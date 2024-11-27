@@ -6,19 +6,21 @@ $sellerHTML = include('../server/fetchstore.php');
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/store.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
 </head>
+
 <body>
 
-<div class="register">
+    <div class="register">
         <p>Become a Seller? <a href="register.php">Register Now</a></p>
     </div>
-    
+
     <!-- Navbar Section -->
     <nav class="navbar">
         <div class="left-side">
@@ -39,25 +41,25 @@ $sellerHTML = include('../server/fetchstore.php');
         </div>
     </nav>
 
-<div class="main-store">
+    <div class="main-store">
 
-<div class="path">
-    <a href="">Home</a>
-    <img src="../assets/arrowrightblack.png" alt="">
-    <a href="">Store</a>
-</div>
+        <div class="path">
+            <a href="">Home</a>
+            <img src="../assets/arrowrightblack.png" alt="">
+            <a href="">Store</a>
+        </div>
 
-<div class="store">
-<?php 
+        <div class="store">
+            <?php 
 
 echo $sellerHTML;
 
 ?>
-</div>
+        </div>
 
-</div>
+    </div>
 
-<footer>
+    <footer>
         <div class="top-footer">
             <div class="footer-logo">
                 <img src="../assets/tianggeportal.png" alt="">
@@ -80,7 +82,8 @@ echo $sellerHTML;
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -100,4 +103,5 @@ echo $sellerHTML;
 
 
 </body>
+
 </html>

@@ -15,11 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contact = $_POST['contact'];
     $birthday = $_POST['birthday'];
     $age = $_POST['age'];
-    $address = $_POST['address'];
+    $province = $_POST['province'];
+    $municipality = $_POST['municipality'];
+    $baranggay= $_POST['barangay'];
+    $houseno = $_POST['houseno'];
+    $lazada = isset($_POST['lazada']) ? $_POST['lazada'] : null;
+    $shopee = isset($_POST['shopee']) ? $_POST['shopee'] : null;
+    $stallName = $_POST['stall_name'];
     $storeName = $_POST['store_name'];
-    $createdAt = date('Y-m-d H:i:s');
-    $updatedAt = date('Y-m-d H:i:s');
-    $status = 'active';
+    $createdAt = date('M d, Y');
+    $updatedAt = date('M d, Y');
 
     // Default image file
     $imagePath = '../assets/storepic.png';
@@ -28,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (file_exists($imagePath)) {
         $imageData = file_get_contents($imagePath);
     } else {
-        die(json_encode(['status' => 'error', 'message' => 'Default image file not found.']));
+        die(json_encode(['status' => 'error', 'message' => 'Default image file not found.'])); 
     }
 
     // Validate password and confirm password
@@ -44,21 +49,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->beginTransaction();
 
         // Insert into sellertb
-        $sellerQuery = "INSERT INTO sellertb (username, password, email, first_name, middle_name, last_name, contact, birthday, age, address, status, created_at, updated_at) 
-                        VALUES (:username, :password, :email, :first_name, :middle_name, :last_name, :contact, :birthday, :age, :address, :status, :created_at, :updated_at)";
+        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno,  created_at, updated_at) 
+                        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno,  :created_at, :updated_at)";
         $sellerStmt = $conn->prepare($sellerQuery);
         $sellerStmt->execute([
             ':username' => $username,
             ':password' => $hashedPassword,
-            ':email' => $email,
+            ':seller_email' => $email,
             ':first_name' => $firstName,
             ':middle_name' => $middleName,
             ':last_name' => $lastName,
-            ':contact' => $contact,
+            ':seller_contact' => $contact,
             ':birthday' => $birthday,
             ':age' => $age,
-            ':address' => $address,
-            ':status' => $status,
+            ':province' => $province,
+            ':municipality' => $municipality,
+            ':baranggay' => $baranggay,
+            ':houseno' => $houseno,
             ':created_at' => $createdAt,
             ':updated_at' => $updatedAt,
         ]);
@@ -67,13 +74,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sellerId = $conn->lastInsertId();
 
         // Insert into storetb
-        $storeQuery = "INSERT INTO storetb (sellerid, storename, img) 
-                       VALUES (:sellerid, :storename, :img)";
+        $storeQuery = "INSERT INTO storetb (sellerid, storename, img, lazada, shopee) 
+                       VALUES (:sellerid, :storename, :img, :lazada, :shopee)";
         $storeStmt = $conn->prepare($storeQuery);
         $storeStmt->bindParam(':sellerid', $sellerId, PDO::PARAM_INT);
         $storeStmt->bindParam(':storename', $storeName, PDO::PARAM_STR);
         $storeStmt->bindParam(':img', $imageData, PDO::PARAM_LOB); // Bind as LOB
+        $storeStmt->bindParam(':lazada', $lazada, PDO::PARAM_STR);
+        $storeStmt->bindParam(':shopee', $shopee, PDO::PARAM_STR);
         $storeStmt->execute();
+
+        // Insert into stalltb
+        $stallQuery = "INSERT INTO stalltb (stallnumber, storename) 
+                       VALUES (:stallnumber, :storename)";
+        $stallStmt = $conn->prepare($stallQuery);
+        $stallStmt->bindParam(':stallnumber', $stallName, PDO::PARAM_INT);
+        $stallStmt->bindParam(':storename', $storeName, PDO::PARAM_STR);
+        $stallStmt->execute();
 
         // Commit transaction
         $conn->commit();

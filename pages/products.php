@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/reset.css">
-    <link rel="stylesheet" href="../style/products.css">
+    <link rel="stylesheet" href="../style/product.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
-    <title>Document</title>
+    <title>e-Tiangge Taytay</title>
 </head>
 
 <body>
@@ -173,9 +173,9 @@
             <div class="products-container">
                 <div class="breadcrumbs">
                     <span>Home</span>
-                    <img src="../assets/arrow-icon.png" alt="">
+                    <img src="../assets/arrowrightblack.png" alt="">
                     <span>Products</span>
-                    <img src="../assets/arrow-icon.png" alt="">
+                    <img src="../assets/arrowrightblack.png" alt="">
                     <span class="selected">Men's Fashion</span>
                 </div>
 
@@ -333,7 +333,8 @@
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../style/storeview.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
     <link rel="stylesheet" href="../style//custom-select.css">
-    <title>Document</title>
+    <title>e-Tiangge Taytay</title>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
             <ul>
                 <li><a href="home.php">Home</a></li>
                 <li><a href="about.php">About</a></li>
-                <li><a href="product.php">Products</a></li>
+                <li><a href="products.php">Products</a></li>
                 <li class="selected"><a href="store.php">Store</a></li>
                 <li><a href="contact.php">Contact us</a></li>
             </ul>
@@ -77,19 +77,26 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="store-description">
                         <div>
-                            <p>STYL E.BOSS offers a curated selection of trendy, high-quality clothing and accessories designed to let you stand out. From everyday essentials to statement pieces, we’ve got everything you need to express your unique style without breaking the bank.</p>
-                            <p>As a proud member of the Taytay Tiangge community, we specialize in Ready-to-Wear (RTW) garments, sourced and crafted with care, ensuring that every piece reflects Taytay’s renowned quality and affordability. Whether you’re dressing for work, a casual day out, or a special occasion, STYL E.BOSS has you covered.</p>
+                            <p>STYL E.BOSS offers a curated selection of trendy, high-quality clothing and accessories
+                                designed to let you stand out. From everyday essentials to statement pieces, we’ve got
+                                everything you need to express your unique style without breaking the bank.</p>
+                            <p>As a proud member of the Taytay Tiangge community, we specialize in Ready-to-Wear (RTW)
+                                garments, sourced and crafted with care, ensuring that every piece reflects Taytay’s
+                                renowned quality and affordability. Whether you’re dressing for work, a casual day out,
+                                or a special occasion, STYL E.BOSS has you covered.</p>
                         </div>
 
                         <div class="linked-accounts">
                             <p>Linked Accounts</p>
                             <div>
-                                <img src="../assets/shopee-md.png" alt="">
-                                <img src="../assets/lazada-md.png" alt="">
-                               
+                                <a href="http://shopee.com" target="_blank"><img src="../assets/shopee-md.png"
+                                        alt=""></a>
+                                <a href="http://lazada.com" target="_blank"><img src="../assets/lazada-md.png"
+                                        alt=""></a>
+
                             </div>
                         </div>
                     </div>
@@ -103,7 +110,7 @@
                     <p>from the shop</p>
 
                     <div>
-                        <select class="custom-select"  >
+                        <select class="custom-select">
                             <option value="0">Categories</option>
                             <option value="1">Audi</option>
                             <option value="2">BMW</option>
@@ -126,7 +133,7 @@
                 <div class="products">
                     <div class="product-card">
                         <div class="product-image">
-                             <a href="view-product.php"><img src="../assets/Frame 32.png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32.png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -134,7 +141,7 @@
 
                     <div class="product-card">
                         <div class="product-image">
-                        <a href="view-product.php"><img src="../assets/Frame 32 (1).png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32 (1).png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -142,7 +149,7 @@
 
                     <div class="product-card">
                         <div class="product-image">
-                        <a href="view-product.php"><img src="../assets/Frame 32 (2).png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32 (2).png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -150,7 +157,7 @@
 
                     <div class="product-card">
                         <div class="product-image">
-                        <a href="view-product.php"><img src="../assets/Frame 32 (3).png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32 (3).png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -158,7 +165,7 @@
 
                     <div class="product-card">
                         <div class="product-image">
-                        <a href="view-product.php"><img src="../assets/Frame 32 (4).png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32 (4).png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -166,7 +173,7 @@
 
                     <div class="product-card">
                         <div class="product-image">
-                        <a href="view-product.php"><img src="../assets/Frame 32 (5).png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32 (5).png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -174,7 +181,7 @@
 
                     <div class="product-card">
                         <div class="product-image">
-                        <a href="view-product.php"><img src="../assets/Frame 32 (6).png" /></a>
+                            <a href="view-product.php"><img src="../assets/Frame 32 (6).png" /></a>
                         </div>
                         <p>One-Life Graphiic T-Shirt</p>
                         <p>&#8369; <span>399</span></p>
@@ -231,7 +238,8 @@
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -250,4 +258,5 @@
     </footer>
 
 </body>
+
 </html>

@@ -8,20 +8,22 @@ $lastproductHTML = include('../server/fetchproduct.php');
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/homes.css">
+    <link rel="stylesheet" href="../style/home.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
     <title>e-Tiangge Taytay</title>
 </head>
+
 <body>
 
     <!-- Register Seller Section -->
     <div class="register">
         <p>Become a Seller? <a href="register.php">Register Now</a></p>
     </div>
-    
+
     <!-- Navbar Section -->
     <nav class="navbar">
         <div class="left-side">
@@ -58,7 +60,7 @@ $lastproductHTML = include('../server/fetchproduct.php');
                 —all in one convenient digital marketplace.</p>
         </div>
         <div class="main-right-side">
-            <img style="width: 100%; height: 100%;" src="../assets/girlinayellow.png" alt=""/>
+            <img style="width: 100%; height: 100%;" src="../assets/girlinayellow.png" alt="" />
             <div class="products-shortcut">
                 <a href="product.php">See All Products</a> <img src="../assets/arrowright.png" alt="">
             </div>
@@ -67,18 +69,39 @@ $lastproductHTML = include('../server/fetchproduct.php');
 
     <!-- Blue Container for Feature Descriptions -->
     <div class="blue-container">
-        <div class="content"><img src="../assets/shopping-basket.png" alt=""><div class="sub-content"><h3>Product Browsing</h3><p>A catalog with categories, detailed product descriptions, and high-quality images.</p></div></div>
-        <div class="content"><img src="../assets/shop.png" alt=""><div class="sub-content"><h3>Store Directory</h3><p>A list of registered sellers or stores, each with a profile showcasing their offerings and contact information.</p></div></div>
-        <div class="content"><img src="../assets/search-alternate.png" alt=""><div class="sub-content"><h3>Product Search</h3><p>Search functionality with filters for category, price, or keywords.</p></div></div>
-        <div class="content"><img src="../assets/smart-phone.png" alt=""><div class="sub-content"><h3>Contact Seller</h3><p>A feature allowing buyers to directly message sellers for inquiries or reservations</p></div></div>
+        <div class="content"><img src="../assets/shopping-basket.png" alt="">
+            <div class="sub-content">
+                <h3>Product Browsing</h3>
+                <p>A catalog with categories, detailed product descriptions, and high-quality images.</p>
+            </div>
+        </div>
+        <div class="content"><img src="../assets/shop.png" alt="">
+            <div class="sub-content">
+                <h3>Store Directory</h3>
+                <p>A list of registered sellers or stores, each with a profile showcasing their offerings and contact
+                    information.</p>
+            </div>
+        </div>
+        <div class="content"><img src="../assets/search-alternate.png" alt="">
+            <div class="sub-content">
+                <h3>Product Search</h3>
+                <p>Search functionality with filters for category, price, or keywords.</p>
+            </div>
+        </div>
+        <div class="content"><img src="../assets/smart-phone.png" alt="">
+            <div class="sub-content">
+                <h3>Contact Seller</h3>
+                <p>A feature allowing buyers to directly message sellers for inquiries or reservations</p>
+            </div>
+        </div>
     </div>
 
     <div class="category-container">
-    <h1>CATEGORIES</h1>
-    <div class="category-item">
-    <?php echo $categoryHTML; ?>
-    </div>
-    <button>Browse Products</button>
+        <h1>CATEGORIES</h1>
+        <div class="category-item">
+            <?php echo $categoryHTML; ?>
+        </div>
+        <a href="products.php"><button>Browse Products</button></a>
     </div>
 
     <div class="divider">
@@ -86,11 +109,11 @@ $lastproductHTML = include('../server/fetchproduct.php');
     </div>
 
     <div class="product-container">
-    <h1>NEW ARRIVALS</h1>
-    <div class="product-item">
-    <?php echo $lastproductHTML; ?>
-    </div>
-    <button class="view">View All</button>
+        <h1>NEW ARRIVALS</h1>
+        <div class="product-item">
+            <?php echo $lastproductHTML; ?>
+        </div>
+        <a href="products.php"><button class="view">View All</button></a>
     </div>
 
     <div class="divider">
@@ -98,11 +121,11 @@ $lastproductHTML = include('../server/fetchproduct.php');
     </div>
 
     <div class="product-container  last-product-container">
-    <h1>MOST VIEWED</h1>
-    <div class="product-item">
-    <?php echo $productHTML; ?>
-    </div>
-    <button class="view">View All</button>
+        <h1>MOST VIEWED</h1>
+        <div class="product-item">
+            <?php echo $productHTML; ?>
+        </div>
+        <a href="products.php"><button class="view">View All</button></a>
     </div>
 
     <footer>
@@ -128,7 +151,8 @@ $lastproductHTML = include('../server/fetchproduct.php');
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -147,4 +171,5 @@ $lastproductHTML = include('../server/fetchproduct.php');
     </footer>
 
 </body>
+
 </html>

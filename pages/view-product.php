@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/reset.css">
-    <link rel="stylesheet" href="../style/view-product.css">
+    <link rel="stylesheet" href="../style/viewproduct.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
-    <title>Document</title>
+    <title>e-Tiangge Taytay</title>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
             <ul>
                 <li><a href="home.php">Home</a></li>
                 <li><a href="about.php">About</a></li>
-                <li class="selected"><a href="product.php">Products</a></li>
+                <li class="selected"><a href="products.php">Products</a></li>
                 <li><a href="store.php">Store</a></li>
                 <li><a href="contact.php">Contact us</a></li>
             </ul>
@@ -38,11 +38,11 @@
             <div class="selected-product">
                 <div class="breadcrumbs">
                     <span>Home</span>
-                    <img src="../assets/arrow-icon.png" alt="">
+                    <img src="../assets/arrowrightblack.png" alt="">
                     <span>Products</span>
-                    <img src="../assets/arrow-icon.png" alt="">
+                    <img src="../assets/arrowrightblack.png" alt="">
                     <span>Men's Fashion</span>
-                    <img src="../assets/arrow-icon.png" alt="">
+                    <img src="../assets/arrowrightblack.png" alt="">
                     <span class="selected">T-shirts</span>
                 </div>
 
@@ -50,17 +50,21 @@
                     <div class="main-product-images">
                         <div class="image-list">
                             <div class="selected-image">
-                                <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-3300-athletic_gray-sm.jpg?v=1719001989&width=823" alt="">
+                                <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-3300-athletic_gray-sm.jpg?v=1719001989&width=823"
+                                    alt="">
                             </div>
                             <div>
-                                <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-6400-charcoal-sm.jpg?v=1716955366&width=823" alt="">
+                                <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-6400-charcoal-sm.jpg?v=1716955366&width=823"
+                                    alt="">
                             </div>
                             <div>
-                                <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-6400-red-sm.jpg?v=1716955367&width=823" alt="">
+                                <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-6400-red-sm.jpg?v=1716955367&width=823"
+                                    alt="">
                             </div>
                         </div>
                         <div class="prev-image">
-                            <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-3300-athletic_gray-sm.jpg?v=1719001989&width=823" alt="">
+                            <img src="https://lookhuman.com/cdn/shop/files/product-giant-468681-3300-athletic_gray-sm.jpg?v=1719001989&width=823"
+                                alt="">
                         </div>
                     </div>
 
@@ -69,7 +73,8 @@
                             <div class="description">
                                 <p>One-Life Graphic TShirt</p>
                                 <p>&#8369; 399</p>
-                                <p>This graphic t-shirt which is perfect for any occasion. Crafted from a soft and breathable fabric, it offers superior comfort and style. </p>
+                                <p>This graphic t-shirt which is perfect for any occasion. Crafted from a soft and
+                                    breathable fabric, it offers superior comfort and style. </p>
                             </div>
 
                             <div class="availability">
@@ -98,10 +103,16 @@
 
                             <div>
                                 <p>
-                                    STYL E.BOSS offers a curated selection of trendy, high-quality clothing and accessories designed to let you stand out. From everyday essentials to statement pieces, we’ve got everything you need to express your unique style without breaking the bank.
+                                    STYL E.BOSS offers a curated selection of trendy, high-quality clothing and
+                                    accessories designed to let you stand out. From everyday essentials to statement
+                                    pieces, we’ve got everything you need to express your unique style without breaking
+                                    the bank.
                                 </p>
 
-                                <p>As a proud member of the Taytay Tiangge community, we specialize in Ready-to-Wear (RTW) garments, sourced and crafted with care, ensuring that every piece reflects Taytay’s renowned quality and affordability. Whether you’re dressing for work, a casual day out, or a special occasion, STYL E.BOSS has you covered.</p>
+                                <p>As a proud member of the Taytay Tiangge community, we specialize in Ready-to-Wear
+                                    (RTW) garments, sourced and crafted with care, ensuring that every piece reflects
+                                    Taytay’s renowned quality and affordability. Whether you’re dressing for work, a
+                                    casual day out, or a special occasion, STYL E.BOSS has you covered.</p>
                             </div>
                         </div>
 
@@ -128,7 +139,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (10).png" />
@@ -136,7 +147,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (11).png" />
@@ -144,7 +155,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32.png" />
@@ -165,7 +176,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (1).png" />
@@ -173,7 +184,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (2).png" />
@@ -181,7 +192,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (3).png" />
@@ -189,7 +200,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (4).png" />
@@ -197,7 +208,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (5).png" />
@@ -205,7 +216,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (6).png" />
@@ -213,7 +224,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32 (7).png" />
@@ -229,7 +240,7 @@
                             <p>One-Life Graphiic T-Shirt</p>
                             <p>&#8369; <span>399</span></p>
                         </div>
-    
+
                         <div class="product-card">
                             <div class="product-image">
                                 <img src="../assets/Frame 32.png" />
@@ -266,7 +277,8 @@
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -286,4 +298,5 @@
 
 
 </body>
+
 </html>

@@ -23,6 +23,11 @@
     color: rgb(44, 44, 44, 0.6);
 }
 
+.breadcrumbs img {
+    width: 15px;
+    height: 15px;
+}
+
 .breadcrumbs span.selected {
     color: rgb(44, 44, 44);
 }

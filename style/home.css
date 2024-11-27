@@ -112,12 +112,12 @@ main {
 }
 
 .content h3 {
-    font-size: 15px;
-    font-family: 'kenzoestic';
+    font-size: 16px; 
+    margin-bottom: 5px;
 }
 
 .content p {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .category-container, .product-container {
@@ -200,7 +200,7 @@ main {
     border-radius: 40px;
     color: blue;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
 }
 

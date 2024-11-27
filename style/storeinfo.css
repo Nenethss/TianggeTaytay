@@ -70,7 +70,7 @@ strong {
 .info {
     display: flex;
     align-items: center;
-    padding-left: 70px;
+    padding-left: 25px;
 }
 
 .info img {
@@ -79,10 +79,84 @@ strong {
     margin-right: 10px;
 }
 
+.rounded-box {
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+.edt-btn {
+    display: flex;
+    background-color: white;
+    border: 1px #a5a5a5 solid;
+    color: #a5a5a5;
+    width: 230px;
+    padding: 0 12px;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+
+.edit-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.basic-info label {
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+#updateInfo h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+    color: #0033a0;
+    text-align: left !important;
+}
+
+.basic-info input[type=file] {
+    padding: 100px 0px;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+}
+
+textarea {
+  width: 1134px;
+  height: 264px;
+  padding: 10px;
+  outline: none;
+  resize: none;
+  border-radius: 10px;
+  font-size: 17px;
+}
+
+.store-information {
+    display: flex;
+}
+
+.first-child {
+    margin-right: 40px;
+}
+
+.store-information div {
+      display: flex;
+      flex-direction: column;
+      width: 350px;
+}
+
+.first-child label {
+    margin-bottom: 10px;
+}
+
 /* Sidebar styling */
 .sidebar {
     width: 250px;
-    height: 167.3%;
+    height: 158.3%;
     position: absolute;
     border-right: 1px solid #cdcdcd;
     left: 0;
@@ -90,13 +164,16 @@ strong {
 }
 
 .sidebar a {
-    font-size: 17px !important;
-    display: block;
-    padding: 10px 15px;
-    color: #333;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background-color 0.3s;
+  font-size: 17px !important;
+  display: flex;
+  padding: 10px 15px;
+  height: 50px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s;
+  align-items: center;
+  justify-content: center;
 }
 
 .sidebar a:hover {
@@ -186,10 +263,6 @@ button {
     font-weight: 400;
 }
 
-/* Hidden by default */
-.hidden {
-    display: none;
-  }
   
   /* Form container styles */
   #productFormContainer {

@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.top-bar {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0033A0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 90px;
+  z-index: -1;
+}
+
+
+table {
+  width: 50%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+.status-cell {
+  background-color: #A0FFAB;
+  color: #006A09;
+  padding: 5px;
+  width: 92px;
+  text-align: center;
+}
+
+/* Center the dropdown and search box */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+select {
+  padding: 10px;
+  margin-left: 10px;
+  /* Space between search and dropdown */
+}
+
+.search-box {
+  text-align: center;
+}
+
+input[type="text"] {
+  padding: 10px;
+  width: 200px;
+  margin-right: 10px;
+  /* Space between search input and dropdown */
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.content {
+  margin-top: 130px;
+  margin-left: 300px;
+  /* Increased margin-left to match the new sidebar width */
+  padding: 20px;
+  width: calc(100% - 300px);
+  /* Adjusted content width */
+}

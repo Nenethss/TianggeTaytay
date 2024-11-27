@@ -1,0 +1,130 @@
+/* General styling */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+
+
+/* Sidebar styles */
+.sidebar {
+    width: 300px;
+    /* Increased width of the sidebar */
+    height: 100vh;
+    background-color: white;
+    color: #0033A0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 40px;
+    /* Increased padding-top for better spacing */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo styles */
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 100px;
+    /* Increased bottom margin for more space */
+}
+
+.sidebar .logo img {
+    max-width: 80%;
+    /* Adjusted to keep the logo size appropriate */
+    height: auto;
+}
+
+/* Sidebar items list */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+/* Sidebar item link styling */
+.sidebar ul li a {
+    color: #0033A0;
+    text-decoration: none;
+    font-size: 20px;
+    /* Increased font size */
+    display: flex;
+    align-items: center;
+    padding: 20px 25px;
+    /* Increased padding for larger buttons */
+}
+
+/* Sidebar item icons */
+.sidebar .sidebar-icon {
+    width: 25px;
+    /* Increased icon size */
+    height: 25px;
+    /* Increased icon size */
+    margin-right: 15px;
+    /* Increased space between icon and text */
+}
+
+/* Active item background color and text color */
+.sidebar ul li.active {
+    background-color: #0033A0;
+    color: white;
+}
+
+/* Change text color for active links */
+.sidebar ul li.active a {
+    color: white;
+}
+
+/* Hover effect */
+.sidebar ul li:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar ul li {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.3s ease;
+}
+
+/* Logout button at the bottom of the sidebar */
+.sidebar .logout {
+    position: absolute;
+    margin-left: 10%;
+    bottom: 80px;
+    /* Pushes it to the bottom */
+    left: 0;
+    width: 80%;
+    background-color: #7AAAFF;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Increased vertical padding */
+}
+
+/* Styling for the logout link */
+.sidebar .logout a {
+    color: white;
+    font-size: 20px;
+    /* Increased font size */
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* Optional: Styling for the logout icon */
+.sidebar .logout a .sidebar-icon {
+    width: 25px;
+    /* Increased icon size */
+    height: 25px;
+    /* Increased icon size */
+    margin-right: 15px;
+    /* Increased space between icon and text */
+}
+
+.sidebar .logout:hover {
+    background-color: #6A92E2;
+}
+

@@ -4,13 +4,15 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/login.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
 </head>
+
 <body>
 
 
@@ -32,26 +34,26 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                 <p class="subheading">Log in to discover exclusive products</p>
 
                 <form action="../server/fetchlogincredentials.php" method="POST">
-        <label>Username</label>
-        <input type="text" name="username" required>
-        <label>Password</label>
-        <input type="password" name="password" id="password" required>
+                    <label>Username</label>
+                    <input type="text" name="username" required>
+                    <label>Password</label>
+                    <input type="password" name="password" id="password" required>
 
-        <div class="show-password">
-            <label for="show-password-checkbox">
-                <input type="checkbox" id="show-password-checkbox" onclick="togglePassword()"> Show Password
-            </label>
-        </div>
+                    <div class="show-password">
+                        <label for="show-password-checkbox">
+                            <input type="checkbox" id="show-password-checkbox" onclick="togglePassword()"> Show Password
+                        </label>
+                    </div>
 
-        <!-- Error Message -->
-        <?php if ($error): ?>
-        <div class="error-message-container">
-            <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
-        </div>
-        <?php endif; ?>
+                    <!-- Error Message -->
+                    <?php if ($error): ?>
+                    <div class="error-message-container">
+                        <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+                    </div>
+                    <?php endif; ?>
 
-        <button type="submit">Log In</button>
-    </form>
+                    <button type="submit">Log In</button>
+                </form>
 
 
                 <div class="register-now">
@@ -85,7 +87,8 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -104,11 +107,12 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
     </footer>
 
     <script>
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const checkbox = document.getElementById('show-password-checkbox');
-            passwordField.type = checkbox.checked ? 'text' : 'password';
-        }
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        const checkbox = document.getElementById('show-password-checkbox');
+        passwordField.type = checkbox.checked ? 'text' : 'password';
+    }
     </script>
 </body>
+
 </html>

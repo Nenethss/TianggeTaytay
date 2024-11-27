@@ -2,19 +2,19 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="../style/contact.css">
-  <link rel="stylesheet" href="../style/navandfoot.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Tiangge Taytay</title>
+    <link rel="stylesheet" href="../style/contact.css">
+    <link rel="stylesheet" href="../style/navandfoot.css">
 </head>
 
 <body>
 
-<div class="register">
+    <div class="register">
         <p>Become a Seller? <a href="register.php">Register Now</a></p>
     </div>
-    
+
     <!-- Navbar Section -->
     <nav class="navbar">
         <div class="left-side">
@@ -35,25 +35,25 @@
         </div>
     </nav>
 
-  <section class="contact-us">
-    <div>
-    <h2>Contact Us</h2>
-    </div>
-    <div class="contact-container">
-      <div>
-      <p>If you have any inquiries or need assistance, feel free to reach out to us.</p>
-      </div>
-      <div>
-          <p>• Email: <a href="mailto:support@e-tiangge.ph">support@e-tiangge.ph</a></p>
-          <p>• Phone: <a href="tel:+639123456789">+63 912 345 6789</a></p>
-      </div>
-      <div>
-      <p>Our team is here to help during business hours.</p>
-      </div>
-    </div>
-  </section>
+    <section class="contact-us">
+        <div>
+            <h2>Contact Us</h2>
+        </div>
+        <div class="contact-container">
+            <div>
+                <p>If you have any inquiries or need assistance, feel free to reach out to us.</p>
+            </div>
+            <div>
+                <p>• Email: <a href="mailto:support@e-tiangge.ph">support@e-tiangge.ph</a></p>
+                <p>• Phone: <a href="tel:+639123456789">+63 912 345 6789</a></p>
+            </div>
+            <div>
+                <p>Our team is here to help during business hours.</p>
+            </div>
+        </div>
+    </section>
 
-  <footer>
+    <footer>
         <div class="top-footer">
             <div class="footer-logo">
                 <img src="../assets/tianggeportal.png" alt="">
@@ -76,7 +76,8 @@
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">

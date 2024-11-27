@@ -2,66 +2,88 @@
 // Start session
 session_start();
 include_once '../server/connect.php';
-
+include_once '../server/fetchstoreinfo.php';
 // Ensure the user is a seller
-if (!isset($_SESSION['seller_id']) || $_SESSION['role'] !== 'seller') {
-  header("Location: login.php");
-  exit();
-}
 
-// Get seller_id from session
-$seller_id = $_SESSION['seller_id'];
 
-// Fetch store details
-$stmt = $conn->prepare("
-    SELECT store.storename, store.description,store.img, seller.created_at, seller.contact, seller.email
-    FROM storetb AS store 
-    JOIN sellertb AS seller ON store.sellerid = seller.seller_id
-    WHERE seller.seller_id = :sellerid
-");
-$stmt->execute(['sellerid' => $seller_id]);
-$store = $stmt->fetch(PDO::FETCH_ASSOC);
+$storeDescription = htmlspecialchars($store['description'] ?? 'N/A');
+$storeName = htmlspecialchars($store['storename'] ?? 'N/A');
+$storeContact = htmlspecialchars($seller['store_contact'] ?? 'N/A');
+$storeEmail = htmlspecialchars($store['email'] ?? 'N/A');
 
-// Set default store info
-$store_name = $store['storename'] ?? 'No Store Found';
-$store_img = isset($store['img']) ? 'data:image/png;base64,' . base64_encode($store['img']) : '../assets/storepic.png';
-$contact = $store['contact'] ?? 'No Contact Info';
-$email = $store['email'] ?? 'No Email';
-$store_name = $store['storename'] ?? 'No Store Found';
-$created_at = $store['created_at'] ?? 'N/A';
-
-// Fetch total number of products
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_products FROM producttb WHERE storename = :storename");
-$stmt->execute(['storename' => $store_name]);
-$product_count = $stmt->fetch(PDO::FETCH_ASSOC)['total_products'] ?? 0;
-
-// Fetch all products for this store
-$stmt = $conn->prepare("SELECT product_name, price, img FROM producttb WHERE storename = :storename");
-$stmt->execute(['storename' => $store_name]);
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch categories
-$stmt = $conn->prepare("SELECT categoryid, category_name FROM categorytb");
-$stmt->execute();
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch product types
-$stmt = $conn->prepare("SELECT typeid, typename FROM producttypetb");
-$stmt->execute();
-$product_types = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Account</title>
-    <link rel="stylesheet" href="../style/store-info.css">
+    <title>e-Tiangge Taytay</title>
+    <link rel="stylesheet" href="../style/storeinfo.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
 </head>
 
+<style>
+.hidden {
+    display: none;
+}
+
+.form-hidden {
+    display: none;
+}
+
+
+.edt-btn {
+    display: flex;
+    background-color: white;
+    border: 1px #a5a5a5 solid;
+    color: #a5a5a5;
+    width: 230px;
+    padding: 0 12px;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+}
+
+/* Hide the default file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Style the custom button */
+.custom-file-upload {
+    background-color: #b6b6b666;
+    color: #2d2d2d;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Style the container where the file will be rendered */
+.file-container {
+    margin-top: 20px;
+    border: 2px solid #dddddd;
+    border-radius: 100px;
+    padding: 20px;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-input {
+    display: block !important;
+}
+
+.file-container label {
+    margin: 0 !important;
+}
+</style>
+
 <body>
+
     <nav class="navbar">
         <div class="left-side">
             <a href="seller.php"><img src="../assets/shoppingbag.png" alt=""></a>
@@ -72,131 +94,223 @@ $product_types = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="right-side">
             <ul>
-                <li><a href="seller.php">Home</a></li>
-                <li><a href="about.php"target="_blank">About</a></li>
-                <li><a href="products.php"target="_blank">Products</a></li>
-                <li><a href="store.php"target="_blank">Store</a></li>
-                <li><a href="contact.php"target="_blank">Contact us</a></li>
+                <li class="selected"><a href="#">Home</a></li>
+                <li><a href="about.php" target="_blank">About</a></li>
+                <li><a href="products.php" target="_blank">Products</a></li>
+                <li><a href="store.php" target="_blank">Store</a></li>
+                <li><a href="contact.php" target="_blank">Contact us</a></li>
             </ul>
         </div>
 
+
         <div class="dropdown-container" id="dropdown">
             <!-- Store Image -->
-            <img style="border-radius: 50px; width: 60px; height: 60px;" src="<?php echo $store_img; ?>" alt="Store Image">
+            <img style="border-radius: 50px; width: 60px; height: 60px;" src="<?php echo $store_img; ?>"
+                alt="Store Image">
             <!-- Arrow Icon -->
-            <img id="arrow" style="width: 20px; height: 20px; transform: rotate(90deg);" src="../assets/arrowrightblack.png" alt="">
+            <img id="arrow" style="width: 20px; height: 20px; transform: rotate(90deg);"
+                src="../assets/arrowrightblack.png" alt="">
         </div>
 
         <!-- Dropdown Menu -->
         <div class="dropdown-menu" id="dropdown-menu">
             <a href="#"><?php echo $store_name; ?></a>
             <a href="seller-info.php">Manage Account</a>
-            <a href="#">Manage Store</a>
+            <a href="store-info.php">Manage Store</a>
             <a style="color: red;" href="logout.php">Logout</a>
         </div>
     </nav>
 
+    <div id="productFormContainer" class="form-hidden">
+        <form class="product-form" id="addingForm" action="../server/add_product.php" method="POST"
+            enctype="multipart/form-data">
+            <!-- Close Button -->
+            <img src="../assets/close.png" id="closeFormButton" class="close-btn" alt="Close">
 
-    <div id="productFormContainer" class="hidden">
-  <form class="product-form" id="addingForm" action="../server/add_product.php" method="POST" enctype="multipart/form-data">
-    <!-- Close Button -->
-    <img src="../assets/close.png" id="closeFormButton" class="close-btn" alt="Close">
-    
-    <label>Product Name</label>
-    <input type="text" name="product_name" required>
-    
-    <label>Product Description</label>
-    <input type="text" name="description" required>
-    
-    <label>Price</label>
-    <input type="text" name="price" required>
-    
-    <label>Category</label>
-    <select name="category" id="category">
-            <?php foreach ($categories as $category): ?>
-                <option value="<?php echo $category['categoryid']; ?>"><?php echo htmlspecialchars($category['category_name']); ?></option>
-            <?php endforeach; ?>
-    </select>
-    
-    <label>Type</label>
-    <select name="type" id="type">
-            <?php foreach ($product_types as $type): ?>
-                <option value="<?php echo $type['typeid']; ?>"><?php echo htmlspecialchars($type['typename']); ?></option>
-            <?php endforeach; ?>
-    </select>
-    
-    <label>Product Image</label>
-    <div class="file-container">
-    <input type="file" name="product_img" required>
-    </div>
-    
-    <label>Link on Shopee</label>
-    <input type="url" name="shopee_link">
-    
-    <label>Link on Lazada</label>
-    <input type="url" name="lazada_link">
-    
-    <div class="add-button">
-    <button type="submit">Add Product</button>
-    </div>
-  </form>
-</div>
+            <label>Product Name</label>
+            <input type="text" name="product_name" required>
 
- 
+            <label>Product Description</label>
+            <input type="text" name="description" required>
 
-<div class="main-content">
-<div class="sidebar">
-    <a href="#">Manage Account</a>
-    <a href="seller-info.php" class="active">Manage Store</a>
-    </div>
-    <!-- Account Info Section -->
-    <div class="account-info">
-        <div class="store-info-card">
-            <img style="border-radius: 50px; width: 100px; height: 100px;" src="<?php echo $store_img; ?>" alt="Store Image">
-            <p style="font-weight: 600;"><?php echo $store_name; ?></p>
-        </div>
-        <div class="info-card middle-info-card">
-          <div class="info"><img src="../assets/shipment-box.png" alt=""><p>Products: <strong><?php echo $product_count; ?></strong></p></div>
-          <div class="info"><img src="../assets/joined.png" alt=""><p>Created At: <strong><?php echo $created_at; ?></strong></p></div>       
-        </div>
-        <div class="info-card">
-          <div class="info"><img src="../assets/telephone.png" alt=""><p>Contact: <strong><?php echo $contact; ?></strong></p></div>
-          <div class="info"><img src="../assets/thread.png" alt=""><p>Email: <strong><?php echo $email; ?></strong></p></div>
-        </div>
+            <label>Price</label>
+            <input type="text" name="price" required>
+
+            <label>Category</label>
+            <select name="category" id="category">
+                <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['categoryid']; ?>">
+                    <?php echo htmlspecialchars($category['category_name']); ?></option>
+                <?php endforeach; ?>
+            </select>
+            <label>Type</label>
+            <select name="type" id="type">
+                <?php foreach ($product_types as $type): ?>
+                <option value="<?php echo $type['typeid']; ?>"><?php echo htmlspecialchars($type['typename']); ?>
+                </option>
+                <?php endforeach; ?>
+            </select>
+
+            <label>Product Image</label>
+            <div class="img-container">
+                <input class="img-input" type="file" name="product_img" required>
+            </div>
+
+            <label>Link on Shopee</label>
+            <input type="url" name="shopee_link">
+
+            <label>Link on Lazada</label>
+            <input type="url" name="lazada_link">
+
+            <div class="add-button">
+                <button type="submit">Add Product</button>
+            </div>
+        </form>
     </div>
 
-    <!-- Divider -->
-    <div class="divider">
-        <div></div>
-    </div>
-
-    <!-- Products Section -->
-    <div class="main-products-container">
-        <div class="child-container">
-          <div class="header-container">
-          <h2>MY PRODUCTS</h2>
-          <button id="showFormButton">Add Product</button>
+    <div class="main-content">
+        <div class="sidebar">
+            <a href="seller-info.php">Manage Account</a>
+            <a href="#" class="active">Manage Store</a>
         </div>
 
-            <div class="products-container">
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $product): ?>
-                        <div class="product-card">
-                            <img src="<?php echo isset($product['img']) ? 'data:image/png;base64,' . base64_encode($product['img']) : '../assets/default-product.png'; ?>" alt="Product Image">
-                            <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                            <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p>No products found for this store.</p>
-                <?php endif; ?>
+        <div class="edit-container">
+            <button class="edt-btn" id="editStoreBtn">
+                <img src="../assets/pencil.svg" alt="Edit">Edit Store Information
+            </button>
+        </div>
+
+        <div id="storeInfo" class="account-info">
+            <div class="store-info-card">
+                <img style="border-radius: 50px; width: 100px; height: 100px;" src="<?php echo $store_img; ?>"
+                    alt="Store Image">
+                <p style="font-weight: 600;"><?php echo $store_name; ?></p>
+            </div>
+            <div class="info-card middle-info-card">
+                <div class="info"><img src="../assets/shipment-box.png" alt="">
+                    <p>Products: <strong><?php echo $product_count; ?></strong></p>
+                </div>
+                <div class="info"><img src="../assets/joined.png" alt="">
+                    <p>Created At: <strong><?php echo $created_at; ?></strong></p>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="info"><img src="../assets/telephone.png" alt="">
+                    <p>Contact: <strong><?php echo $store_contact; ?></strong></p>
+                </div>
+                <div class="info"><img src="../assets/thread.png" alt="">
+                    <p>Email: <strong><?php echo $store_email; ?></strong></p>
+                </div>
             </div>
         </div>
+
+        <div id="divider" class="divider">
+            <div></div>
+        </div>
+
+        <div id="mainProducts" class="main-products-container">
+            <div class="child-container">
+                <div class="header-container">
+                    <h2>MY PRODUCTS</h2>
+                    <button id="showFormButton">Add Product</button>
+                </div>
+
+                <div class="products-container">
+                    <?php if (!empty($products)): ?>
+                    <?php foreach ($products as $product): ?>
+                    <div class="product-card">
+                        <img src="<?php echo isset($product['img']) ? 'data:image/png;base64,' . base64_encode($product['img']) : '../assets/default-product.png'; ?>"
+                            alt="Product Image">
+                        <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                        <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                    <p>No products found for this store.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <form class="hidden" id="updateInfo" method="POST" action="../server/updateStore.php"
+            enctype="multipart/form-data">
+            <div class="basic-info rounded-box">
+                <h2>Store Icon</h2>
+                <div>
+                    <div id="file-container" class="file-container">
+                        <label for="file-upload" class="custom-file-upload">Choose File</label>
+                        <input type="file" id="file-upload" name="img" accept="image/*" onchange="renderFile(event)"
+                            style="opacity: 0%;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="basic-info rounded-box">
+                <h2>About</h2>
+                <div>
+                    <textarea name="description"
+                        id="description"><?php echo htmlspecialchars($storeDescription); ?></textarea>
+                </div>
+            </div>
+
+            <div class="basic-info rounded-box">
+                <h2>Store Details</h2>
+                <div class="store-information">
+                    <div class="first-child">
+                        <div>
+                            <label for="stallnumber">Stall No.</label>
+                            <input type="text" name="stallnumber" id="stallnumber"
+                                value="<?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?>" />
+                        </div>
+                        <div>
+                            <label for="contact">Contact No.</label>
+                            <input type="text" name="contact" id="contact"
+                                value="<?php echo htmlspecialchars($store_contact); ?>" />
+                        </div>
+                        <div>
+                            <label for="firstname">Business Permit</label>
+                            <p>Verified</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label for="storename">Store Name</label>
+                            <input type="text" name="storename" id="storename"
+                                value="<?php echo htmlspecialchars(html_entity_decode($storeName)); ?>" readonly
+                                required />
+                        </div>
+                        <div>
+                            <label for="email">Email</label>
+                            <input type="text" name="email" id="email"
+                                value="<?php echo htmlspecialchars($store_email); ?>" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="basic-info rounded-box">
+                <h2>Linked Accounts</h2>
+                <div style="display: flex;">
+                    <label for="firstname">Lazada</label>
+                    <p>YES</p>
+                </div>
+                <div style="display: flex;">
+                    <label for="firstname">Shopee</label>
+                    <p>YES</p>
+                </div>
+            </div>
+
+            <div class="add-button">
+                <button style="margin-right: 20px;" type="button" id="cancelButton">Cancel</button>
+                <button type="submit">Save</button>
+            </div>
+        </form>
+
+
+
     </div>
-</div>
 
-
-<footer>
+    <footer>
         <div class="top-footer">
             <div class="footer-logo">
                 <img src="../assets/tianggeportal.png" alt="">
@@ -219,7 +333,8 @@ $product_types = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
+                        alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -238,7 +353,77 @@ $product_types = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
 
     <script src="../script/drop-down.js"></script>
-    <script src="../script/form-show.js"></script>
-</body>
-</html>
+    <script src="../script/formshow.js"></script>
+    <script src="../script/adding-form.js"></script>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const editStoreBtn = document.getElementById('editStoreBtn');
+        const updateInfoForm = document.getElementById('updateInfo');
+        const editContainer = document.querySelector('.edit-container');
+        const accountInfo = document.getElementById('storeInfo');
+        const divider = document.getElementById('divider');
+        const mainProducts = document.getElementById('mainProducts');
+        const closeButton = document.getElementById('cancelButton'); // Adjust the ID if necessary
+
+        // Toggle visibility when the "Edit Store Information" button is clicked
+        editStoreBtn.addEventListener('click', () => {
+            console.log('Edit button clicked');
+            // Show the update info form
+            updateInfoForm.classList.remove('hidden');
+
+            // Hide the other sections
+            editContainer.classList.add('hidden');
+            accountInfo.classList.add('hidden');
+            divider.classList.add('hidden');
+            mainProducts.classList.add('hidden');
+        });
+
+        // Revert visibility when the close button is clicked
+        closeButton.addEventListener('click', () => {
+            console.log('Close button clicked');
+            // Hide the update info form
+            updateInfoForm.classList.add('hidden');
+
+            // Show the other sections
+            editContainer.classList.remove('hidden');
+            accountInfo.classList.remove('hidden');
+            divider.classList.remove('hidden');
+            mainProducts.classList.remove('hidden');
+        });
+    });
+
+    function renderFile(event) {
+        const container = document.getElementById("file-container");
+        const file = event.target.files[0]; // Get the uploaded file
+
+        // Remove the label only
+        const label = container.querySelector("label");
+        if (label) {
+            container.removeChild(label);
+        }
+
+        // Clear existing preview image if present
+        const existingPreview = container.querySelector("img");
+        if (existingPreview) {
+            container.removeChild(existingPreview);
+        }
+
+        if (file) {
+            // Create a new image preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                img.style.width = "200px";
+                img.style.height = "200px";
+                img.style.borderRadius = "100px";
+                container.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    </script>
+</body>
+
+</html>

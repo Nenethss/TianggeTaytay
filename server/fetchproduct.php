@@ -28,7 +28,7 @@ try {
 
             // Generate HTML for each product
             $productHTML .= '<div class="new-arrival-item">';
-            $productHTML .= '<img src="data:' . $imageType . ';base64,' . $base64Image . '" alt="' . htmlspecialchars($row['product_name']) . '">';
+            $productHTML .= '<a href="products.php"><img src="data:' . $imageType . ';base64,' . $base64Image . '" alt="' . htmlspecialchars($row['product_name']) . '"></a>';
             $productHTML .= '<p>'  . htmlspecialchars($row['product_name']) . '</p>';
             $productHTML .= '<p class="product-price"> ₱' . number_format(htmlspecialchars($row['price']), 2) . '</p>'; // Format price as currency
             $productHTML .= '</div>';
@@ -52,7 +52,7 @@ try {
 
             // Generate HTML for each product
             $lastproductHTML .= '<div class="new-arrival-item">';
-            $lastproductHTML .= '<img src="data:' . $imageType . ';base64,' . $base64Image . '" alt="' . htmlspecialchars($row['product_name']) . '">';
+            $lastproductHTML .= '<a href="products.php"><img src="data:' . $imageType . ';base64,' . $base64Image . '" alt="' . htmlspecialchars($row['product_name']) . '"></a>';
             $lastproductHTML .= '<p>'  . htmlspecialchars($row['product_name']) . '</p>';
             $lastproductHTML .= '<p class="product-price"> ₱' . number_format(htmlspecialchars($row['price']), 2) . '</p>'; // Format price as currency
             $lastproductHTML .= '</div>';

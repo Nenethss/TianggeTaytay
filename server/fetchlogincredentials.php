@@ -18,13 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['username' => $username]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($admin && password_verify($password, $admin['password'])) {
+        if ($admin && $password === $admin['password']) {
             // Set session for admin and redirect
             $_SESSION['role'] = 'admin';
             $_SESSION['username'] = $admin['username'];
-            header("Location: ../pages/admin.php");
+            header("Location: ../pages/dashboard.php");
             exit();
         }
+        
 
         // Check if the user is a seller
         $stmt = $conn->prepare("SELECT * FROM sellertb WHERE username = :username");

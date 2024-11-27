@@ -1,17 +1,5 @@
 const heroContent = {
-    1: {
-        title: "Register",
-        description: "Create your seller account to post and market your products!",
-    },
-    2: {
-        title: "Register",
-        description: "Create your seller account to post and market your products!",
-    },
-    3: {
-        title: "Register",
-        description: "Create your seller account to post and market your products!",
-    },
-    4: {
+    default: {
         title: "Register",
         description: "Create your seller account to post and market your products!",
     },
@@ -24,9 +12,20 @@ const heroContent = {
 function updateHeroContent(step) {
     const heroTitle = document.getElementById("hero-title");
     const heroDescription = document.getElementById("hero-description");
-    if (heroContent[step]) {
-        heroTitle.textContent = heroContent[step].title;
-        heroDescription.textContent = heroContent[step].description;
+    const content = heroContent[step] || heroContent.default;
+    heroTitle.textContent = content.title;
+    heroDescription.textContent = content.description;
+}
+
+function showError(field, message) {
+    const errorElement = field.nextElementSibling;
+    if (errorElement && errorElement.classList.contains('error')) {
+        errorElement.textContent = message;
+    } else {
+        const span = document.createElement('span');
+        span.classList.add('error');
+        span.textContent = message;
+        field.parentNode.insertBefore(span, field.nextSibling);
     }
 }
 
@@ -36,14 +35,51 @@ function nextStep(currentStep) {
 
     var allValid = true;
 
+    // Step-specific validation
+    if (currentStep === 1) {
+        const username = document.querySelector('[name="username"]');
+        const email = document.querySelector('[name="email"]');
+        const password = document.querySelector('#password');
+        const confirmPassword = document.querySelector('#confirmPassword');
+
+        if (!username.value.trim()) {
+            showError(username, 'Username is required.');
+            allValid = false;
+        }
+        if (!email.value.match(/^\S+@\S+\.\S+$/)) {
+            showError(email, 'Please enter a valid email address.');
+            allValid = false;
+        }
+        if (password.value !== confirmPassword.value) {
+            showError(confirmPassword, 'Passwords do not match.');
+            allValid = false;
+        }
+    }
+
+    // File upload validation (if needed in step 3)
+    if (currentStep === 3) {
+        const fileInput = document.querySelector('[name="business_permit"]');
+        if (fileInput.files.length === 0) {
+            alert('Please upload a business permit.');
+            allValid = false;
+        } else {
+            const file = fileInput.files[0];
+            const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Invalid file type. Only JPG, PNG, or PDF are allowed.');
+                allValid = false;
+            }
+        }
+    }
 
     if (allValid) {
         currentForm.classList.remove('active');
         nextForm.classList.add('active');
-
-        // Update hero section visibility
-        document.getElementById('hero-text').classList.add('active');
         updateHeroContent(currentStep + 1);
+
+        // Set focus to the first input in the next step
+        const firstInput = nextForm.querySelector('input, select, textarea');
+        if (firstInput) firstInput.focus();
     }
 }
 
@@ -73,6 +109,12 @@ function submitRegistrationForm(formData) {
             // Show Step 5
             document.getElementById('step5').classList.add('active');
             updateHeroContent(5);
+        } else if (data.errors) {
+            // Display specific errors returned by the server
+            for (let field in data.errors) {
+                const input = document.querySelector(`[name="${field}"]`);
+                if (input) showError(input, data.errors[field]);
+            }
         } else {
             alert('Registration failed. Please try again.');
         }
@@ -86,5 +128,13 @@ function submitRegistrationForm(formData) {
 document.getElementById('registrationForm').addEventListener('submit', function(event) {
     event.preventDefault();
     var formData = new FormData(this);
+
+    // Add Lazada and Shopee links explicitly to the FormData (if not already)
+    const lazada = document.querySelector('[name="lazada"]');
+    const shopee = document.querySelector('[name="shopee"]');
+    formData.append('lazada', lazada ? lazada.value : '');
+    formData.append('shopee', shopee ? shopee.value : '');
+
     submitRegistrationForm(formData);
 });
+

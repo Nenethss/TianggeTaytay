@@ -247,6 +247,11 @@
     font-size: 1.05rem;    
 }
 
+.breadcrumbs img {
+    width: 15px;
+    height: 15px;
+}
+
 .breadcrumbs span {
     color: rgb(44, 44, 44, 0.6);
 }
