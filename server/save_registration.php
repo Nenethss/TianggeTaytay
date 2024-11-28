@@ -26,6 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $createdAt = date('M d, Y');
     $updatedAt = date('M d, Y');
 
+    if (isset($_FILES['permit']) && $_FILES['permit']['error'] === UPLOAD_ERR_OK) {
+        // Get the file content
+        $permit = file_get_contents($_FILES['permit']['tmp_name']);
+    } else {
+        $permit = null; // No permit file uploaded
+    }
+
     // Default image file
     $imagePath = '../assets/storepic.png';
 
@@ -49,26 +56,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->beginTransaction();
 
         // Insert into sellertb
-        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno,  created_at, updated_at) 
-                        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno,  :created_at, :updated_at)";
+        // Insert into sellertb
+        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno, created_at, updated_at, permit) 
+        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno, :created_at, :updated_at, :permit)";
         $sellerStmt = $conn->prepare($sellerQuery);
-        $sellerStmt->execute([
-            ':username' => $username,
-            ':password' => $hashedPassword,
-            ':seller_email' => $email,
-            ':first_name' => $firstName,
-            ':middle_name' => $middleName,
-            ':last_name' => $lastName,
-            ':seller_contact' => $contact,
-            ':birthday' => $birthday,
-            ':age' => $age,
-            ':province' => $province,
-            ':municipality' => $municipality,
-            ':baranggay' => $baranggay,
-            ':houseno' => $houseno,
-            ':created_at' => $createdAt,
-            ':updated_at' => $updatedAt,
-        ]);
+        $sellerStmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':seller_email', $email, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':first_name', $firstName, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':middle_name', $middleName, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':last_name', $lastName, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':seller_contact', $contact, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':birthday', $birthday, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':age', $age, PDO::PARAM_INT);
+        $sellerStmt->bindParam(':province', $province, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':municipality', $municipality, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':baranggay', $baranggay, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':houseno', $houseno, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':created_at', $createdAt, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':updated_at', $updatedAt, PDO::PARAM_STR);
+        $sellerStmt->bindParam(':permit', $permit, PDO::PARAM_LOB); // Insert permit as LOB
+        $sellerStmt->execute();
+
 
         // Get the last inserted seller_id
         $sellerId = $conn->lastInsertId();

@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $store_name = $stmt->fetchColumn(); // Fetch the storename directly
 
     if (!$store_name) {
-        // If no store is associated with the seller, handle the error
         die("Error: No store found for the logged-in seller.");
     }
 
@@ -40,28 +39,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(['typeid' => $type_id]);
     $typename = $stmt->fetchColumn();
 
-    // Handle image upload
-    if (isset($_FILES['product_img']) && $_FILES['product_img']['error'] === UPLOAD_ERR_OK) {
-        $img = file_get_contents($_FILES['product_img']['tmp_name']);
-    } else {
-        $img = null;
-    }
-
     // Insert product into the database
     $stmt = $conn->prepare("
-        INSERT INTO producttb (product_name, category_name, typename, price, img, lazada_link, shopee_link, storename)
-        VALUES (:product_name, :category_name, :typename, :price, :img, :lazada_link, :shopee_link, :storename)
+        INSERT INTO producttb (product_name, category_name, typename, price, lazada_link, shopee_link, storename)
+        VALUES (:product_name, :category_name, :typename, :price, :lazada_link, :shopee_link, :storename)
     ");
     $stmt->execute([
         'product_name' => $product_name,
         'category_name' => $category_name,
         'typename' => $typename,
         'price' => $price,
-        'img' => $img,
         'lazada_link' => $lazada_link,
         'shopee_link' => $shopee_link,
         'storename' => $store_name
     ]);
+
+    // Get the inserted product's ID
+    $product_id = $conn->lastInsertId();
+
+    // Handle multiple image uploads
+    if (!empty($_FILES['product_imgs']['name'][0])) {
+        $stmt = $conn->prepare("
+            INSERT INTO product_img_tb (product_id, img)
+            VALUES (:product_id, :img)
+        ");
+
+        foreach ($_FILES['product_imgs']['tmp_name'] as $key => $tmp_name) {
+            if ($_FILES['product_imgs']['error'][$key] === UPLOAD_ERR_OK) {
+                $image_blob = file_get_contents($tmp_name);
+
+                // Insert the image into the product_images table
+                $stmt->execute([
+                    'product_id' => $product_id,
+                    'img' => $image_blob
+                ]);
+            }
+        }
+    }
 
     // Redirect back to the store-info page
     header("Location: ../pages/store-info.php");

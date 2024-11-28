@@ -2,72 +2,34 @@
 // Include database connection
 include_once "connect.php";
 
-try {
-    // SQL query to fetch the first 4 products (ordered by product_id in ascending order)
-    $queryFirst4 = "SELECT product_name, price, img FROM producttb ORDER BY productid ASC LIMIT 4";
-    $stmtFirst4 = $conn->prepare($queryFirst4);
-    $stmtFirst4->execute();
+// Fetch all products from producttb without the store name filter
+$stmt = $conn->prepare("
+    SELECT * FROM producttb
+");
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // SQL query to fetch the last 4 products (ordered by product_id in descending order)
-    $queryLast4 = "SELECT product_name, price, img FROM producttb ORDER BY productid DESC LIMIT 4";
-    $stmtLast4 = $conn->prepare($queryLast4);
-    $stmtLast4->execute();
+// Prepare an array to hold the product details along with the first image
+$product_details = [];
 
-    // Store product HTML for new arrivals
-    $productHTML = "";
+foreach ($products as $product) {
+    // Fetch the first image for the product (LIMIT 1)
+    $stmt = $conn->prepare("
+        SELECT img FROM product_img_tb WHERE product_id = :product_id LIMIT 1
+    ");
+    $stmt->execute(['product_id' => $product['productid']]);
+    $image = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Fetch the first 4 products (NEW ARRIVALS)
-    if ($stmtFirst4->rowCount() > 0) {
-        while ($row = $stmtFirst4->fetch(PDO::FETCH_ASSOC)) {
-            // Check if the image is valid
-            $imageData = $row['img'];
-            $imageType = 'image/png'; // Default image type, change if necessary (e.g., image/jpeg)
-
-            // Base64 encode the image data
-            $base64Image = base64_encode($imageData);
-
-            // Generate HTML for each product
-            $productHTML .= '<div class="new-arrival-item">';
-            $productHTML .= '<a href="products.php"><img src="data:' . $imageType . ';base64,' . $base64Image . '" alt="' . htmlspecialchars($row['product_name']) . '"></a>';
-            $productHTML .= '<p>'  . htmlspecialchars($row['product_name']) . '</p>';
-            $productHTML .= '<p class="product-price"> ₱' . number_format(htmlspecialchars($row['price']), 2) . '</p>'; // Format price as currency
-            $productHTML .= '</div>';
-        }
+    // If an image exists, add it to the product data
+    if ($image) {
+        $product['first_image'] = $image['img']; // Store the first image's data
     } else {
-        $productHTML .= "<p>No products found in the new arrivals.</p>";
+        $product['first_image'] = null; // No image found
     }
 
-    // Store product HTML for most viewed
-    $lastproductHTML = "";
-
-    // Fetch the last 4 products (MOST VIEWED)
-    if ($stmtLast4->rowCount() > 0) {
-        while ($row = $stmtLast4->fetch(PDO::FETCH_ASSOC)) {
-            // Check if the image is valid
-            $imageData = $row['img'];
-            $imageType = 'image/png'; // Default image type, change if necessary (e.g., image/jpeg)
-
-            // Base64 encode the image data
-            $base64Image = base64_encode($imageData);
-
-            // Generate HTML for each product
-            $lastproductHTML .= '<div class="new-arrival-item">';
-            $lastproductHTML .= '<a href="products.php"><img src="data:' . $imageType . ';base64,' . $base64Image . '" alt="' . htmlspecialchars($row['product_name']) . '"></a>';
-            $lastproductHTML .= '<p>'  . htmlspecialchars($row['product_name']) . '</p>';
-            $lastproductHTML .= '<p class="product-price"> ₱' . number_format(htmlspecialchars($row['price']), 2) . '</p>'; // Format price as currency
-            $lastproductHTML .= '</div>';
-        }
-    } else {
-        $lastproductHTML .= "<p>No products found in the most viewed section.</p>";
-    }
-} catch (PDOException $e) {
-    $productHTML = "<p>Error fetching products: " . $e->getMessage() . "</p>";
-    $lastproductHTML = "<p>Error fetching most viewed products: " . $e->getMessage() . "</p>";
+    // Add the product data (with the first image) to the final result
+    $product_details[] = $product;
 }
 
-
-return $lastproductHTML;
-return $productHTML;
-
-// Return the HTML for both the first 4 and the last 4 products
+// Return the product details with the first image included
 ?>

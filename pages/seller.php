@@ -51,7 +51,7 @@ $lastproductHTML = include('../server/fetchproduct.php');
 }
 
 .dropdown-menu a:hover {
-    background-color: none !important;
+    background-color: #fff !important;
 }
 </style>
 
@@ -95,6 +95,7 @@ $lastproductHTML = include('../server/fetchproduct.php');
         </div>
     </nav>
 
+    <!-- Blue Container for Feature Descriptions -->
     <main>
         <div class="main-left-side">
             <div class="hero">
@@ -161,7 +162,21 @@ $lastproductHTML = include('../server/fetchproduct.php');
     <div class="product-container">
         <h1>NEW ARRIVALS</h1>
         <div class="product-item">
-            <?php echo $lastproductHTML; ?>
+            <?php 
+        // Assuming $product_details is your array of products
+        $new_arrivals = array_slice($product_details, 0, 4); // Get first 4 products
+        
+        foreach ($new_arrivals as $product): ?>
+            <div class="product-card">
+                <!-- Display the first image of the product -->
+                <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
+                    alt="Product Image">
+
+                <!-- Product Name and Price -->
+                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+            </div>
+            <?php endforeach; ?>
         </div>
         <a href="products.php"><button class="view">View All</button></a>
     </div>
@@ -170,10 +185,24 @@ $lastproductHTML = include('../server/fetchproduct.php');
         <div></div>
     </div>
 
-    <div class="product-container  last-product-container">
+    <div class="product-container last-product-container">
         <h1>MOST VIEWED</h1>
         <div class="product-item">
-            <?php echo $productHTML; ?>
+            <?php 
+        // Get last 4 products (assuming they are sorted by views or some other criteria)
+        $most_viewed = array_slice($product_details, -4); // Get last 4 products
+        
+        foreach ($most_viewed as $product): ?>
+            <div class="product-card">
+                <!-- Display the first image of the product -->
+                <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
+                    alt="Product Image">
+
+                <!-- Product Name and Price -->
+                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+            </div>
+            <?php endforeach; ?>
         </div>
         <a href="products.php"><button class="view">View All</button></a>
     </div>

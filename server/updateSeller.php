@@ -1,10 +1,11 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Database connection
     include("connect.php");
 
     // Retrieve form values
-    $username = $_POST['username'];
+    $username = $_POST['newusername'];
+    $password = $_POST['newpassword'];
+    $seller_email = $_POST['seller_email'];
     $firstname = $_POST['firstname'];
     $middlename = $_POST['middlename'] ?? null;
     $lastname = $_POST['lastname'];
@@ -15,39 +16,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $municipality = $_POST['municipality'];
     $baranggay = $_POST['baranggay'];
     $houseno = $_POST['houseno'];
+    $current_username = $_POST['current_username'];
 
+    if (!empty($password)) {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $passwordQuery = "password = :newpassword,";
+    } else {
+        $passwordQuery = ""; // Skip updating the password
+    }
+    
+    // Update Query
+    $updateQuery = "UPDATE sellertb 
+                    SET
+                        username = :newusername,
+                        $passwordQuery
+                        seller_email = :seller_email,
+                        first_name = :firstname, 
+                        middle_name = :middlename, 
+                        last_name = :lastname, 
+                        seller_contact = :seller_contact, 
+                        birthday = :birthday, 
+                        age = :age, 
+                        province = :province, 
+                        municipality = :municipality, 
+                        baranggay = :baranggay, 
+                        houseno = :houseno 
+                    WHERE username = :current_username";
+    
+    $updateStmt = $conn->prepare($updateQuery);
+    
+    // Bind Parameters
+    $params = [
+        ':newusername' => $username,
+        ':seller_email' => $seller_email,
+        ':firstname' => $firstname,
+        ':middlename' => $middlename,
+        ':lastname' => $lastname,
+        ':seller_contact' => $contact,
+        ':birthday' => $birthday,
+        ':age' => $age,
+        ':province' => $province,
+        ':municipality' => $municipality,
+        ':baranggay' => $baranggay,
+        ':houseno' => $houseno,
+        ':current_username' => $current_username,
+    ];
+    if (!empty($password)) {
+        $params[':newpassword'] = $hashedPassword;
+    }
+    
     try {
-        // Update seller information
-        $updateQuery = "UPDATE sellertb 
-                        SET first_name = :firstname, 
-                            middle_name = :middlename, 
-                            last_name = :lastname, 
-                            seller_contact = :seller_contact, 
-                            birthday = :birthday, 
-                            age = :age, 
-                            province = :province, 
-                            municipality = :municipality, 
-                            baranggay = :baranggay, 
-                            houseno = :houseno 
-                        WHERE username = :username";
-        $updateStmt = $conn->prepare($updateQuery);
-        $updateStmt->execute([
-            ':firstname' => $firstname,
-            ':middlename' => $middlename,
-            ':lastname' => $lastname,
-            ':seller_contact' => $contact,
-            ':birthday' => $birthday,
-            ':age' => $age,
-            ':province' => $province,
-            ':municipality' => $municipality,
-            ':baranggay' => $baranggay,
-            ':houseno' => $houseno,
-            ':username' => $username,
-        ]);
-
+        $updateStmt->execute($params);
         header("Location: ../pages/seller-info.php");
     } catch (PDOException $e) {
-        echo "<script>alert('Error updating seller info: " . $e->getMessage() . "');</script>";
+        echo "Error updating seller info: " . $e->getMessage();
     }
+    
 }
 ?>

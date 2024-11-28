@@ -156,7 +156,7 @@ textarea {
 /* Sidebar styling */
 .sidebar {
     width: 250px;
-    height: 158.3%;
+    height: 180.3%;
     position: absolute;
     border-right: 1px solid #cdcdcd;
     left: 0;
@@ -188,8 +188,8 @@ textarea {
 .main-content {
     padding-left: 330px;
     padding-right: 100px;
-    margin-bottom: 200px;
-    height: 1437px;
+    margin-bottom: 20px;
+    height: 1550px;
     border-bottom: 1px solid #cdcdcd41;
 }
 
@@ -343,9 +343,5 @@ button {
     font-weight: 600;
   }
 
-  input[type=file] {  
-    padding: 100px;
-    height: 150px;
-  }
   
 

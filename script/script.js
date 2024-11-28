@@ -50,15 +50,21 @@ function nextStep(currentStep) {
             showError(email, 'Please enter a valid email address.');
             allValid = false;
         }
+        
         if (password.value !== confirmPassword.value) {
             showError(confirmPassword, 'Passwords do not match.');
+            allValid = false;
+        }
+        
+        if (password.value.length < 8) {
+            showError(password, 'The password should have at least 8 characters.');
             allValid = false;
         }
     }
 
     // File upload validation (if needed in step 3)
     if (currentStep === 3) {
-        const fileInput = document.querySelector('[name="business_permit"]');
+        const fileInput = document.querySelector('[name="permit"]');
         if (fileInput.files.length === 0) {
             alert('Please upload a business permit.');
             allValid = false;

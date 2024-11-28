@@ -17,9 +17,9 @@ try {
     // Display Seller Table
     if ($selected_table == 'seller') {
         // Prepare SQL query with placeholders
-        $sql = "SELECT seller_id, email, CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, status 
+        $sql = "SELECT seller_id,  CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, status 
                 FROM sellertb 
-                WHERE seller_id LIKE :search OR email LIKE :search OR CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE :search OR status LIKE :search";
+                WHERE seller_id LIKE :search OR /:search OR CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE :search OR status LIKE :search";
 
         $stmt = $conn->prepare($sql);
         $search_like = '%' . $search_term . '%';
@@ -36,7 +36,6 @@ try {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($row['seller_id']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['email']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
                 echo "<td class='status-cell'>" . htmlspecialchars($row['status']) . "</td>";
                 echo "</tr>";

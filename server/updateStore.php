@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stallnumber = trim($_POST['stallnumber']);
         $contact = trim($_POST['contact']);
         $email = trim($_POST['email']);
+        $shopee = trim($_POST['shopee_link']);
+        $lazada = trim($_POST['lazada_link']);
 
         // Initialize img to null
         $img = null;
@@ -29,11 +31,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             UPDATE storetb 
             SET description = :description, 
                 store_contact = :store_contact, 
+                lazada = :lazada, 
+                shopee = :shopee, 
                 store_email = :store_email 
             WHERE storename = :storename";
         $storeStmt = $conn->prepare($storeUpdateQuery);
         $storeStmt->bindParam(':description', $description, PDO::PARAM_STR);
         $storeStmt->bindParam(':store_contact', $contact, PDO::PARAM_STR);
+        $storeStmt->bindParam(':lazada', $lazada, PDO::PARAM_STR);
+        $storeStmt->bindParam(':shopee', $shopee, PDO::PARAM_STR);
         $storeStmt->bindParam(':store_email', $email, PDO::PARAM_STR);
         $storeStmt->bindParam(':storename', $storename, PDO::PARAM_STR);
         $storeStmt->execute();

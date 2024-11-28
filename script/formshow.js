@@ -139,6 +139,25 @@ const editButtons = document.querySelectorAll('.edit-btn'); // All edit buttons
     });
 
     // Hide the update form and show account/personal info on Cancel button click
-    cancelButton.addEventListener('click', hideEditForm);
+    // Get the cancel button and error container
+// Get the cancel button, error container, and password inputs
+const errorContainer = document.querySelector('#error-container');
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirmpassword');
+
+// Add event listener to the cancel button
+cancelButton.addEventListener('click', function () {
+    // Clear any error messages when cancel button is clicked
+    errorContainer.innerHTML = '';
+
+    // Clear the password and confirm password input fields
+    passwordInput.value = '';
+    confirmPasswordInput.value = '';
+
+    // Assuming you have a function to hide the form
+    hideEditForm();
+});
+
+
 
 

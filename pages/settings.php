@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/sidebar.css">
-    <link rel="stylesheet" href="../style/settings.css">
+    <link rel="stylesheet" href="../style/setting.css">
 
 </head>
 
@@ -54,7 +54,6 @@
     <!-- Main Content -->
     <div class="content">
         <div class="top-bar"></div>
-        <h1>Settings</h1>
     </div>
 
     <script>

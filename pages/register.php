@@ -13,7 +13,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/registers.css">
+    <link rel="stylesheet" href="../style/register.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
     <title>e-Tiangge Taytay</title>
 </head>
@@ -69,6 +69,15 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         position: absolute;
         top: 10px;
         right: 10px;
+    }
+
+    .img-container {      
+    height: 200px;
+    display: flex;
+    border: 1px solid #cccccc;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
     }
     </style>
 
@@ -209,8 +218,12 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <label>Store Name</label>
                 <input type="text" name="store_name" required>
 
-                <label>Upload Business Permit</label>
-                <input type="file" name="business_permit" required>
+                <label>Business Permit</label>
+                <div id="image-container" class="img-container">
+                    <label style=" font-weight: 600;" for="file-upload" class="img-file-upload">Upload Business Permit</label>
+                    <input type="file" id="file-upload" name="permit" accept="image/*"
+                        onchange="renderFiles(event)" style="opacity: 0%; width:0.01%;" />
+                </div>
 
                 <label id="linkshowFormButton"
                     style="color: #0033A0; font-weight: 600; cursor: pointer; margin-bottom: 10px;">Link Your Accounts
@@ -317,6 +330,37 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script src="../script/script.js"></script>
     <script src="../script/formshow.js"></script>
+
+    <script>
+    function renderFiles(event) {
+        const container = document.getElementById("image-container");
+        const files = event.target.files; // Get the uploaded files
+
+        // Clear the container
+        const label = container.querySelector("label");
+        if (label) {
+            container.removeChild(label);
+        }
+
+        if (files.length) {
+            Array.from(files).forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.style.maxWidth = "100px";
+                    img.style.maxHeight = "100px";
+                    img.style.margin = "5px";
+                    img.style.position = "absolute";
+                    container.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        } else {
+            container.innerHTML = 'No files selected';
+        }
+    }
+    </script>
 
 </body>
 
