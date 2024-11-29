@@ -1,3 +1,10 @@
+<?php 
+
+
+include_once '../server/fetchproduct.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

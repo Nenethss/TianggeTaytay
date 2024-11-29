@@ -1,6 +1,6 @@
 <?php
 
-$categoryHTML = include('../server/fetchcategory.php');
+list($categoryHTML, $categories) = include_once '../server/fetchcategory.php';
 include_once '../server/fetchproduct.php';
 
 ?>

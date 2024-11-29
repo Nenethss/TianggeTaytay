@@ -1,3 +1,9 @@
+<?php 
+
+
+include_once '../server/fetchproduct.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -180,134 +186,27 @@
                 </div>
 
                 <div class="products">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32.png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
+                            <?php 
+        
+                             foreach ($product_details as $product): ?>
+                            <div class="product-card">
+                                <!-- Display the first image of the product -->
+                                <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
+                                    alt="Product Image">
 
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (1).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (2).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (3).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (4).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (5).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (6).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (7).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (8).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (9).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (10).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (11).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32.png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (1).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (2).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
+                                <!-- Product Name and Price -->
+                                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                                <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+                            </div>
+                            <?php endforeach; ?>
                 </div>
             </div>
-        </div>
 
-        <div class="pagination">
-            <p>1 to 12 of 100 results</p>
+            <div class="pagination">
+                <p>1 to 12 of 100 results</p>
 
-            <div></div>
-        </div>
+                <div></div>
+            </div>
     </main>
 
     <footer>
