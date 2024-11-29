@@ -1,3 +1,26 @@
+<?php
+session_start(); // Start session
+include_once '../server/connect.php';
+
+// Check if the seller is logged in
+if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
+    if ( $_SESSION['role'] === 'superadmin')  {
+        
+    header("Location: dashboard.php"); // Redirect to login if not logged in
+    exit();
+    }
+    header("Location: login.php"); // Redirect to login if not logged in
+    exit();
+}
+
+// Use the seller_id from the session
+$userid = $_SESSION['userid'];
+
+// Fetch store details from the database
+$stmt = $conn->prepare("SELECT username, role FROM admintb WHERE userid = :userid");
+$stmt->execute(['userid' => $userid]);
+$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 

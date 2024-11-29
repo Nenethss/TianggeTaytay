@@ -46,17 +46,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // On page load, check the URL to determine the active section
     const urlParams = new URLSearchParams(window.location.search);
-    const sectionFromURL = urlParams.get('section'); // Get the section from the URL query parameter
+const sectionFromURL = urlParams.get('section'); // Get the section from the URL query parameter
 
-    if (sectionFromURL) {
-        const sidebarItem = document.querySelector(`.sidebar-item[data-section="${sectionFromURL}"]`);
+const selectElement = document.getElementById('archive-select'); // Get the select element
+const sidebarItems = document.querySelectorAll('.sidebar-item'); // Get all sidebar items
+
+// Function to activate a section based on its data-section attribute
+function activateSection(section) {
+    if (section) {
+        // Simulate clicking the matching sidebar item
+        const sidebarItem = document.querySelector(`.sidebar-item[data-section="${section}"]`);
         if (sidebarItem) {
-            sidebarItem.click(); // Trigger a click on the sidebar item corresponding to the URL
+            sidebarItem.click();
         }
     } else {
-        // Default to the first section if no section is specified in the URL
+        // Default to the first section
         document.querySelector('.sidebar-item').click();
     }
+}
+
+// If a section is specified in the URL, activate it
+if (sectionFromURL) {
+    activateSection(sectionFromURL);
+} else {
+    activateSection(); // Activate the default section
+}
+
+// Add an event listener to the select element to handle changes
+selectElement.addEventListener('change', (event) => {
+    const selectedOption = event.target.options[event.target.selectedIndex]; // Get the selected option
+    const section = selectedOption.getAttribute('data-section'); // Get the data-section attribute value
+
+    // Update the URL query parameter without reloading the page
+    const newUrl = `${window.location.pathname}?section=${section}`;
+    window.history.pushState({}, '', newUrl);
+
+    // Activate the corresponding section
+    activateSection(section);
+});
+
 
     // Listen for input events on the form fields to remove the error or success messages when user starts typing
     document.querySelectorAll('input').forEach(input => {
@@ -77,6 +105,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('clearBtn').addEventListener('click', function() {
         // Reset all form fields
         document.getElementById('adminForm').reset();
+        document.getElementById('add-category-form').reset();
+        document.getElementById('add-type-form').reset();
 
         // Clear any error or success message if visible
         const errorMessageElement = document.getElementById('error-message');
@@ -91,14 +121,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const errorMessage = document.getElementById('error-message');
         const successMessage = document.getElementById('success-message');
+        const caterrorMessage = document.getElementById('cat-error-message');
+            const catsuccessMessage = document.getElementById('cat-success-message');
+            const typeerrorMessage = document.getElementById('type-error-message');
+                const typesuccessMessage = document.getElementById('type-success-message');
 
         // Set a timeout to hide the messages after 3 seconds
         setTimeout(() => {
             if (errorMessage) {
-                errorMessage.style.display = 'none'; // Hide error message
+                errorMessage.style.display = 'none';
+                caterrorMessage.style.display = 'none';
+                typeerrorMessage.style.display = 'none'; // Hide error message
             }
             if (successMessage) {
-                successMessage.style.display = 'none'; // Hide success message
+                successMessage.style.display = 'none';
+                catsuccessMessage.style.display = 'none';
+                typesuccessMessage.style.display = 'none'; // Hide success message
             }
         }, 3000); 
 

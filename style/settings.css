@@ -16,8 +16,14 @@ body {
 }
 
 input,
-button {
+button,
+select {
     outline: none;
+    
+}
+
+input {
+    border: 1px solid #cccccc;
 }
 
 /* Sidebar */
@@ -39,26 +45,29 @@ button {
 
 .main-container {
     margin: 50px 0px 0px 300px;
+    border-radius: 10px;
 }
 
 .main-content {
     display: flex;
     flex: 1;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .left-container {
     width: 280px;
     margin-right: 40px;
-    padding: 20px 0;
-    border: 1px solid;
-    border-radius: 10px;
+    border-right: 1px solid #f3f3f3;
 }
 
 .left-container p {
     font-weight: 600;
     font-size: 17px;
     padding: 10px 20px;
-    color: #0033a0;
+    color: #202020;
+    text-align: center;
+    padding: 15px;
 }
 
 .sidebar-item {
@@ -67,21 +76,22 @@ button {
 }
 
 .sidebar-item.active {
-    background-color: #0033a0;
-    color: white;
+    background-color: #e4e9f4;
+    color: #0033A0;
 }
 
 .right-container {
     flex: 1;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid;
+    padding: 60px 20px 20px 20px;
 }
 
 .section-container {
     display: none;
     /* Initially hidden */
+}
+
+h2 {
+    color: #0033A0;
 }
 
 .section-container.active {
@@ -111,24 +121,20 @@ button {
 }
 
 .form-container {
-    display: flex;
+    display: flex
+;
     width: 100%;
     justify-content: space-between;
+    flex-direction: column;
 }
 
-.left-form {
-    width: 45%;
-}
-
-.right-form {
-    width: 50%;
-}
 
 .form-group {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .form-group label {
@@ -141,17 +147,22 @@ button {
     font-size: 17px;
     font-weight: 600;
     height: 40px;
-    width: 65%;
+    width: 100%;
     padding: 5px;
     outline: none;
     border-radius: 5px;
+    margin-top: 10px; 
 }
 
-table {
+table{
+    cursor: default;
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;  /* Change to 'separate' for border-radius to work */
+    border-spacing: 0;           /* Removes space between cells */
     margin-bottom: 20px;
-    border-radius: 10px;
+    border-radius: 20px;      /* Rounded corners */
+    margin-top: 100px;
+    overflow: hidden;           /* Ensure overflow is hidden to show rounded corners */
 }
 
 .search {
@@ -163,21 +174,31 @@ th, td {
     font-size: 17px;
     font-weight: 600;
     text-align: center;
+    color:  black;
+    border: none;
+    cursor: default;
 }
+
+
 th {
-    background-color: #0033A0;
-    color: rgb(255, 255, 255);
+    color:  black;
     font-weight: bold;
     padding: 10px;
 }
+
 tr:hover {
     background-color: #e0e0e0;
 }
-.delete-btn {    background-color: #0033A0;
+
+/* Optional: Apply a border to table and cells */
+table, th{
+    border: 1px solid #ccc; /* Light border color for visibility */
+}
+
+.delete-btn {
     color: white;
     border: none;
     font-size: 15px;
-    padding: 7px 15px;
     font-weight: 600;
     cursor: pointer;
 }
@@ -220,15 +241,17 @@ tr:hover {
     border-radius: 5px;
     text-align: left;
     width: 278px;
+    margin-right: 20px;
 }
 
 .success-message-container {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 10px;
     border: 1px solid green;
     border-radius: 5px;
     text-align: left;
     width: 278px;
+    margin-right: 20px
 }
 
 .category-table-container {

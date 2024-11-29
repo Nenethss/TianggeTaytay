@@ -7,7 +7,7 @@ $types = [];
 
 try {
     // Query to fetch all types
-    $query_all = "SELECT * FROM productypetb";  
+    $query_all = "SELECT * FROM producttypetb";  
     $stmt_all = $conn->prepare($query_all);
     $stmt_all->execute();
 
