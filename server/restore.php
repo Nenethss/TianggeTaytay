@@ -1,33 +1,49 @@
 <?php
-$host = "localhost"; // Database host
-$username = "root";  // Database username
-$password = "";      // Database password
-$dbname = "tianggedb"; // Database name
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if a file was uploaded
+    if (isset($_FILES['backup_file']) && $_FILES['backup_file']['error'] === UPLOAD_ERR_OK) {
+        $uploadedFile = $_FILES['backup_file']['tmp_name'];
 
-if ($_FILES["backup_file"]["error"] === UPLOAD_ERR_OK) {
-    $backupFile = $_FILES["backup_file"]["tmp_name"];
+        // Database connection details
+        $host = 'localhost';
+        $username = 'root';
+        $password = '';
+        $database = 'backup';
 
-    // Command for restoring the database
-    $command = "mysql --user=$username --password=$password --host=$host $dbname < $backupFile";
+        try {
+            // Connect to the database
+            $pdo = new PDO("mysql:host=$host;dbname=$database", $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Execute the command
-    exec($command, $output, $return_var);
+            // Read the uploaded SQL file
+            $sql = file_get_contents($uploadedFile);
 
-    if ($return_var === 0) {
-        echo json_encode([
-            "status" => "success",
-            "message" => "Restore successful!"
-        ]);
+            // Disable foreign key checks
+            $pdo->exec('SET foreign_key_checks = 0;');
+
+            // Drop tables before restoring
+            preg_match_all('/CREATE TABLE `([^`]+)`/i', $sql, $matches);
+            if (!empty($matches[1])) {
+                foreach ($matches[1] as $tableName) {
+                    // Drop the table if it exists
+                    $pdo->exec("DROP TABLE IF EXISTS `$tableName`");
+                }
+            }
+
+            // Execute the SQL commands from the backup file
+            $pdo->exec($sql);
+
+            // Enable foreign key checks after restoration
+            $pdo->exec('SET foreign_key_checks = 1;');
+
+            echo "Database restored successfully.";
+        } catch (PDOException $e) {
+            echo "Error restoring database: " . $e->getMessage();
+        }
     } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Restore failed!"
-        ]);
+        echo "Error uploading file.";
     }
 } else {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Error uploading file!"
-    ]);
+    echo "Invalid request method.";
 }
 ?>

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Execute the log query
             $logStmt->execute();
 
-            header("Location: ../pages/settings.php?section=general");
+            header("Location: ../pages/admin-settings.php?section=general");
         }
 
         if (!empty($_POST['terms'])) {
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Execute the log query
             $logStmt->execute();
 
-            header("Location: ../pages/settings.php?section=general");
+            header("Location: ../pages/admin-settings.php?section=general");
         }
 
         if (!empty($_POST['privacy'])) {
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Execute the log query
             $logStmt->execute();
 
-            header("Location: ../pages/settings.php?section=general");
+            header("Location: ../pages/admin-settings.php?section=general");
         }
     } catch (Exception $e) {
         $response = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];

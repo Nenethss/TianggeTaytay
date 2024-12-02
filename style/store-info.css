@@ -40,7 +40,30 @@ h2 {
     display: flex;
     width: 33.3%;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 40px;
+}
+
+select {
+  flex: 1;
+  min-width: 200px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='rgb(44, 44, 44, 0.7)' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 95%;
+  background-position-y: 50%;
+  padding: 12px 20px;
+  border: 1px solid rgb(44, 44, 44, 0.1);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: rgb(44, 44, 44, 0.7);
+  cursor: pointer;
+}
+
+.store-info-card p {
+  font-size: 1.5rem;
+  text-transform: uppercase;
 }
 
 .info-card {
@@ -126,11 +149,12 @@ strong {
 }
 
 textarea {
-  width: 1134px;
+  width: 1295px;
   height: 264px;
   padding: 10px;
   outline: none;
   resize: none;
+  border: 1px solid #dddddd;
   border-radius: 10px;
   font-size: 17px;
 }
@@ -156,8 +180,6 @@ textarea {
 /* Sidebar styling */
 .sidebar {
     width: 250px;
-    height: 180.3%;
-    position: absolute;
     border-right: 1px solid #cdcdcd;
     left: 0;
     padding: 20px 0px;
@@ -184,19 +206,28 @@ textarea {
   background-color: #cdcdcd;
 }
 
+#updateInfo {
+  padding: 0px 90px 50px 0;
+}
+
+
 /* Main content adjustment */
 .main-content {
-    padding-left: 330px;
-    padding-right: 100px;
-    margin-bottom: 20px;
-    height: 1550px;
-    border-bottom: 1px solid #cdcdcd41;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #cdcdcd41;
+  display: flex;
+  gap: 50px;
 }
 
 .main-products-container {
     display: flex;
     justify-content: flex-start;
     margin-bottom: 50px;
+}
+
+.account-container {
+  flex: 1;
+  padding-right: 100px;
 }
 
 .child-container {
@@ -211,6 +242,12 @@ textarea {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1em;
+}
+
+.filterbar {
+    display: flex;
+    gap: 20px;
 }
 
 .add-button {
@@ -218,11 +255,16 @@ textarea {
   justify-content: flex-end;
 }
 
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
 button {
-    background-color:#0033a0;
-    width: 114px;
+    background-color: #0033a0;
     color: white;
     height: 40px;
+    padding-inline: 20px;
     border: none;
     border-radius: 8px;
     outline: none;
@@ -231,39 +273,10 @@ button {
     font-weight: 600;
 }
 
-.products-container {
-    display: grid;
-    margin-top: 20px;
-    gap: 3rem;
-    grid-template-columns: repeat(4, 1fr);
+#showFormButton {
+  width: 100%;
 }
 
-.product-card {
-    width: 254px;
-}
-
-.product-card img {
-    object-fit: cover;
-    width: 275px;
-    border-radius: 8px;
-}
-
-.divider {
-    padding: 0 !important;
-}
-
-.product-card h3 {
-    font-size: 18px !important;
-    font-weight: 600;
-    margin: 10px 0;
-}
-
-.product-card p {
-    font-size: 17px;
-    font-weight: 400;
-}
-
-  
   /* Form container styles */
   #productFormContainer {
     position: absolute;
@@ -326,7 +339,7 @@ button {
     justify-content: space-around;
   }
 
-  input, select {
+  input {
     width: 100%;
     height: 40px;
     font-size: 17px;
@@ -343,5 +356,75 @@ button {
     font-weight: 600;
   }
 
-  
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    row-gap: 40px;
+    column-gap: 30px;
+    margin-bottom: 2.5em;
+    width: 100%;
 
+}
+
+.product-card p {
+  margin-left: 17px;
+}
+
+img {
+  cursor: pointer;
+}
+
+.product-card p:nth-of-type(1) {
+  margin-top: 10px;
+  font-size: 0.95rem;
+}
+
+.product-card p:nth-of-type(2) {
+  font-size: 1.2rem;
+}
+
+.product-card span {
+  font-weight: 600;
+}
+
+.store-info-main-container{
+    display: flex;
+    flex-direction: column;
+    width: 83%;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 90px 40px 90px;
+}
+
+.pagination p {
+  color: rgb(44, 44, 44, 0.6);
+}
+
+.pages {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgb(44, 44, 44, 0.15);
+  border-radius: 5px;
+}
+
+.pages > div {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.pages > .page p.selected {
+  color: #2C97EB;
+  font-weight: 600;
+}
+
+.pages > * + * {
+  border-left: 1px solid rgb(44, 44, 44, 0.1);
+}

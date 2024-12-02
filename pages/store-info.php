@@ -146,31 +146,6 @@ input[type="file"] {
     flex-direction: column;
 }
 
-.pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 50px;
-    padding: 0 90px;
-}
-
-.pagination a {
-    padding: 15px 15px;
-    margin: 0 4px;
-    text-decoration: none;
-    color: #333;
-    border: 1px solid #ccc;
-}
-
-
-.pagination a:hover {
-    background-color: #f0f0f0;
-}
-
-.pagination .prev,
-.pagination .next {
-    padding: 15px 13px;
-}
-
 .description {
     width: 440px;
     height: 200px;
@@ -186,7 +161,7 @@ input[type="file"] {
 
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
         <div class="left-side">
             <a href="seller.php"><img src="../assets/shoppingbag.png" alt=""></a>
             <div class="input-with-icon">
@@ -278,71 +253,91 @@ input[type="file"] {
             <a href="#" class="active">Manage Store</a>
         </div>
 
-        <div class="edit-container">
-            <button class="edt-btn" id="editStoreBtn">
-                <img src="../assets/pencil.svg" alt="Edit">Edit Store Information
-            </button>
-        </div>
+        <div class="store-info-main-container">
 
-        <div id="storeInfo" class="account-info">
-            <div class="store-info-card">
-                <img style="border-radius: 50px; width: 100px; height: 100px;" src="<?php echo $store_img; ?>"
-                    alt="Store Image">
-                <p style="font-weight: 600;"><?php echo $store_name; ?></p>
+        <div class="account-container">
+            <div class="edit-container">
+                <button class="edt-btn" id="editStoreBtn">
+                    <img src="../assets/pencil.svg" alt="Edit">Edit Store Information
+                </button>
             </div>
-            <div class="info-card middle-info-card">
-                <div class="info"><img src="../assets/shipment-box.png" alt="">
-                    <p>Products: <strong><?php echo $product_count; ?></strong></p>
-                </div>
-                <div class="info"><img src="../assets/joined.png" alt="">
-                    <p>Created At: <strong><?php echo $created_at; ?></strong></p>
-                </div>
-                <div class="info"><img src="../assets/stall.png" alt="">
-                    <p>Stall No: <strong><?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?></strong></p>
-                </div>
-            </div>
-            <div class="info-card">
-                <div class="info"><img src="../assets/telephone.png" alt="">
-                    <p>Contact: <strong><?php echo $store_contact; ?></strong></p>
-                </div>
-                <div class="info"><img src="../assets/thread.png" alt="">
-                    <p>Email: <strong><?php echo $store_email; ?></strong></p>
-                </div>
-            </div>
-        </div>
 
-        <div id="divider" class="divider">
-            <div></div>
-        </div>
-
-        <div id="mainProducts" class="main-products-container">
-            <div class="child-container">
-                <div class="header-container">
-                    <h2>MY PRODUCTS</h2>
-                    <button id="showFormButton">Add Product</button>
+            <div id="storeInfo" class="account-info">
+                <div class="store-info-card">
+                    <img style="border-radius: 50px; width: 100px; height: 100px;" src="<?php echo $store_img; ?>"
+                        alt="Store Image">
+                    <p style="font-weight: 600;"><?php echo $store_name; ?></p>
                 </div>
 
-                <div class="products-container">
-                    <?php if (!empty($product_details)): ?>
-                    <?php foreach ($product_details as $product): ?>
-                    <div class="product-card">
-                        <!-- Display Product Image -->
-                        <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
-                            alt="Product Image">
-
-                        <!-- Product Name and Price -->
-                        <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                        <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+                <div class="info-card middle-info-card">
+                    <div class="info"><img src="../assets/shipment-box.png" alt="">
+                        <p>Products: <strong><?php echo $product_count; ?></strong></p>
                     </div>
-                    <?php endforeach; ?>
-                    <?php else: ?>
-                    <p>No products found for this store.</p>
-                    <?php endif; ?>
+                    <div class="info"><img src="../assets/joined.png" alt="">
+                        <p>Created At: <strong><?php echo $created_at; ?></strong></p>
+                    </div>
+                    <div class="info"><img src="../assets/stall.png" alt="">
+                        <p>Stall No: <strong><?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?></strong></p>
+                    </div>
                 </div>
 
-                <!-- Pagination Controls -->
-
+                <div class="info-card">
+                    <div class="info"><img src="../assets/telephone.png" alt="">
+                        <p>Contact: <strong><?php echo $store_contact; ?></strong></p>
+                    </div>
+                    <div class="info"><img src="../assets/thread.png" alt="">
+                        <p>Email: <strong><?php echo $store_email; ?></strong></p>
+                    </div>
+                </div>
             </div>
+
+            <div id="divider" class="divider">
+                <div></div>
+            </div>
+
+            <div id="mainProducts" class="main-products-container">
+                <div class="child-container">
+                    <div class="header-container">
+                        <h2>MY PRODUCTS</h2>
+
+                        <div class="filterbar">
+                            <select class="custom-select categories-select">
+                                <option value="All Products">All Categories</option>
+                            </select>
+
+                            <select class="custom-select types-select">
+                                <option value="All Products">All Products</option>
+                            </select>
+                            <button id="showFormButton">Add Product</button>
+                        </div>
+
+                    </div>
+
+                    <!-- <div class="products-container">
+                        <?php if (!empty($product_details)): ?>
+                            <?php foreach ($product_details as $product): ?>
+                                <div class="product-card">
+                                    
+                                    <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
+                                        alt="Product Image">
+
+                                   
+                                    <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                                    <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>No products found for this store.</p>
+                        <?php endif; ?>
+                    </div> -->
+
+                    <!-- Pagination Controls -->
+
+                    <div class="products" data-storename="<?php echo $store_name; ?>">
+                    </div>
+                </div>
+            </div>
+
         </div>
 
 
@@ -384,9 +379,9 @@ input[type="file"] {
                         <div>
                             <label for="firstname">Business Permit</label>
                             <p style="color: green; font-weight: 600;">
-                                <?php 
+                                <?php
                                 // Assume $status is fetched from sellertb
-                                echo htmlspecialchars($status ?? 'Unknown'); 
+                                echo htmlspecialchars($status ?? 'Unknown');
                                 ?>
                             </p>
                         </div>
@@ -443,23 +438,21 @@ input[type="file"] {
                 <button type="submit">Save</button>
             </div>
         </form>
+
+
+        </div>
+
+
+        
     </div>
+
     <div class="pagination">
+        <p class="results"></p>
 
-        <?php if ($current_page > 1): ?>    
-        <a href="?page=<?php echo $current_page - 1; ?>" class="prev"><img  style="width: 12px; height: 12px; transform: rotate(180deg);" src="../assets/arrowrightblack.png" alt=""></a>
-        <?php endif; ?>
-
-        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-        <a href="?page=<?php echo $i; ?>"
-            class="page <?php echo ($i == $current_page) ? 'active' : ''; ?>"><?php echo $i; ?></a>
-        <?php endfor; ?>
-
-        <?php if ($current_page < $total_pages): ?>
-        <a href="?page=<?php echo $current_page + 1; ?>" class="next"><img style="width: 12px; height: 12px;" src="../assets/arrowrightblack.png" alt=""></a>
-        <?php endif; ?>
-
+        <div class="pages">
+        </div>
     </div>
+
 
     <footer>
         <div class="top-footer">
@@ -620,5 +613,6 @@ input[type="file"] {
     });
     </script>
 </body>
+<script src="../script/store-info.js"></script>
 
 </html>

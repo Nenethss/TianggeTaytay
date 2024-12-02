@@ -17,15 +17,24 @@ if (isset($_POST['admin_id'])) {
 
         if ($admin) {
             // Insert the admin back into the admintb table
-            $stmt_restore = $conn->prepare("INSERT INTO admintb (userid, username, email, role, status) 
-                VALUES (?, ?, ?, ?, ?)");
+            $stmt_restore = $conn->prepare("INSERT INTO admintb (userid, username, password, first_name, middle_name, surname, email, role, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+// Hash the password before executing the query
+            $hashed_password = password_hash($admin['password'], PASSWORD_DEFAULT);
+
             $stmt_restore->execute([
                 $admin['userid'],
                 $admin['username'],
+                $hashed_password,  // Use the hashed password here
+                $admin['first_name'],
+                $admin['middle_name'],
+                $admin['surname'],
                 $admin['email'],
                 $admin['role'],
                 $admin['status']
             ]);
+
 
             // Delete the admin from the archived_admintb table
             $stmt_delete = $conn->prepare("DELETE FROM archived_admintb WHERE admin_id = ?");

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/reset.css">
-    <link rel="stylesheet" href="../style/storeview.css">
+    <link rel="stylesheet" href="../style/store-view.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
     <link rel="stylesheet" href="../style//custom-select.css">
     <title>e-Tiangge Taytay</title>
@@ -15,24 +15,10 @@
     <div class="register">
         <p>Become a Seller? <a href="register.php">Register Now</a></p>
     </div>
-    <nav class="navbar">
-        <div class="left-side">
-            <a href="#"><img src="../assets/shoppingbag.png" alt=""></a>
-            <div class="input-with-icon">
-                <img class="search-icon" src="../assets/Vector.png" alt="">
-                <input type="text" placeholder="Search for Products...">
-            </div>
-        </div>
-        <div class="right-side">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="products.php">Products</a></li>
-                <li class="selected"><a href="store.php">Store</a></li>
-                <li><a href="contact.php">Contact us</a></li>
-            </ul>
-        </div>
-    </nav>
+
+    <?php
+    include("../components/nav.php");
+    ?>
 
     <main class="container">
         <div class="content">
@@ -42,174 +28,87 @@
                     <img src="../assets/arrowrightblack.png" alt="">
                     <span>Stores</span>
                     <img src="../assets/arrowrightblack.png" alt="">
-                    <span class="selected">STYL E.BOSS</span>
+                    <span class="name selected">STYL E.BOSS</span>
                 </div>
 
                 <div class="store-container">
                     <div class="store-info">
                         <div class="store-img">
-                            <img src="../assets/storepic.png" alt="">
-                            <p>STYL E.BOSS</p>
+                            <img class="store-logo" src="../assets/storepic.png" alt="">
+                            <p class="store-name"></p>
                         </div>
                         <div>
                             <div class="info-container">
                                 <img src="../assets/shipment-box.png" alt="">
-                                <p>Products: <span>3</span></p>
+                                <p>Products: <span class="product-count"></span></p>
                             </div>
                             <div class="info-container">
                                 <img src="../assets/joined.png" alt="">
-                                <p>Joined: <span>November 19, 2024</span></p>
+                                <p>Joined: <span class="store-join-date"></span></p>
                             </div>
                         </div>
                         <div>
                             <div class="info-container">
                                 <img src="../assets/telephone.png" alt="">
-                                <p>Contact: <span>+63 1234 5678</span></p>
+                                <p>Contact: <span class="store-contact">+63 1234 5678</span></p>
                             </div>
                             <div class="info-container">
                                 <img src="../assets/thread.png" alt="">
-                                <p>Email: <span>style.boss@gmail.com</span></p>
+                                <p>Email: <span class="store-email">style.boss@gmail.com</span></p>
                             </div>
                         </div>
                         <div>
                             <div class="info-container">
-                                <p>Stall No: <span>127, 128</span></p>
+                                <img src="../assets/stall.png" alt="">
+                                <p>Stall No: <span class="store-stall">127, 128</span></p>
                             </div>
                         </div>
                     </div>
 
                     <div class="store-description">
-                        <div>
-                            <p>STYL E.BOSS offers a curated selection of trendy, high-quality clothing and accessories
-                                designed to let you stand out. From everyday essentials to statement pieces, we’ve got
-                                everything you need to express your unique style without breaking the bank.</p>
-                            <p>As a proud member of the Taytay Tiangge community, we specialize in Ready-to-Wear (RTW)
-                                garments, sourced and crafted with care, ensuring that every piece reflects Taytay’s
-                                renowned quality and affordability. Whether you’re dressing for work, a casual day out,
-                                or a special occasion, STYL E.BOSS has you covered.</p>
+                        <div class="store-description-text">
                         </div>
 
                         <div class="linked-accounts">
                             <p>Linked Accounts</p>
-                            <div>
-                                <a href="http://shopee.com" target="_blank"><img src="../assets/shopee-md.png"
-                                        alt=""></a>
-                                <a href="http://lazada.com" target="_blank"><img src="../assets/lazada-md.png"
-                                        alt=""></a>
-
+                            <div class="account-logos accounts">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="divider"></div>
+            <div class="store-div"></div>
 
             <div class="store-products">
                 <div class="store-products-header">
                     <p>from the shop</p>
 
                     <div>
-                        <select class="custom-select">
-                            <option value="0">Categories</option>
-                            <option value="1">Audi</option>
-                            <option value="2">BMW</option>
+                        <select class="custom-select categories-select">
+                            <option value="All Products">All Categories</option>
                         </select>
 
-                        <select class="custom-select">
-                            <option value="0">All Products</option>
-                            <option value="1">Audi</option>
-                            <option value="2">BMW</option>
-                        </select>
-
-                        <select class="custom-select">
-                            <option value="0">Price</option>
-                            <option value="1">Audi</option>
-                            <option value="2">BMW</option>
+                        <select class="custom-select types-select">
+                            <option value="All Products">All Products</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="products">
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32.png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
+                </div>
+            </div>
 
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32 (1).png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
+            <div class="pagination">
+                <p class="results"></p>
 
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32 (2).png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32 (3).png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32 (4).png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32 (5).png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <a href="view-product.php"><img src="../assets/Frame 32 (6).png" /></a>
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (7).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (8).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="../assets/Frame 32 (11).png" />
-                        </div>
-                        <p>One-Life Graphiic T-Shirt</p>
-                        <p>&#8369; <span>399</span></p>
-                    </div>
+                <div class="pages">
+                    <!-- <div class="button back-page">
+                    <img src="../assets/pagination-right.png" alt="">
+                </div>
+                <div class="button next-page">
+                    <img src="../assets/pagination-next.png" alt="">
+                </div> -->
                 </div>
             </div>
         </div>
@@ -256,7 +155,8 @@
             <img src="../assets/smiletaytay.png" alt="">
         </div>
     </footer>
-
 </body>
+<script src="../script/view-store.js"></script>
+<script src="../script/view-store-ui.js"></script>
 
 </html>

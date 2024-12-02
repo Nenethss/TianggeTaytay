@@ -40,7 +40,7 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($selected_table === 'administrator') {
     if (count($results) > 0) {
         echo "<table>";
-        echo "<tr><th>Admin ID</th><th>Email Address</th><th>Username</th><th>Status</th><th>Action</th></tr>";
+        echo "<tr><th>Admin ID</th><th>Email Address</th><th>Username</th><th>Status</th></tr>";
 
         foreach ($results as $row) {
             echo "<tr>";
@@ -56,12 +56,6 @@ if ($selected_table === 'administrator') {
                         <input type='hidden' name='userid' value='" . htmlspecialchars($row['userid']) . "'>
                     </form>
                   </td>";
-            echo '<td>
-                    <form action="../server/archive_admin.php" method="POST" style="display:inline;">
-                        <input type="hidden" name="userid" value="' . htmlspecialchars($row['userid']) . '">
-                        <button type="submit" class="delete-btn"><img src="../assets/archive.png" alt=""></button>
-                    </form>
-                    </td>';
     
             echo "</tr>";
         }

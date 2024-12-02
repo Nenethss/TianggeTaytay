@@ -19,30 +19,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($admin && password_verify($password, $admin['password'])) {
-            // Set session for admin and redirect
+            // Set session for admin or super admin
             $_SESSION['userid'] = $admin['userid']; // Assuming there is a userid column
-            $_SESSION['role'] = 'admin';
             $_SESSION['first_name'] = $admin['first_name']; // Fetch first name
             $_SESSION['middle_name'] = $admin['middle_name']; // Fetch middle name
             $_SESSION['surname'] = $admin['surname']; // Fetch surname
             $_SESSION['username'] = $admin['username'];
-            header("Location: ../pages/dashboard.php");
-            exit();
+        
+            if ($admin['role'] === 'super_admin') {
+                $_SESSION['role'] = 'super_admin';
+                header("Location: ../pages/dashboard.php");
+                exit();
+            } elseif ($admin['role'] === 'admin') {
+                $_SESSION['role'] = 'admin';
+                header("Location: ../pages/admin-dashboard.php");
+                exit();
+            }
         }
-
-
-        $stmt = $conn->prepare("SELECT * FROM admintb WHERE username = :username");
-        $stmt->execute(['username' => $username]);
-        $superadmin = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($superadmin && $password === $superadmin['password']) {
-            // Set session for admin and redirect
-            $_SESSION['userid'] = 'userid';
-            $_SESSION['role'] = 'super_admin';
-            $_SESSION['username'] = $superadmin['username'];
-            header("Location: ../pages/dashboard.php");
-            exit();
-        }
+        
 
         
         

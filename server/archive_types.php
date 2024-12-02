@@ -60,9 +60,9 @@ if (isset($_POST['typeid'])) {
 
             // Commit transaction
             $conn->commit();
-            header("Location: ../pages/settings.php?section=type&success=Type archived successfully.");
+            header("Location: ../pages/admin-settings.php?section=type&success=Type archived successfully.");
         } else {
-            header("Location: ../pages/settings.php?section=type&error=Type not found.");
+            header("Location: ../pages/admin-settings.php?section=type&error=Type not found.");
         }
     } catch (PDOException $e) {
         // Rollback the transaction in case of error

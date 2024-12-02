@@ -19,7 +19,7 @@ include_once '../server/list_categories.php';
 include_once '../server/list_type.php';
 include_once '../server/list_admin.php';
 
-if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'super_admin') {
+if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php"); // Redirect to login if not logged in
     exit();
 }
@@ -329,14 +329,6 @@ tr:hover {
     border: 1px solid #89898a;
 }
 
-.choose-file {
-    
-    width: 150px;
-    height: 45px;
-    text-align: center;
-    align-content: center;
-}
-
 .delete-btn {
     width: 45px;
     height: 45px;
@@ -358,41 +350,6 @@ tr:hover {
 textarea {
     border-radius: 10px;
     border: 1px solid #e2e2e3;
-}
-
-.backupandrestore {
-    margin-bottom: 20px;
-    display: flex
-;
-    height: 150px;
-    flex-direction: column;
-    padding: 15px;
-    border: 1px solid #d3d3d3;
-    border-radius: 20px;
-    justify-content: space-around;
-}
-
-.btn {
-    padding: 13px 20px;
-    font-weight: 600;
-    font-size: 15px;
-    width: 140px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-.btn-submit {
-    background-color: #ffffff;
-    color: #585858;
-    border: 1px solid #a2a2a2;
-}
-
-.choose-file {
-    width: 150px;
-    height: 45px;
-    text-align: center;
-    align-content: center;
-    padding-left: 30px;
-    color: white;
 }
 </style>
 
@@ -420,25 +377,25 @@ textarea {
         </div>
         <ul>
             <li>
-                <a href="dashboard.php">
+                <a href="admin-dashboard.php">
                     <img class="sidebar-icon" src="img/dashboard-grey.png" alt="Dashboard"
                         data-active-src="img/dashboard-grey.png"> Dashboard
                 </a>
             </li>
             <li>
-                <a href="users.php">
+                <a href="admin-users.php">
                     <img class="sidebar-icon" src="img/users-grey.png" alt="Users" data-active-src="img/users-grey.png">
                     Users
                 </a>
             </li>
             <li>
-                <a href="reports.php">
+                <a href="admin-reports.php">
                     <img class="sidebar-icon" src="img/reports-grey.png" alt="Reports"
                         data-active-src="img/reports-grey.png"> Reports
                 </a>
             </li>
             <li class="active">
-                <a href="settings.php">
+                <a href="admin-settings.php">
                     <img class="sidebar-icon" src="img/settings-blue.png" alt="Settings"
                         data-active-src="img/settings-grey.png"> Settings
                 </a>
@@ -451,111 +408,18 @@ textarea {
         <h2 class="header">SETTINGS</h2>
         <div class="main-content">
             <div class="left-container">
-                <p style="border-top-left-radius: 10px;" class="sidebar-item active" data-section="admin">Admin</p>
-                <p class="sidebar-item" data-section="categories">Categories</p>
+                <p style="border-top-left-radius: 10px;" class="sidebar-item active" data-section="categories">
+                    Categories</p>
                 <p class="sidebar-item" data-section="type">Product Type</p>
                 <p class="sidebar-item" data-section="general">General Information</p>
                 <p class="sidebar-item" data-section="archive">Archive</p>
-                <p class="sidebar-item" data-section="backup">Back-up & Restore</p>
                 <p class="sidebar-item" data-section="account">Profile Account</p>
             </div>
 
 
             <div class="right-container">
-                <!-- Display error message if it exists -->
-
-
-                <!-- Admin Section (Initially Active) -->
-                <div class="section-container admin-section active">
-                    <form id="adminForm" action="../server/add_admin.php" method="POST">
-                        <div class="form-container">
-                            <div class="left-form">
-                                <h2 style="margin-bottom: 15px; font-size: 30px; color: #0033a0;">Personal Information
-                                </h2>
-                                <div class="form-group">
-                                    <label for="firstName">First Name</label>
-                                    <input type="text" id="firstName" name="first_name" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="middleName">Middle Name</label>
-                                    <input type="text" id="middleName" name="middle_name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="surname">Surname</label>
-                                    <input type="text" id="surname" name="surname" required>
-                                </div>
-                            </div>
-                            <div class="right-form">
-                                <h2 style="margin-bottom: 15px; font-size: 30px; color: #0033a0;">Account Information
-                                </h2>
-                                <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="username">Username</label>
-                                    <input type="text" id="username" name="username" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="button-group">
-                            <?php if ($errorMessage): ?>
-                            <div id="admin-error-message" class="error-message-container">
-                                <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                            </div>
-                            <?php endif; ?>
-                            <?php if ($successMessage): ?>
-                            <div id="admin-success-message" class="success-message-container">
-                                <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                            </div>
-                            <?php endif; ?>
-                            <div style="display: flex; justify-content: flex-end;">
-                                <button style="margin-right: 10px;" type="button" id="clearBtn"
-                                    class="btn btn-cancel">Clear</button>
-                                <button type="submit" class="btn btn-submit">Add Admin</button>
-                            </div>
-                        </div>
-                    </form>
-                    <table style="margin-top: 30px;">
-                        <thead>
-                            <tr>
-                                <th>Admin ID</th>
-                                <th>Email</th>
-                                <th>Full Name</th>
-                                <th>Role</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($admins)): ?>
-                            <?php foreach ($admins as $admin): ?>
-                            <tr>
-                                <td><?php echo "DI-0" . htmlspecialchars($admin['userid']); ?></td>
-                                <td><?php echo htmlspecialchars($admin['email']); ?></td>
-                                <td><?php echo htmlspecialchars($admin['fullname']); ?></td>
-                                <td><?php echo htmlspecialchars($admin['role']); ?></td>
-                                <td><?php echo htmlspecialchars($admin['status']); ?></td>
-                            </tr>
-                            <?php endforeach; ?>
-                            <?php else: ?>
-                            <tr>
-                                <td colspan="5">No admins found.</td>
-                            </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
-
-
-
-                <!-- Category Section -->
-                <!-- Category Section -->
                 <div class="section-container categories-section">
-                    <form action="../server/add_category.php" method="POST" class="add-category-form"
+                    <form action="../server/add_categories.php" method="POST" class="add-category-form"
                         id="add-category-form">
                         <h2 style="margin-bottom: 15px;">Product Category</h2>
                         <div class="form-group">
@@ -596,7 +460,7 @@ textarea {
                                 <td><?php echo htmlspecialchars($category['categoryid']); ?></td>
                                 <td><?php echo htmlspecialchars($category['category_name']); ?></td>
                                 <td>
-                                    <form action="../server/archive_category.php" method="POST" style="display:inline;">
+                                    <form action="../server/archive_categories.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="categoryid"
                                             value="<?php echo htmlspecialchars($category['categoryid']); ?>">
                                         <button type="submit" class="delete-btn"><img src="../assets/archive.png"
@@ -617,7 +481,7 @@ textarea {
 
                 <!-- Type Section -->
                 <div class="section-container type-section">
-                    <form action="../server/add_type.php" method="POST" class="add-type-form" id="add-type-form">
+                    <form action="../server/add_types.php" method="POST" class="add-type-form" id="add-type-form">
 
                         <h2 style="margin-bottom: 15px;">Product Type</h2>
 
@@ -668,7 +532,7 @@ textarea {
                                     </form> -->
 
                                     <!-- Archive Button -->
-                                    <form action="../server/archive_type.php" method="POST" style="display:inline;">
+                                    <form action="../server/archive_types.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="typeid"
                                             value="<?php echo htmlspecialchars($type['typeid']); ?>">
                                         <button type="submit" class="delete-btn"><img src="../assets/archive.png"
@@ -689,12 +553,11 @@ textarea {
 
                 <div class="section-container archive-section">
                     <div style="width: 100%; display: flex; justify-content: flex-end;">
+
                     
 
                         <label class="filter-lbl" for="">Filter by</label>
                         <select class="filter-btn" name="" id="archive-select">
-                            <option data-section="archive" style="background-color: white; color: black;" value="Admin">
-                                Admin</option>
                             <option data-section="archive" style="background-color: white; color: black;"
                                 value="Category">Category</option>
                             <option data-section="archive" style="background-color: white; color: black;" value="Type">
@@ -704,18 +567,8 @@ textarea {
                     </div>
 
                     <!-- Archive Category Section -->
-                    <div style="display: none;" class="archive-container archiveCategory-section" id="archive-category">
+                    <div style="display: block;" class="archive-container archiveCategory-section" id="archive-category">
                         <h2 style="margin-bottom: 15px;">Archived Categories</h2>
-                        <?php if ($errorMessage): ?>
-                        <div id="restore-type-error-message" class="error-message-container">
-                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if ($successMessage): ?>
-                        <div id="restore-type-success-message" class="success-message-container">
-                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
                         <table style="margin-top: 10px;">
                             <thead>
                                 <tr>
@@ -733,7 +586,7 @@ textarea {
                                     <td><?php echo htmlspecialchars($category['category_name']); ?></td>
                                     <td><?php echo htmlspecialchars($category['archived_at']); ?></td>
                                     <td>
-                                        <form action="../server/restore_category.php" method="POST"
+                                        <form action="../server/restore_categories.php" method="POST"
                                             style="display:inline;">
                                             <input type="hidden" name="categoryid"
                                                 value="<?php echo htmlspecialchars($category['categoryid']); ?>">
@@ -756,16 +609,7 @@ textarea {
                     <!-- Archive Type Section -->
                     <div style="display: none;" class="archive-container archiveCategory-section" id="archive-type">
                         <h2 style="margin-bottom: 15px;">Archived Types</h2>
-                        <?php if ($errorMessage): ?>
-                        <div id="restore-type-error-message" class="error-message-container">
-                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if ($successMessage): ?>
-                        <div id="restore-type-success-message" class="success-message-container">
-                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
+
                         <table style="margin-top: 10px;">
                             <thead>
                                 <tr>
@@ -783,7 +627,7 @@ textarea {
                                     <td><?php echo htmlspecialchars($type['typename']); ?></td>
                                     <td><?php echo htmlspecialchars($type['archived_at']); ?></td>
                                     <td>
-                                        <form action="../server/restore_type.php" method="POST" style="display:inline;">
+                                        <form action="../server/restore_types.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="typeid"
                                                 value="<?php echo htmlspecialchars($type['typeid']); ?>">
                                             <button type="submit" class="delete-btn"><img src="../assets/restore.png"
@@ -801,64 +645,10 @@ textarea {
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- Archive Admin Section -->
-                    <div class="archive-container archiveAdmin" id="archive-admin">
-                        <h2 style="margin-bottom: 15px;">Archived Admins</h2>
-                        <?php if ($errorMessage): ?>
-                        <div id="restore-type-error-message" class="error-message-container">
-                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if ($successMessage): ?>
-                        <div id="restore-type-success-message" class="success-message-container">
-                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <table style="margin-top: 10px;">
-                            <thead>
-                                <tr>
-                                    <th>Admin ID</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($archiveAdmins)): ?>
-                                <?php foreach ($archiveAdmins as $arcAdmin): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($arcAdmin['admin_id']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['username']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['email']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['role']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['status']); ?></td>
-                                    <td>
-                                        <!-- Restore Button -->
-                                        <form action="../server/restore_admin.php" method="POST"
-                                            style="display:inline;">
-                                            <input type="hidden" name="admin_id"
-                                                value="<?php echo htmlspecialchars($arcAdmin['admin_id']); ?>">
-                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
-                                                    alt=""></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <tr>
-                                    <td colspan="5">No archived admins found.</td>
-                                </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
 
                 <div class="section-container account-section">
-                    <form id="adminForm" action="../server/update_superadmin.php" method="POST">
+                    <form id="adminForm" action="../server/update_admin.php" method="POST">
                         <div style="margin-bottom: 15px;" class="form-container">
                             <div class="left-form">
                                 <h2 style="margin-bottom: 15px; font-size: 30px; color: #0033a0;">Personal Information
@@ -920,7 +710,7 @@ textarea {
                 <div class="section-container general-section">
                     <h2>Logo</h2>
                     <form id="logoForm" enctype="multipart/form-data" method="post"
-                        action="../server/update_systeminfo.php">
+                        action="../server/update_systeminfos.php">
                         <img style="margin-bottom: 15px; width: 100%;"
                             src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
                         <input type="file" name="systemlogo" style="display: none;" id="logoInput"
@@ -937,7 +727,7 @@ textarea {
 
                     <div>
                         <h3 style="margin-bottom: 10px;">Terms & Conditions</h3>
-                        <form id="termsForm" method="post" action="../server/update_systeminfo.php">
+                        <form id="termsForm" method="post" action="../server/update_systeminfos.php">
                             <textarea id="TCTextEditor"
                                 style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
                                 name="terms"><?= htmlspecialchars($data['TC']) ?></textarea>
@@ -952,7 +742,7 @@ textarea {
 
                     <div>
                         <h3 style="margin-bottom: 10px;">Privacy Policy</h3>
-                        <form id="privacyForm" method="post" action="../server/update_systeminfo.php">
+                        <form id="privacyForm" method="post" action="../server/update_systeminfos.php">
                             <textarea id="PPTextEditor"
                                 style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
                                 name="privacy"><?= htmlspecialchars($data['PP']) ?></textarea>
@@ -965,25 +755,6 @@ textarea {
                         </form>
                     </div>
                 </div>
-
-                <div class="section-container backup-section">
-
-                    <form class="backupandrestore" action="../server/backup.php" method="POST">
-                        <h2>Data Backup</h2>
-                        <p>Perform data backup</p>
-                        <button class="btn btn-submit" type="submit" class="btn-backup">Backup Now</button>
-                    </form>
-                    <form class="backupandrestore" action="../server/restore.php" method="POST" enctype="multipart/form-data">
-                    <h2>Data Restore</h2>
-                    <p>Recover data from saved backups</p>
-                    <div>
-                        <input class="choose-file"  type="file" name="backup_file" accept=".sql" required>
-                        <button  class="btn btn-submit" type="submit" class="btn-restore">Restore</button>
-                    </div>
-                    </form>
-
-
-                </div> <!-- Other Sections Here -->
             </div>
         </div>
 

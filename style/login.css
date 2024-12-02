@@ -96,9 +96,11 @@ body {
     height: 50px;
     color: white;
     background-color: rgba(0, 51, 160, 1);
-    font-weight: 600px;
+    font-weight: 500;
     border-radius: 10px;
     border: 0px;
+    font-size: 18px;
+    letter-spacing: 1px;;
 }
 
 .login-wrapper h3 {

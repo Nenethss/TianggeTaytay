@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['category_name'])) {
         // If the category exists (count > 0), show an error message
         if ($stmt_check->fetchColumn() > 0) {
             // Redirect with error message
-            header("Location: ../pages/settings.php?section=categories&error=Category%20with%20this%20name%20already%20exists.");
+            header("Location: ../pages/admin-settings.php?section=categories&error=Category%20with%20this%20name%20already%20exists.");
             exit();
         } else {
             // Prepare and execute the insert query
@@ -54,12 +54,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['category_name'])) {
                 $logStmt->execute();
 
             // Redirect back to the categories page after successful insertion with a success message
-            header("Location: ../pages/settings.php?section=categories&success=Category%20added%20successfully.");
+            header("Location: ../pages/admin-settings.php?section=categories&success=Category%20added%20successfully.");
             exit();
         }
     } catch (PDOException $e) {
         // Redirect with error message if there is a database exception
-        header("Location: ../pages/settings.php?section=categories&error=Error%20adding%20category:%20" . urlencode($e->getMessage()));
+        header("Location: ../pages/admin-settings.php?section=categories&error=Error%20adding%20category:%20" . urlencode($e->getMessage()));
         exit();
     }
 }

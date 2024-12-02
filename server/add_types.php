@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['typename'])) {
 
     // Check if type name is empty
     if (empty($type_name)) {
-        header('Location: ../pages/settings.php?section=type&rror=Type name cannot be empty');
+        header('Location: ../pages/admin-settings.php?section=type&rror=Type name cannot be empty');
         exit();
     }
 
@@ -47,16 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['typename'])) {
                 $logStmt->execute();
 
         // Redirect back with success message
-        header('Location: ../pages/settings.php?section=type&success=Type added successfully');
+        header('Location: ../pages/admin-settings.php?section=type&success=Type added successfully');
         exit();
     } catch (PDOException $e) {
         // Handle any errors
-        header('Location: ../pages/settings.php?section=type&error=Failed to add type: ' . $e->getMessage());
+        header('Location: ../pages/admin-settings.php?section=type&error=Failed to add type: ' . $e->getMessage());
         exit();
     }
 } else {
     // If the form is not submitted, redirect back
-    header('Location: ../pages/settings.php?section=type&error=Invalid request');
+    header('Location: ../pages/admin-settings.php?section=type&error=Invalid request');
     exit();
 }
 ?>

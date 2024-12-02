@@ -15,6 +15,32 @@ $sellerHTML = include('../server/fetchstore.php');
     <link rel="stylesheet" href="../style/navandfoot.css">
 </head>
 
+<style>
+.path {
+    padding: 30px 100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.path a {
+    color: #2c2c2c;
+    margin-right: 10px;
+    font-size: 17px !important;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.store {
+    padding: 0 200px 0 250px;
+    display: grid;
+    margin-top: 20px;
+    margin-bottom: 150px;
+    gap: 5rem;
+    grid-template-columns: repeat(4, 1fr);
+}
+</style>
+
 <body>
 
     <div class="register">
@@ -22,24 +48,10 @@ $sellerHTML = include('../server/fetchstore.php');
     </div>
 
     <!-- Navbar Section -->
-    <nav class="navbar">
-        <div class="left-side">
-            <a href="home.php"><img src="../assets/shoppingbag.png" alt=""></a>
-            <div class="input-with-icon">
-                <img class="search-icon" src="../assets/Vector.png" alt="">
-                <input type="text" placeholder="Search for Products...">
-            </div>
-        </div>
-        <div class="right-side">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="products.php">Products</a></li>
-                <li class="selected"><a href="store.php">Store</a></li>
-                <li><a href="contact.php">Contact us</a></li>
-            </ul>
-        </div>
-    </nav>
+
+    <?php
+    include("../components/nav.php");
+    ?>
 
     <div class="main-store">
 

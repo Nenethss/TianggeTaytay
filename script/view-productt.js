@@ -11,7 +11,7 @@ const storename = document.querySelector(".store-name");
 const viewShop = document.querySelector(".view-shop");
 
 const defaultImage = "https://via.placeholder.com/150?text=No+Image";
-const API_URL = "http://localhost/eTianggeTaytay/server";
+const API_URL = "http://localhost/ETianggeTaytay/server";
 
 const displayLinks = (shopee_link, lazada_link) => {
   links.innerHTML = "";
@@ -122,7 +122,8 @@ const renderPage = async () => {
     displayProductDetails(
       product.product_name,
       product.price,
-      product.description
+      product.description,
+      product
     );
     displayImages(images || []);
     displayLinks(product.shopee_link, product.lazada_link);
@@ -131,7 +132,7 @@ const renderPage = async () => {
     storename.textContent = product.storename;
 
     viewShop.addEventListener("click", () => {
-      window.location.href = `http://localhost:3000/pages/view-store.php`;
+      window.location.href = `http://localhost/ETianggeTaytay/pages/view-store.php?storename=${product.storename}`;
     });
   } catch (error) {
     console.error(error.message);

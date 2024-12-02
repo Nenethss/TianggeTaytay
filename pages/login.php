@@ -16,7 +16,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Tiangge Taytay</title>
-    <link rel="stylesheet" href="../style/login.css">
+    <link rel="stylesheet" href="../style/Login.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
 </head>
 

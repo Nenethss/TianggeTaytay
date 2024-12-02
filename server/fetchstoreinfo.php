@@ -25,7 +25,7 @@ $store = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Set default store info
 $seller_username = html_entity_decode($store['username'] ?? 'No Store Found');
-$seller_password = html_entity_decode($store['password']);
+$seller_password = html_entity_decode($store['password']?? 'No Store Found');
 $store_name = html_entity_decode($store['storename'] ?? 'No Store Found');
 $store_description = $store['description'] ?? 'No Description';
 $store_img = isset($store['img']) ? 'data:image/png;base64,' . base64_encode($store['img']) : '../assets/storepic.png';

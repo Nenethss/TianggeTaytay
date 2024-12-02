@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(44, 44, 44);
+}
+
 .container {
     min-height: 100vh;  
     padding-inline: 60px;
@@ -6,7 +13,7 @@
     display: grid;
 }
 
-.divider {
+.store-div {
     border-top: 1px solid rgb(44, 44, 44, 0.1);
     width: 90%;
     margin-block: 35px;
@@ -71,7 +78,7 @@
 .store-info > div:nth-of-type(1) {
     display: flex;
     align-items: center;
-    gap: 20px
+    gap: 40px
 }
 
 .store-info > div:nth-of-type(1) img {
@@ -79,13 +86,13 @@
 }
 
 .store-info > div:nth-of-type(1) p {
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.5rem;
 }
 
 .store-info span {
     color: #0033a0;
-    font-weight: 500;
+    font-weight: 600;
     margin-left: 12px;
 }
 
@@ -219,4 +226,42 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+
+.pagination {
+    padding-top: 20px;
+    margin-top: 60px;
+    border-top: 1px solid rgb(44, 44, 44, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination p {
+    color: rgb(44, 44, 44, 0.6);
+}
+
+.pages {
+    display: flex;
+    align-items: center;
+    border: 1px solid rgb(44, 44, 44, 0.15);
+    border-radius: 5px;
+}
+
+.pages > div {
+    width: 45px;
+    height: 45px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.pages > .page p.selected {
+    color: #2C97EB;
+    font-weight: 600;
+}
+
+.pages > * + * {
+    border-left: 1px solid rgb(44, 44, 44, 0.1);
 }

@@ -4,7 +4,7 @@ session_start(); // Start session
 include_once '../server/connect.php';
 
 
-if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'super_admin') {
+if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php"); // Redirect to login if not logged in
     exit();
 }
@@ -227,25 +227,25 @@ td:nth-child(4), th:nth-child(4) {
         </div>
         <ul>
             <li>
-                <a href="dashboard.php">
+                <a href="admin-dashboard.php">
                     <img class="sidebar-icon" src="img/dashboard-grey.png" alt="Dashboard"
                         data-active-src="img/dashboard-grey.png"> Dashboard
                 </a>
             </li>
-            <li class="active">
+            <li class="admin-active">
                 <a href="users.php">
                     <img class="sidebar-icon" src="img/users-blue.png" alt="Users" data-active-src="img/users-grey.png">
                     Users
                 </a>
             </li>
             <li>
-                <a href="reports.php">
+                <a href="admin-reports.php">
                     <img class="sidebar-icon" src="img/reports-grey.png" alt="Reports"
                         data-active-src="img/reports-grey.png"> Reports
                 </a>
             </li>
             <li>
-                <a href="settings.php">
+                <a href="admin-settings.php">
                     <img class="sidebar-icon" src="img/settings-grey.png" alt="Settings"
                         data-active-src="img/settings-grey.png"> Settings
                 </a>
@@ -316,7 +316,7 @@ td:nth-child(4), th:nth-child(4) {
         let tableSelect = document.querySelector('[name="table_select"]').value;
 
         // Prepare the URL with search term and selected table
-        let url = '../server/fetch_data.php?search=' + searchTerm + '&table_select=' + tableSelect;
+        let url = '../server/fetch_data_users.php?search=' + searchTerm + '&table_select=' + tableSelect;
 
         // Make the AJAX request to fetch data
         fetch(url)

@@ -60,7 +60,7 @@ if (isset($_POST['categoryid'])) {
 
             // Commit the transaction
             $conn->commit();
-            header("Location: ../pages/settings.php?section=categories&success=Category archived successfully");
+            header("Location: ../pages/admin-settings.php?section=categories&success=Category archived successfully");
         } else {
             echo "Category not found.";
         }

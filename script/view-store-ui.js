@@ -65,6 +65,10 @@ const ProductCard = (id, img, name, price) => {
   const productPrice = document.createElement("p");
   productPrice.innerHTML = `&#8369; <span>${price}</span>`;
 
+  div.addEventListener("click", () => {
+    window.location.href = `http://localhost/ETianggeTaytay/pages/view-product.php?id=${id}`;
+  });
+
   div.appendChild(productImage);
   div.appendChild(productName);
   div.appendChild(productPrice);
@@ -74,11 +78,6 @@ const ProductCard = (id, img, name, price) => {
 
 /** Fetch Categories */
 const fetchCategories = async () => {
-  if (!categorySelect) {
-    console.error("Category select element not found in the DOM.");
-    return;
-  }
-
   try {
     const response = await fetch(
       "http://localhost/ETianggeTaytay/server/products-fetch-ui.php?component=category"

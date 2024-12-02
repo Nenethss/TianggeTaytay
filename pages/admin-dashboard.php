@@ -59,7 +59,7 @@ if ($admin) {
         $user_img = '../assets/storepic.png';
     }
     
-} else {
+} elseif ($superadmin) {
     // Handle case where no admin record was found
     echo "No admin record found for the given user ID.";
     exit();
@@ -358,25 +358,25 @@ tr:hover {
         </div>
         <ul>
             <li class="active">
-                <a href="dashboard.php">
+                <a href="admin-dashboard.php">
                     <img class="sidebar-icon" src="img/dashboard-blue.png" alt="Dashboard"
                         data-active-src="img/dashboard-grey.png"> Dashboard
                 </a>
             </li>
             <li>
-                <a href="users.php">
+                <a href="admin-users.php">
                     <img class="sidebar-icon" src="img/users-grey.png" alt="Users" data-active-src="img/users-grey.png">
                     Users
                 </a>
             </li>
             <li>
-                <a href="reports.php">
+                <a href="admin-reports.php">
                     <img class="sidebar-icon" src="img/reports-grey.png" alt="Reports"
                         data-active-src="img/reports-grey.png"> Reports
                 </a>
             </li>
             <li>
-                <a href="settings.php">
+                <a href="admin-settings.php">
                     <img class="sidebar-icon" src="img/settings-grey.png" alt="Settings"
                         data-active-src="img/settings-grey.png"> Settings
                 </a>

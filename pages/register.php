@@ -13,7 +13,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/register.css">
+    <link rel="stylesheet" href="../style/registerr.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
     <title>e-Tiangge Taytay</title>
 </head>
@@ -383,7 +383,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </footer>
 
-    <script src="../script/scripts.js"></script>
+    <script src="../script/register.js"></script>
     <script src="../script/formshow.js"></script>
 
     <script>

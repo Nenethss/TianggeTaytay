@@ -2,6 +2,9 @@
 session_start();
 include_once 'connect.php';
 
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ensure the seller is logged in
     if (!isset($_SESSION['seller_id'])) {

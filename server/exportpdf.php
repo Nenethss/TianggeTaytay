@@ -2,6 +2,22 @@
 require_once("../TCPDF-main/tcpdf.php");
 include("connect.php");
 
+session_start();
+
+$userid = $_SESSION['userid'];
+
+// Fetch store details from the database
+$stmt = $conn->prepare("SELECT userid, username, password, first_name, middle_name, surname, email, role, img FROM admintb WHERE userid = :userid");
+$stmt->execute(['userid' => $userid]);
+$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($admin) {
+    $admin_id = $admin['userid'];
+    $adminUsername = $admin['username']; 
+    $adminRole = $admin['role'];
+    $adminEmail = $admin['email'];
+} 
+
 // Function to fetch data based on filters
 function fetchData($query, $params = []) {
     global $conn;
@@ -100,6 +116,18 @@ if (isset($_GET['export_audit'])) {
         ['title' => 'Date', 'key' => 'formatted_date', 'width' => 40],
     ];
 
+    $action = $adminUsername . " export a report for audit trail.";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
     // Generate the PDF report
     generatePDF('Audit Trail Report', $headers, $data, 'audit_trail_report.pdf');
 }
@@ -141,6 +169,18 @@ if (isset($_GET['export_user_seller'])) {
         ['title' => 'Province', 'key' => 'province', 'width' => 40],
     ];
 
+    $action = $adminUsername . " export a report for user seller.";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
     // Generate the PDF
     generatePDF('User-Seller Report', $headers, $data, 'user_seller_report.pdf', "L");
 }
@@ -165,6 +205,17 @@ if (isset($_GET['export_user_admin'])) {
         ['title' => 'Status', 'key' => 'status', 'width' => 30],
     ];
 
+    $action = $adminUsername . " export a report for user admin.";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
     // Generate the PDF
     generatePDF('User-Admin Report', $headers, $data, 'user_admin_report.pdf');
 }
@@ -186,6 +237,18 @@ if (isset($_GET['export_product_views'])) {
     ];
 
     // Generate the PDF
+    $action = $adminUsername . " export a report for product views.";
+    $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+               VALUES (:usertype, :email, :action)";
+
+    $logStmt = $conn->prepare($logSql);
+    $logStmt->bindParam(':usertype', $adminRole);
+    $logStmt->bindParam(':email', $adminEmail);
+    $logStmt->bindParam(':action', $action);
+
+    // Execute the log query
+    $logStmt->execute();
+
     generatePDF('Product Views Report', $headers, $data, 'product_views_report.pdf');
 }
 
@@ -202,6 +265,18 @@ if (isset($_GET['export_signup_trends'])) {
         ['title' => 'Sign-Up Count', 'key' => 'count', 'width' => 40],
         ['title' => 'Date', 'key' => 'signup_date', 'width' => 60],
     ];
+
+    $action = $adminUsername . " export a report for sign up trends.";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
     generatePDF('Sign-Up Trends Report', $headers, $data, 'signup_trends_report.pdf');
 }
 ?>
