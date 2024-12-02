@@ -345,7 +345,7 @@ include("../server/fetchstoreinfo.php");
     <script src="../script/drop-down.js"></script>
     <script src="../script/formshow.js"></script>
     <form class="hidden" id="updateInfo" method="POST" action="../server/updateSeller.php">
-        <input type="hidden" name="current_username" id="current_username" value="<?php echo $seller_username; ?>">
+        <input type="hidden" name="current_username"  value="<?php echo $seller_username; ?>">
 
         <div class="section-header">
             <h2>Account Information</h2>
@@ -359,7 +359,7 @@ include("../server/fetchstoreinfo.php");
                 </div>
                 <div class="info-group">
                     <label for="seller_email">Email</label>
-                    <input type="text" name="seller_email" id="seller_email" value="<?php echo $seller_email ?>"
+                    <input type="text" name="seller_email"  value="<?php echo $seller_email ?>"
                         required>
                 </div>
             </div>
@@ -446,8 +446,9 @@ include("../server/fetchstoreinfo.php");
         // Clear any previous errors
         errorContainer.innerHTML = '';
 
-        // Check if password and confirm password match
-        if (password !== confirmPassword) {
+
+if (password.length > 0 OR confirmPassword.length > 0) {
+    if (password !== confirmPassword) {
             e.preventDefault();
             const errorMsg = document.createElement('p');
             errorMsg.textContent = 'Passwords do not match.';
@@ -465,6 +466,9 @@ include("../server/fetchstoreinfo.php");
             errorContainer.appendChild(errorMsg);
             isValid = false;
         }
+}
+        // Check if password and confirm password match
+        
 
         // Only submit the form if all validations pass
         if (!isValid) {

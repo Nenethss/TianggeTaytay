@@ -41,13 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Insert product into the database
     $stmt = $conn->prepare("
-        INSERT INTO producttb (product_name, category_name, typename, price, lazada_link, shopee_link, storename)
-        VALUES (:product_name, :category_name, :typename, :price, :lazada_link, :shopee_link, :storename)
+        INSERT INTO producttb (product_name, category_name,typename, description, price, lazada_link, shopee_link, storename)
+        VALUES (:product_name, :category_name, :typename, :description, :price, :lazada_link, :shopee_link, :storename)
     ");
     $stmt->execute([
         'product_name' => $product_name,
         'category_name' => $category_name,
         'typename' => $typename,
+        'description' => $description,
         'price' => $price,
         'lazada_link' => $lazada_link,
         'shopee_link' => $shopee_link,

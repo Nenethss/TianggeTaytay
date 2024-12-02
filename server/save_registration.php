@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $shopee = isset($_POST['shopee']) ? $_POST['shopee'] : null;
     $stallName = $_POST['stall_name'];
     $storeName = $_POST['store_name'];
-    $createdAt = date('M d, Y');
     $updatedAt = date('M d, Y');
 
     if (isset($_FILES['permit']) && $_FILES['permit']['error'] === UPLOAD_ERR_OK) {
@@ -57,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Insert into sellertb
         // Insert into sellertb
-        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno, created_at, updated_at, permit) 
-        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno, :created_at, :updated_at, :permit)";
+        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno,  updated_at, permit) 
+        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno, :updated_at, :permit)";
         $sellerStmt = $conn->prepare($sellerQuery);
         $sellerStmt->bindParam(':username', $username, PDO::PARAM_STR);
         $sellerStmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
@@ -73,7 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sellerStmt->bindParam(':municipality', $municipality, PDO::PARAM_STR);
         $sellerStmt->bindParam(':baranggay', $baranggay, PDO::PARAM_STR);
         $sellerStmt->bindParam(':houseno', $houseno, PDO::PARAM_STR);
-        $sellerStmt->bindParam(':created_at', $createdAt, PDO::PARAM_STR);
         $sellerStmt->bindParam(':updated_at', $updatedAt, PDO::PARAM_STR);
         $sellerStmt->bindParam(':permit', $permit, PDO::PARAM_LOB); // Insert permit as LOB
         $sellerStmt->execute();

@@ -1,8 +1,12 @@
 <?php
-
 list($categoryHTML, $categories) = include_once '../server/fetchcategory.php';
 include_once '../server/fetchproduct.php';
+include_once '../server/connect.php';
 
+$sql = "SELECT systemlogo, TC, PP FROM systeminfo WHERE id = 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -16,38 +20,66 @@ include_once '../server/fetchproduct.php';
     <title>e-Tiangge Taytay</title>
 </head>
 
-<body>
+<style>
 
+
+.slider {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    z-index: -1;
+}
+
+.image-slider {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    animation: slide 10s infinite; 
+}
+
+.image-slider > img {
+    flex-shrink: 0; /* Prevent shrinking of images */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio while covering */
+}
+
+@keyframes slide {
+    0%, 20% {
+        transform: translateX(0); /* First image */
+    }
+    25%, 45% {
+        transform: translateX(-100%); /* Second image */
+    }
+    50%, 70% {
+        transform: translateX(-200%); /* Third image */
+    }
+    75%, 95% {
+        transform: translateX(-300%); /* Fourth image (duplicated 1st image) */
+    }
+    100% {
+        transform: translateX(-300%); /* Transition to the duplicate */
+    }
+}
+
+</style>
+
+<body>
     <!-- Register Seller Section -->
     <div class="register">
         <p>Become a Seller? <a href="register.php">Register Now</a></p>
     </div>
 
     <!-- Navbar Section -->
-    <nav class="navbar">
-        <div class="left-side">
-            <a href="#"><img src="../assets/shoppingbag.png" alt=""></a>
-            <div class="input-with-icon">
-                <img class="search-icon" src="../assets/Vector.png" alt="">
-                <input type="text" placeholder="Search for Products...">
-            </div>
-        </div>
-        <div class="right-side">
-            <ul>
-                <li class="selected"><a href="#">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li><a href="products.php">Products</a></li>
-                <li><a href="store.php">Store</a></li>
-                <li><a href="contact.php">Contact us</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php
+    include("../components/nav.php");
+    ?>
 
     <!-- Main Content Section -->
     <main>
         <div class="main-left-side">
             <div class="hero">
-                <img src="../assets/tianggeportal.png" alt="">
+            <img src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
                 <div class="text-hero">
                     <h1>CONNECTING</h1>
                     <h1>COMMUNITIES</h1>
@@ -59,7 +91,14 @@ include_once '../server/fetchproduct.php';
                 —all in one convenient digital marketplace.</p>
         </div>
         <div class="main-right-side">
-            <img style="width: 100%; height: 100%;" src="../assets/girlinayellow.png" alt="" />
+            <div class="slider">
+                <div class="image-slider">
+                    <img src="../assets/slider1.png" alt="" />
+                    <img src="../assets/slider2.png" alt="" />
+                    <img src="../assets/slider3.png" alt="" />
+                    <img src="../assets/slider1.png" alt="" />
+                </div>
+            </div>
             <div class="products-shortcut">
                 <a href="product.php">See All Products</a> <img src="../assets/arrowright.png" alt="">
             </div>
@@ -110,20 +149,20 @@ include_once '../server/fetchproduct.php';
     <div class="product-container">
         <h1>NEW ARRIVALS</h1>
         <div class="product-item">
-            <?php 
-        // Assuming $product_details is your array of products
-        $new_arrivals = array_slice($product_details, 0, 4); // Get first 4 products
-        
-        foreach ($new_arrivals as $product): ?>
-            <div class="product-card">
-                <!-- Display the first image of the product -->
-                <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
-                    alt="Product Image">
+            <?php
+            // Assuming $product_details is your array of products
+            $new_arrivals = fetchProducts("NEW_ARRIVALS"); // Get first 4 products
 
-                <!-- Product Name and Price -->
-                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
-            </div>
+            foreach ($new_arrivals as $product): ?>
+                <div class="product-card">
+                    <!-- Display the first image of the product -->
+                    <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
+                        alt="Product Image">
+
+                    <!-- Product Name and Price -->
+                    <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                    <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+                </div>
             <?php endforeach; ?>
         </div>
         <a href="products.php"><button class="view">View All</button></a>
@@ -136,20 +175,20 @@ include_once '../server/fetchproduct.php';
     <div class="product-container last-product-container">
         <h1>MOST VIEWED</h1>
         <div class="product-item">
-            <?php 
-        // Get last 4 products (assuming they are sorted by views or some other criteria)
-        $most_viewed = array_slice($product_details, -4); // Get last 4 products
-        
-        foreach ($most_viewed as $product): ?>
-            <div class="product-card">
-                <!-- Display the first image of the product -->
-                <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
-                    alt="Product Image">
+            <?php
+            // Get last 4 products (assuming they are sorted by views or some other criteria)
+            $most_viewed = fetchProducts("MOST_VIEWED");
 
-                <!-- Product Name and Price -->
-                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
-            </div>
+            foreach ($most_viewed as $product): ?>
+                <div class="product-card">
+
+                    <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
+                        alt="Product Image">
+
+                    <!-- Product Name and Price -->
+                    <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
+                    <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
+                </div>
             <?php endforeach; ?>
         </div>
         <a href="products.php"><button class="view">View All</button></a>
@@ -158,7 +197,7 @@ include_once '../server/fetchproduct.php';
     <footer>
         <div class="top-footer">
             <div class="footer-logo">
-                <img src="../assets/tianggeportal.png" alt="">
+            <img src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
                 <p>Find quality clothes and<br> garments in Taytay Tiangge<br> anytime and anywhere you are!</p>
             </div>
 

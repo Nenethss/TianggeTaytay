@@ -170,6 +170,18 @@ input[type="file"] {
 .pagination .next {
     padding: 15px 13px;
 }
+
+.description {
+    width: 440px;
+    height: 200px;
+    padding: 10px;
+    outline: none;
+    resize: none;
+    border-radius: 10px;
+    font-size: 17px;
+    margin-bottom: 10px;
+    border: 1px solid #dddddf;
+}
 </style>
 
 <body>
@@ -221,7 +233,7 @@ input[type="file"] {
             <input type="text" name="product_name" required>
 
             <label>Product Description</label>
-            <input type="text" name="description" required>
+            <textarea class="description" name="description" id="" placeholder="Description"></textarea>
 
             <label>Price</label>
             <input type="text" name="price" required>

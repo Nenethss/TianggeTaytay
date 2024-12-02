@@ -1,3 +1,13 @@
+/* General Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
 
 /* Sidebar styles */
 .sidebar {
@@ -38,7 +48,7 @@
 
 /* Sidebar item link styling */
 .sidebar ul li a {
-    color: #0033A0;
+    color: #2d2d2d;
     text-decoration: none;
     font-size: 20px;
     /* Increased font size */
@@ -50,9 +60,9 @@
 
 /* Sidebar item icons */
 .sidebar .sidebar-icon {
-    width: 25px;
+    width: 30px;
     /* Increased icon size */
-    height: 25px;
+    height: 30px;
     /* Increased icon size */
     margin-right: 15px;
     /* Increased space between icon and text */
@@ -60,13 +70,12 @@
 
 /* Active item background color and text color */
 .sidebar ul li.active {
-    background-color: #0033A0;
     color: white;
 }
 
 /* Change text color for active links */
 .sidebar ul li.active a {
-    color: white;
+    color: #0033A0;
 }
 
 /* Hover effect */
@@ -75,7 +84,6 @@
 }
 
 .sidebar ul li {
-    border-bottom: 1px solid #f0f0f0;
     transition: background-color 0.3s ease;
 }
 
@@ -132,3 +140,44 @@
     background-color: #6A92E2;
 }
 
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 30px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 100;
+}
+
+.dropdown-menu .store-name {
+    font-weight: 600;
+}
+
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown-container p {
+    text-align: left;
+}
+
+.dropdown-menu a {
+    display: block;
+    text-decoration: none;
+    color: #333;
+    padding: 8px 12px;
+    font-weight: 550;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    text-align: center;
+}

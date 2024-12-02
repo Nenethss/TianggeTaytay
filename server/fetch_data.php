@@ -1,85 +1,122 @@
 <?php
-// Database connection parameters
-$servername = "localhost";
-$username = "root"; // replace with your database username
-$password = ""; // replace with your database password
-$dbname = "tianggedb"; // replace with your database name
+require_once('connect.php');
 
-try {
-    // Create PDO connection
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    // Set PDO error mode to exception
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Get search term and table selection from query parameters
+$search_term = isset($_GET['search']) ? $_GET['search'] : '';
+$selected_table = isset($_GET['table_select']) ? $_GET['table_select'] : 'seller';
 
-    $search_term = isset($_GET['search']) ? $_GET['search'] : '';
-    $selected_table = isset($_GET['table_select']) ? $_GET['table_select'] : 'seller';
+// Prepare the search term for SQL LIKE
+$search_like = '%' . $search_term . '%';
 
-    // Display Seller Table
-    if ($selected_table == 'seller') {
-        // Prepare SQL query with placeholders
-        $sql = "SELECT seller_id,  CONCAT(first_name, ' ', middle_name, ' ', last_name) AS full_name, status 
-                FROM sellertb 
-                WHERE seller_id LIKE :search OR /:search OR CONCAT(first_name, ' ', middle_name, ' ', last_name) LIKE :search OR status LIKE :search";
-
-        $stmt = $conn->prepare($sql);
-        $search_like = '%' . $search_term . '%';
-        $stmt->bindParam(':search', $search_like, PDO::PARAM_STR);
-        $stmt->execute();
-
-        // Check if we have data
-        if ($stmt->rowCount() > 0) {
-            echo "<h2 style='text-align: center;'>Seller Table</h2>";
-            echo "<table>";
-            echo "<tr><th>Seller ID</th><th>Email Address</th><th>Full Name</th><th>Status</th></tr>";
-
-            // Fetch and display data
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['seller_id']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
-                echo "<td class='status-cell'>" . htmlspecialchars($row['status']) . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        } else {
-            echo "<p style='text-align: center;'>No seller data found.</p>";
-        }
-    }
-
-    // Display Administrator Table
-    elseif ($selected_table == 'administrator') {
-        // Prepare SQL query with placeholders
-        $sql = "SELECT userid, email, username, status 
-                FROM admintb 
-                WHERE userid LIKE :search OR email LIKE :search OR username LIKE :search OR status LIKE :search";
-
-        $stmt = $conn->prepare($sql);
-        $search_like = '%' . $search_term . '%';
-        $stmt->bindParam(':search', $search_like, PDO::PARAM_STR);
-        $stmt->execute();
-
-        // Check if we have data
-        if ($stmt->rowCount() > 0) {
-            echo "<h2 style='text-align: center;'>Administrator Table</h2>";
-            echo "<table>";
-            echo "<tr><th>User ID</th><th>Email Address</th><th>Username</th><th>Status</th></tr>";
-
-            // Fetch and display data
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td>" . htmlspecialchars($row['userid']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['email']) . "</td>";
-                echo "<td>" . htmlspecialchars($row['username']) . "</td>";
-                echo "<td class='status-cell'>" . htmlspecialchars($row['status']) . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        } else {
-            echo "<p style='text-align: center;'>No administrator data found.</p>";
-        }
-    }
-} catch (PDOException $e) {
-    // Handle connection or query errors
-    echo "Connection failed: " . $e->getMessage();
+// Handle different table selections
+if ($selected_table === 'administrator') {
+    $sql = "
+        SELECT userid, email, username, status 
+        FROM admintb 
+        WHERE userid LIKE :search_like OR email LIKE :search_like OR username LIKE :search_like OR status LIKE :search_like
+    ";
+} elseif ($selected_table === 'seller') {
+    $sql = "
+        SELECT sellertb.seller_id, sellertb.seller_email, 
+               CONCAT(sellertb.first_name, ' ', sellertb.middle_name, ' ', sellertb.last_name) AS full_name, 
+               sellertb.status, sellertb.permit, stalltb.stallnumber, stalltb.storename
+        FROM sellertb
+        INNER JOIN storetb ON sellertb.seller_id = storetb.sellerid
+        INNER JOIN stalltb ON storetb.storename = stalltb.storename
+        WHERE storetb.storename LIKE :search_like
+    ";
+} else {
+    echo "<p style='text-align: center;'>Invalid table selection.</p>";
+    exit;
 }
-?>
+
+// Prepare and execute the query
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':search_like', $search_like, PDO::PARAM_STR);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Display the results
+if ($selected_table === 'administrator') {
+    if (count($results) > 0) {
+        echo "<table>";
+        echo "<tr><th>Admin ID</th><th>Email Address</th><th>Username</th><th>Status</th><th>Action</th></tr>";
+
+        foreach ($results as $row) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['userid']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['email']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['username']) . "</td>";
+            echo "<td>
+                    <form method='POST'>
+                        <select name='status' class='status-dropdown' data-userid='" . htmlspecialchars($row['userid']) . "'>
+                            <option value='active' " . ($row['status'] === 'active' ? 'selected' : '') . ">Active</option>
+                            <option value='inactive' " . ($row['status'] === 'inactive' ? 'selected' : '') . ">Inactive</option>
+                        </select>
+                        <input type='hidden' name='userid' value='" . htmlspecialchars($row['userid']) . "'>
+                    </form>
+                  </td>";
+            echo '<td>
+                    <form action="../server/archive_admin.php" method="POST" style="display:inline;">
+                        <input type="hidden" name="userid" value="' . htmlspecialchars($row['userid']) . '">
+                        <button type="submit" class="delete-btn"><img src="../assets/restore.png" alt=""></button>
+                    </form>
+                    </td>';
+    
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "<p style='text-align: center;'>No administrator data found.</p>";
+    }
+} elseif ($selected_table === 'seller') {
+    if (count($results) > 0) {
+        echo "<table>";
+        echo "<tr><th>Seller ID</th><th>Email Address</th><th>Full Name</th><th>Store Name</th><th>Status</th><th>Permit</th></tr>";
+
+        foreach ($results as $row) {
+            echo "<tr>";
+            echo "<td>" . htmlspecialchars($row['seller_id']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['seller_email']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['full_name']) . "</td>";
+            echo "<td>" . htmlspecialchars($row['storename'] ?? 'N/A') . "</td>";
+            echo "<td>
+                    <select name='status' class='status-dropdown' data-userid='" . htmlspecialchars($row['seller_id']) . "'>
+                        <option value='Not Verified'" . ($row['status'] === 'Not Verified' ? ' selected' : '') . ">Not Verified</option>
+                        <option value='Pending'" . ($row['status'] === 'Pending' ? ' selected' : '') . ">Pending</option>
+                        <option value='Verified'" . ($row['status'] === 'Verified' ? ' selected' : '') . ">Verified</option>
+                    </select>
+                  </td>";
+            if (!empty($row['permit'])) {
+                $permit_data = base64_encode($row['permit']);
+                $permit_link = "data:application/octet-stream;base64," . $permit_data;
+                echo "<td><a href='" . $permit_link . "' download='permit_" . htmlspecialchars($row['seller_id']) . ".png'>Download</a></td>";
+            } else {
+                echo "<td>N/A</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "<p style='text-align: center;'>No seller data found.</p>";
+    }
+}
+
+// Handle status update for administrator
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['userid'])) {
+    $userid = $_POST['userid'];
+    $new_status = $_POST['status'];
+
+    $update_sql = "UPDATE admintb SET status = :new_status WHERE userid = :userid";
+    $update_stmt = $conn->prepare($update_sql);
+    $update_stmt->bindParam(':new_status', $new_status, PDO::PARAM_STR);
+    $update_stmt->bindParam(':userid', $userid, PDO::PARAM_STR);
+    
+    if ($update_stmt->execute()) {
+        echo "<p style='color: green;'>Status updated successfully.</p>";
+    } else {
+        echo "<p style='color: red;'>Error updating status.</p>";
+    }
+}
+
+$conn = null; // Close connection

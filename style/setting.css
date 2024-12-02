@@ -10,8 +10,6 @@
 
 body {
     font-family: 'Roboto' !important;
-    display: flex;
-    height: 100vh;
     background-color: #ffffff;
 }
 
@@ -28,13 +26,15 @@ input {
 
 /* Sidebar */
 
-
+.top-bar
 /* Main Content */
 .main-container {
+    margin: 180px 0px 0px 300px;
     display: flex;
     flex: 1;
     padding: 20px;
     flex-direction: column;
+    border-radius: 10px;
 }
 
 .header {
@@ -43,10 +43,6 @@ input {
     margin-bottom: 20px;
 }
 
-.main-container {
-    margin: 50px 0px 0px 300px;
-    border-radius: 10px;
-}
 
 .main-content {
     display: flex;
@@ -110,15 +106,6 @@ h2 {
     font-weight: bold;
 }
 
-/* Top Bar (if needed) */
-.top-bar {
-    height: 50px;
-    background-color: #0033A0;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .form-container {
     display: flex

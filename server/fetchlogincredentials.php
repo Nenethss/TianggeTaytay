@@ -1,6 +1,5 @@
 <?php
-
-session_start(); // Start session for user authentication
+// Start session for user authentication
 include_once 'connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -10,26 +9,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
 
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = $_POST['password']; // Plaintext password from login form
     $error = 'Invalid username or password. Please try again.';
 
     try {
         // Check if the user is an admin
         $stmt = $conn->prepare("SELECT * FROM admintb WHERE username = :username");
-$stmt->execute(['username' => $username]);
-$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->execute(['username' => $username]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if ($admin && $password === $admin['password']) {
-    // Set session for admin and redirect
-    $_SESSION['userid'] = $admin['userid']; // Assuming there is a userid column
-    $_SESSION['role'] = 'admin';
-    $_SESSION['first_name'] = $admin['first_name']; // Fetch first name
-    $_SESSION['middle_name'] = $admin['middle_name']; // Fetch middle name
-    $_SESSION['surname'] = $admin['surname']; // Fetch surname
-    $_SESSION['username'] = $admin['username'];
-    header("Location: ../pages/dashboard.php");
-    exit();
-}
+        if ($admin && password_verify($password, $admin['password'])) {
+            // Set session for admin and redirect
+            $_SESSION['userid'] = $admin['userid']; // Assuming there is a userid column
+            $_SESSION['role'] = 'admin';
+            $_SESSION['first_name'] = $admin['first_name']; // Fetch first name
+            $_SESSION['middle_name'] = $admin['middle_name']; // Fetch middle name
+            $_SESSION['surname'] = $admin['surname']; // Fetch surname
+            $_SESSION['username'] = $admin['username'];
+            header("Location: ../pages/dashboard.php");
+            exit();
+        }
 
 
         $stmt = $conn->prepare("SELECT * FROM admintb WHERE username = :username");

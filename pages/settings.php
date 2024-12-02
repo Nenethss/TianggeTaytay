@@ -2,6 +2,12 @@
 session_start(); // Start session
 include_once '../server/connect.php';
 
+// Fetch current data
+$sql = "SELECT systemlogo, TC, PP FROM systeminfo WHERE id = 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+
 // Check if there's an error or success message passed via URL query parameters
 $errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
 $successMessage = isset($_GET['success']) ? $_GET['success'] : '';
@@ -22,7 +28,7 @@ if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'admin') {
 $userid = $_SESSION['userid'];
 
 // Fetch store details from the database
-$stmt = $conn->prepare("SELECT username, password, first_name, middle_name, surname, email, role FROM admintb WHERE userid = :userid");
+$stmt = $conn->prepare("SELECT username, password, first_name, middle_name, surname, email, role, img FROM admintb WHERE userid = :userid");
 $stmt->execute(['userid' => $userid]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -33,7 +39,15 @@ if ($admin) {
     $mname = $admin['middle_name'];
     $lname = $admin['surname'];
     $email = $admin['email'];
+    $fullname = $fname . " " . $lname;
     $role = $admin['role'];
+    $password = html_entity_decode($admin['password']);
+    if (!empty($admin['img'])) {
+        $user_img = 'data:image/png;base64,' . base64_encode($admin['img']);
+    } else {
+        $user_img = '../assets/storepic.png';
+    }
+    
 } else {
     // Handle case where no admin record was found
     echo "No admin record found for the given user ID.";
@@ -50,182 +64,342 @@ if ($admin) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Tiangge Taytay</title>
-    <link rel="stylesheet" href="../style/sidebars.css">
-    <link rel="stylesheet" href="../style/settings.css">
+    <link rel="stylesheet" href="../style/main-sidebar.css">
+    <script src="https://cdn.tiny.cloud/1/yfzcekqme9bnde6m4kj5va4phv7cwoyw2ttqg0r14c3xdjcl/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
 </head>
 
 <style>
+/* General Styles */
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
-
-@font-face {
-    font-family: "Kenzoestic";
-    src: url("./kenzoestic/Kenzoestic\ Black.ttf");
-}
-
-label {
-    align-content: center;
-}
-
-.top-bar {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #f5f6fa;
+}
+
+input,
+button,
+select {
+    outline: none;
+}
+
+input {
+    border: 1px solid #cccccc;
+}
+
+/* Sidebar */
+.top-bar {
+    margin: 0;
     overflow: hidden;
     background-color: #ffffff;
     position: fixed;
     top: 0;
+    display: flex;
     right: 0;
+    padding: 0 40px;
     width: 100%;
-    height: 50px;
+    height: 90px;
     z-index: 1;
+    justify-content: flex-end;
 }
 
-body {
-    font-family: 'Roboto';
-    background-color: #f5f6fa;
-}
-
-#add-category-form,
-#add-type-form {
-    padding: 10px;
+/* Main Content */
+.main-container {
+    margin: 90px 0 0 300px;
+    display: flex;
+    flex: 1;
+    padding: 20px;
     flex-direction: column;
+    border-radius: 10px;
+}
+
+
+.header {
+    margin-bottom: 20px;
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
     background-color: white;
-    justify-content: space-around;
+    border-radius: 10px;
+}
+
+.left-container {
+    width: 280px;
+    margin-right: 40px;
+    border-right: 1px solid #f3f3f3;
+}
+
+.left-container p {
+    font-weight: 600;
+    font-size: 17px;
+    color: #202020;
+    text-align: center;
+    padding: 15px;
+}
+
+.sidebar-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.sidebar-item.active {
+    background-color: #e4e9f4;
+    color: #0033A0;
+}
+
+.right-container {
+    flex: 1;
+    padding: 60px 20px 20px 20px;
+}
+
+.section-container {
+    display: none;
+    /* Initially hidden */
+}
+
+.section-container.active {
+    display: block;
+    /* Visible when active */
+}
+
+.section-header {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Form Styles */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
     align-items: flex-start;
 }
 
-select {
-    width: 150px !important;
-    background-color: white !important;
-    color: #2d2d2d !important;
-    border: 1px solid #cccccc !important;
-    height: 40px !important;
-    margin-left: 20px !important;
-}
-
-#add-category-form input,
-#add-type-form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-
-}
-
-#add-category-form button,
-#add-type-form button {
-    width: 90px;
+.form-group label {
+    font-size: 17px;
     font-weight: 600;
-    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.form-group input {
+    font-size: 17px;
+    font-weight: 600;
+    height: 40px;
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+table {
+    border: 1px solid #ccc;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
     border-radius: 10px;
+    overflow: hidden;
+}
+
+table thead {
+    background-color: #fdfdfd;
+}
+
+td,
+th {
+    font-size: 14px;
+    padding: 15px;
+    font-weight: 600;
+    text-align: center;
+    color: black;
+}
+
+th {
+    border-bottom: 1px solid #ccc;
+}
+
+tr {
+    background-color: #FFFFFF;
+}
+
+tr:hover {
+    background-color: #FFFFFF;
+}
+
+/* Buttons */
+.btn {
+    padding: 13px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    width: 140px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.add-btn {
+    padding: 13px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    width: 140px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #0033A0;
+    color: white;
+    border: none;
 }
 
 .close-btn {
     background-color: white;
-    border: 1px solid #0033A0;
     color: #0033A0;
+    border: 1px solid #0033A0;
+    padding: 10px 50px;
+    padding: 13px 20px;
+    font-weight: 600;
+    font-size: 15px;
+    width: 140px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
-.add-btn {
-    width: 150px !important;
-    cursor: pointer;
-    background-color: #0033a0;
+
+.btn-submit {
+    background-color: #0033A0;
     color: white;
     border: none;
 }
 
-.search {
-    margin-bottom: 20px;
+.btn-cancel {
+    background-color: white;
+    color: #0033A0;
+    border: 1px solid #0033A0;
+}
+
+.button-group {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
 }
 
-.archive.admin table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    margin-bottom: 20px;
-    border-radius: 20px;
-    margin-top: 20px !important;
-    overflow: hidden;
+.success-message-container {
+    padding: 14px;
+    border-radius: 5px;
+    border: 1px solid green;
+    margin-right: 10px;
 }
 
-.search button {
+
+.error-message-container {
+    padding: 14px;
+    border-radius: 5px;
+    border: 1px solid red;
+    margin-right: 10px;
+}
+
+.filter-btn {
+    padding: 13px 20px;
     font-weight: 600;
-    color: white;
-    width: 90px;
-    height: 40px;
-    border: none;
-    background-color: #0033A0;
+    font-size: 15px;
+    width: 140px;
     cursor: pointer;
+    border-radius: 5px;
+    color: #89898a;
+    border: 1px solid #89898a;
 }
 
 .delete-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50px;
-    color: white;
-    border: none;
-    font-size: 15px;
-    font-weight: 600;
+    width: 45px;
+    height: 45px;
+    border-radius: 25px;
     cursor: pointer;
+    background-color: white;
+    border: 1px solid #0033a0;
 }
 
-td {
-    border: none;
+.filter-lbl {
+
     align-content: center;
-    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 20px;
+    color: #89898a;
 }
 
-.search input {
-    width: 76%;
-    height: 40px;
-    border-radius: 5px;
-    padding-left: 10px;
-    font-size: 15px;
+textarea {
+    border-radius: 10px;
+    border: 1px solid #e2e2e3;
 }
 </style>
 
 <body>
-    <div class="top-bar"></div>
+    <div class="top-bar">
+        <div class="dropdown-container" id="dropdown">
+            <div style="margin-right: 10px;">
+                <p style="margin-bottom: 5px; color: #404040; font-weight: 600;"><?php echo $fullname; ?></p>
+                <p style="color: #565656;"><?php echo $role; ?></p>
+            </div>
+            <img id="arrow" style="width: 15px; height: 15px; transform: rotate(90deg); margin-left: 20px;"
+                src="../assets/arrowrightblack.png" alt="">
+        </div>
 
+        <!-- Dropdown Menu -->
+
+    </div>
+    <div class="dropdown-menu" id="dropdown-menu">
+        <a href="settings.php?section=account">Account</a>
+        <a style="color: red;" href="logout.php">Logout</a>
+    </div>
     <div class="sidebar">
         <div class="logo">
-            <img src="../assets/e-logo.png" alt="Logo">
+            <img src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
         </div>
         <ul>
             <li>
                 <a href="dashboard.php">
-                    <img class="sidebar-icon" src="../assets/dashboard.png" alt="Dashboard"
-                        data-active-src="../assets/dashboard-white.png"> Dashboard
+                    <img class="sidebar-icon" src="img/dashboard-grey.png" alt="Dashboard"
+                        data-active-src="img/dashboard-grey.png"> Dashboard
                 </a>
             </li>
             <li>
                 <a href="users.php">
-                    <img class="sidebar-icon" src="../assets/users.png" alt="Users"
-                        data-active-src="../assets/users-white.png"> Users
-                </a>
-            </li>
-            <li class="active">
-                <a href="reports.php">
-                    <img class="sidebar-icon" src="../assets/reports-white.png" alt="Reports"
-                        data-active-src="../assets/reports-white.png"> Reports
+                    <img class="sidebar-icon" src="img/users-grey.png" alt="Users" data-active-src="img/users-grey.png">
+                    Users
                 </a>
             </li>
             <li>
-                <a href="settings.php">
-                    <img class="sidebar-icon" src="../assets/settings.png" alt="Settings"
-                        data-active-src="../assets/settings-white.png"> Settings
+                <a href="reports.php">
+                    <img class="sidebar-icon" src="img/reports-grey.png" alt="Reports"
+                        data-active-src="img/reports-grey.png"> Reports
                 </a>
             </li>
-            <!-- Add more sidebar items here -->
-            <li class="logout">
-                <a href="logout.php">
-                    <img class="sidebar-icon sidebar-icon-logout" src="../assets/logout.png" alt="Logout"> Logout
+            <li class="active">
+                <a href="settings.php">
+                    <img class="sidebar-icon" src="img/settings-blue.png" alt="Settings"
+                        data-active-src="img/settings-grey.png"> Settings
                 </a>
-                </a>
-            </li> <!-- Logout button -->
+            </li>
         </ul>
     </div>
 
@@ -237,10 +411,10 @@ td {
                 <p style="border-top-left-radius: 10px;" class="sidebar-item active" data-section="admin">Admin</p>
                 <p class="sidebar-item" data-section="categories">Categories</p>
                 <p class="sidebar-item" data-section="type">Product Type</p>
-                <p class="sidebar-item" data-section="general-information">General Information</p>
+                <p class="sidebar-item" data-section="general">General Information</p>
                 <p class="sidebar-item" data-section="archive">Archive</p>
-                <p class="sidebar-item" data-section="backup-restore">Back-up & Restore</p>
-                <p class="sidebar-item" data-section="account">Account Information</p>
+                <p class="sidebar-item" data-section="backup">Back-up & Restore</p>
+                <p class="sidebar-item" data-section="account">Profile Account</p>
             </div>
 
 
@@ -253,7 +427,8 @@ td {
                     <form id="adminForm" action="../server/add_admin.php" method="POST">
                         <div class="form-container">
                             <div class="left-form">
-                                <h2 style="margin-bottom: 15px;">Personal Information</h2>
+                                <h2 style="margin-bottom: 15px; font-size: 30px; color: #0033a0;">Personal Information
+                                </h2>
                                 <div class="form-group">
                                     <label for="firstName">First Name</label>
                                     <input type="text" id="firstName" name="first_name" required>
@@ -268,7 +443,8 @@ td {
                                 </div>
                             </div>
                             <div class="right-form">
-                                <h2 style="margin-bottom: 15px;">Account Information</h2>
+                                <h2 style="margin-bottom: 15px; font-size: 30px; color: #0033a0;">Account Information
+                                </h2>
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
                                     <input type="email" id="email" name="email" required>
@@ -285,22 +461,23 @@ td {
                         </div>
                         <div class="button-group">
                             <?php if ($errorMessage): ?>
-                            <div id="error-message" class="error-message-container">
+                            <div id="admin-error-message" class="error-message-container">
                                 <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
                             </div>
                             <?php endif; ?>
                             <?php if ($successMessage): ?>
-                            <div id="success-message" class="success-message-container">
+                            <div id="admin-success-message" class="success-message-container">
                                 <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
                             </div>
                             <?php endif; ?>
-                            <div style="dislay: flex;">
-                                <button type="button" id="clearBtn" class="btn btn-cancel">Clear</button>
+                            <div style="display: flex; justify-content: flex-end;">
+                                <button style="margin-right: 10px;" type="button" id="clearBtn"
+                                    class="btn btn-cancel">Clear</button>
                                 <button type="submit" class="btn btn-submit">Add Admin</button>
                             </div>
                         </div>
                     </form>
-                    <table>
+                    <table style="margin-top: 30px;">
                         <thead>
                             <tr>
                                 <th>Admin ID</th>
@@ -337,7 +514,7 @@ td {
                 <div class="section-container categories-section">
                     <form action="../server/add_category.php" method="POST" class="add-category-form"
                         id="add-category-form">
-                        <h2 style="margin-bottom: 15px;">Add Category</h2>
+                        <h2 style="margin-bottom: 15px;">Product Category</h2>
                         <div class="form-group">
                             <label for="surname">Category Name</label>
                             <input type="text" id="category_name" name="category_name" required>
@@ -361,7 +538,7 @@ td {
                     </form>
 
                     <!-- Table to display categories -->
-                    <table style="margin-top: 30px;" border="1" cellpadding="10" cellspacing="0">
+                    <table style="margin-top: 30px;">
                         <thead>
                             <tr>
                                 <th>Category ID</th>
@@ -376,14 +553,6 @@ td {
                                 <td><?php echo htmlspecialchars($category['categoryid']); ?></td>
                                 <td><?php echo htmlspecialchars($category['category_name']); ?></td>
                                 <td>
-                                    <!-- Delete Button -->
-                                    <!-- <form action="../server/delete_category.php" method="POST" style="display:inline;">
-                                        <input type="hidden" name="categoryid"
-                                            value="?php echo htmlspecialchars($category['categoryid']); ?>">
-                                        <button type="submit" class="delete-btn">Delete</button>
-                                    </form> -->
-
-                                    <!-- Archive Button -->
                                     <form action="../server/archive_category.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="categoryid"
                                             value="<?php echo htmlspecialchars($category['categoryid']); ?>">
@@ -433,7 +602,7 @@ td {
                         </div>
                     </form>
                     <!-- Type Table -->
-                    <table style="margin-top: 30px;" border="1" cellpadding="10" cellspacing="0">
+                    <table style="margin-top: 30px;">
                         <thead>
                             <tr>
                                 <th>Type ID</th>
@@ -476,20 +645,17 @@ td {
                 </div>
 
                 <div class="section-container archive-section">
-                    <div style="margin-bottom: 15px; width: 100%; display: flex; justify-content: flex-end;">
+                    <div style="width: 100%; display: flex; justify-content: flex-end;">
 
 
-                        <label for="">Filter by</label>
-                        <select name="" id="archive-select">
-                            <option data-section="archiveAdmin style=" background-color: white; color: black;"
-                                value="Admin">User
-                                Type</option>
-                            <option data-section="archiveAdmin" style="background-color: white; color: black;"
-                                value="Admin">Admin</option>
-                            <option data-section="archiveCategory" style="background-color: white; color: black;"
+                        <label class="filter-lbl" for="">Filter by</label>
+                        <select class="filter-btn" name="" id="archive-select">
+                            <option data-section="archive" style="background-color: white; color: black;" value="Admin">
+                                Admin</option>
+                            <option data-section="archive" style="background-color: white; color: black;"
                                 value="Category">Category</option>
-                            <option data-section="archiveType" style="background-color: white; color: black;"
-                                value="Type">Type</option>
+                            <option data-section="archive" style="background-color: white; color: black;" value="Type">
+                                Type</option>
                         </select>
 
                     </div>
@@ -497,7 +663,7 @@ td {
                     <!-- Archive Category Section -->
                     <div style="display: none;" class="archive-container archiveCategory-section" id="archive-category">
                         <h2 style="margin-bottom: 15px;">Archived Categories</h2>
-                        <table style="margin-top: 10px;" border="1" cellpadding="10" cellspacing="0">
+                        <table style="margin-top: 10px;">
                             <thead>
                                 <tr>
                                     <th>Category ID</th>
@@ -518,7 +684,7 @@ td {
                                             style="display:inline;">
                                             <input type="hidden" name="categoryid"
                                                 value="<?php echo htmlspecialchars($category['categoryid']); ?>">
-                                            <button type="submit" class="delete-btn"><img src="../assets/archive.png"
+                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
                                                     alt=""></button>
                                         </form>
                                     </td>
@@ -537,7 +703,8 @@ td {
                     <!-- Archive Type Section -->
                     <div style="display: none;" class="archive-container archiveCategory-section" id="archive-type">
                         <h2 style="margin-bottom: 15px;">Archived Types</h2>
-                        <table style="margin-top: 10px;" border="1" cellpadding="10" cellspacing="0">
+
+                        <table style="margin-top: 10px;">
                             <thead>
                                 <tr>
                                     <th>Type ID</th>
@@ -557,7 +724,7 @@ td {
                                         <form action="../server/restore_type.php" method="POST" style="display:inline;">
                                             <input type="hidden" name="typeid"
                                                 value="<?php echo htmlspecialchars($type['typeid']); ?>">
-                                            <button type="submit" class="delete-btn"><img src="../assets/archive.png"
+                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
                                                     alt=""></button>
                                         </form>
                                     </td>
@@ -576,31 +743,43 @@ td {
                     <!-- Archive Admin Section -->
                     <div class="archive-container archiveAdmin" id="archive-admin">
                         <h2 style="margin-bottom: 15px;">Archived Admins</h2>
-                        <table style="margin-top: 10px;" border="1" cellpadding="10" cellspacing="0">
+                        <?php if ($errorMessage): ?>
+                        <div id="restore-type-error-message" class="error-message-container">
+                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
+                        </div>
+                        <?php endif; ?>
+                        <?php if ($successMessage): ?>
+                        <div id="restore-type-success-message" class="success-message-container">
+                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
+                        </div>
+                        <?php endif; ?>
+                        <table style="margin-top: 10px;">
                             <thead>
                                 <tr>
                                     <th>Admin ID</th>
                                     <th>Username</th>
                                     <th>Email</th>
                                     <th>Role</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php if (!empty($archived_admins)): ?>
-                                <?php foreach ($archived_admins as $admin): ?>
+                                <?php if (!empty($archiveAdmins)): ?>
+                                <?php foreach ($archiveAdmins as $arcAdmin): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($admin['admin_id']); ?></td>
-                                    <td><?php echo htmlspecialchars($admin['username']); ?></td>
-                                    <td><?php echo htmlspecialchars($admin['email']); ?></td>
-                                    <td><?php echo htmlspecialchars($admin['role']); ?></td>
+                                    <td><?php echo htmlspecialchars($arcAdmin['admin_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($arcAdmin['username']); ?></td>
+                                    <td><?php echo htmlspecialchars($arcAdmin['email']); ?></td>
+                                    <td><?php echo htmlspecialchars($arcAdmin['role']); ?></td>
+                                    <td><?php echo htmlspecialchars($arcAdmin['status']); ?></td>
                                     <td>
                                         <!-- Restore Button -->
                                         <form action="../server/restore_admin.php" method="POST"
                                             style="display:inline;">
                                             <input type="hidden" name="admin_id"
-                                                value="<?php echo htmlspecialchars($admin['admin_id']); ?>">
-                                            <button type="submit" class="restore-btn"><img src="../assets/archive.png"
+                                                value="<?php echo htmlspecialchars($arcAdmin['admin_id']); ?>">
+                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
                                                     alt=""></button>
                                         </form>
                                     </td>
@@ -617,116 +796,240 @@ td {
                 </div>
 
                 <div class="section-container account-section">
-                <form id="adminForm" action="../server/add_admin.php" method="POST">
-                        <div class="form-container">
+                    <form id="adminForm" action="../server/add_admin.php" method="POST">
+                        <div style="margin-bottom: 15px;" class="form-container">
                             <div class="left-form">
-                                <h2 style="margin-bottom: 15px;">Personal Information</h2>
+                                <h2 style="margin-bottom: 15px; font-size: 30px; color: #0033a0;">Personal Information
+                                </h2>
                                 <div class="form-group">
                                     <label for="firstName">First Name</label>
-                                    <input type="text" id="firstName" value="<?php echo $fname; ?>" name="first_name" required>
+                                    <input type="text" id="firstName" value="<?php echo $fname; ?>" name="first_name"
+                                        required>
                                 </div>
                                 <div class="form-group">
                                     <label for="middleName">Middle Name</label>
-                                    <input type="text" id="middleName" name="middle_name">
+                                    <input type="text" id="middleName" value="<?php echo $mname; ?>" name="middle_name">
                                 </div>
                                 <div class="form-group">
                                     <label for="surname">Surname</label>
-                                    <input type="text" id="surname" name="surname" required>
+                                    <input type="text" id="surname" value="<?php echo $lname; ?>" name="surname"
+                                        required>
                                 </div>
                             </div>
                             <div class="right-form">
-                                <h2 style="margin-bottom: 15px;">Account Information</h2>
+                                <h2 style="margin-bottom: 15px;font-size: 30px;color: #0033a0;">Account Information</h2>
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
-                                    <input type="email" id="email" name="email" required>
+                                    <input type="email" id="email" value="<?php echo $email; ?>" name="email" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="username">Username</label>
-                                    <input type="text" id="username" name="username" required>
+                                    <input type="text" id="username" value="<?php echo $username; ?>" name="username"
+                                        required readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input type="password" id="password" name="password" required>
+                                    <input type="password" id="password" value="<?php 
+                        $password = $seller_password['password'] ?? 'N/A';
+                        $maskedPassword = str_repeat('•••', strlen($password));
+                        echo htmlspecialchars($maskedPassword);
+                        ?>" name="password" readonly>
                                 </div>
                             </div>
                         </div>
                         <div class="button-group">
                             <?php if ($errorMessage): ?>
-                            <div id="error-message" class="error-message-container">
+                            <div id="update-error-message" class="error-message-container">
                                 <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
                             </div>
                             <?php endif; ?>
                             <?php if ($successMessage): ?>
-                            <div id="success-message" class="success-message-container">
+                            <div id="update-success-message" class="success-message-container">
                                 <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
                             </div>
                             <?php endif; ?>
                             <div style="dislay: flex;">
-                                <button type="button" id="clearBtn" class="btn btn-cancel">Clear</button>
-                                <button type="submit" class="btn btn-submit">Add Admin</button>
+                                <button type="submit" class="btn btn-submit">Save</button>
                             </div>
                         </div>
                     </form>
                 </div>
 
+                <div class="section-container general-section">
+                    <h2>Logo</h2>
+                    <form id="logoForm" enctype="multipart/form-data" method="post"
+                        action="../server/update_systeminfo.php">
+                        <img style="margin-bottom: 15px; width: 100%;"
+                            src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
+                        <input type="file" name="systemlogo" style="display: none;" id="logoInput"
+                            onchange="handleFileChange(event, 'logoForm')">
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                            <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="button"
+                                class="btn btn-submit" onclick="document.getElementById('logoInput').click()">
+                                Change
+                            </button>
+                        </div>
+                    </form>
 
-            </div> <!-- Other Sections Here -->
+                    <h2 style="margin-bottom: 10px;">Privacy</h2>
+
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Terms & Conditions</h3>
+                        <form id="termsForm" method="post" action="../server/update_systeminfo.php">
+                            <textarea id="TCTextEditor"
+                                style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                name="terms"><?= htmlspecialchars($data['TC']) ?></textarea>
+                            <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                                <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="submit"
+                                    class="btn btn-submit">
+                                    Update
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div>
+                        <h3 style="margin-bottom: 10px;">Privacy Policy</h3>
+                        <form id="privacyForm" method="post" action="../server/update_systeminfo.php">
+                            <textarea id="PPTextEditor"
+                                style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                name="privacy"><?= htmlspecialchars($data['PP']) ?></textarea>
+                            <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                                <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="submit"
+                                    class="btn btn-submit">
+                                    Update
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="section-container backup-section">
+
+                    <form action="http://localhost/ETianggeTaytay/server/backup.php" method="get"
+                        onsubmit="return confirm('Are you sure you want to backup the database?');">
+                        <button type="submit">Backup Database</button>
+                    </form>
+
+
+                </div> <!-- Other Sections Here -->
+            </div>
         </div>
-    </div>
 
-    <script src="../script/setting_script.js"></script>
-    <script>
-    document.getElementById('archive-select').addEventListener('change', function() {
-        var selectedValue = this.value;
-
-        // Hide all sections
-        document.querySelectorAll('.archive-container').forEach(function(container) {
-            container.style.display = 'none';
+        <script src="../script/setting_scripts.js"></script>
+        <script src="../script/drop-down.js"></script>
+        <script>
+        tinymce.init({
+            selector: '#TCTextEditor',
+            plugins: 'code link',
+            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+            menubar: false
         });
 
-        // Show the selected section
-        if (selectedValue === 'Admin') {
-            document.getElementById('archive-admin').style.display = 'block';
-        } else if (selectedValue === 'Category') {
-            document.getElementById('archive-category').style.display = 'block';
-        } else if (selectedValue === 'Type') {
-            document.getElementById('archive-type').style.display = 'block';
+        tinymce.init({
+            selector: '#PPTextEditor',
+            plugins: 'code link',
+            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+            menubar: false
+        });
+        </script>
+        <script>
+        const sidebarItems = document.querySelectorAll('.sidebar ul li:not(.logout)');
+
+        // Loop through all sidebar items and add a click event listener
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove the 'active' class from all items and revert their icons to blue
+                sidebarItems.forEach(i => {
+                    i.classList.remove('active'); // Remove 'active' class from all items
+                    const icon = i.querySelector('.sidebar-icon');
+                    const defaultIconSrc = icon.getAttribute('src').replace('-grey',
+                        ''); // Get the default blue icon (remove any '-white' part)
+                    icon.src = defaultIconSrc; // Set the icon back to the default blue
+                });
+
+                // Add the 'active' class to the clicked item and change its icon to white
+                this.classList.add('active');
+                const icon = this.querySelector('.sidebar-icon');
+                const activeIconSrc = icon.getAttribute('data-active-src'); // Get the white icon path
+                icon.src = activeIconSrc; // Set the icon to the white version
+            });
+        });
+
+        document.getElementById('archive-select').addEventListener('change', function() {
+            var selectedValue = this.value;
+
+            // Hide all sections
+            document.querySelectorAll('.archive-container').forEach(function(container) {
+                container.style.display = 'none';
+            });
+
+            // Show the selected section
+            if (selectedValue === 'Admin') {
+                document.getElementById('archive-admin').style.display = 'block';
+            } else if (selectedValue === 'Category') {
+                document.getElementById('archive-category').style.display = 'block';
+            } else if (selectedValue === 'Type') {
+                document.getElementById('archive-type').style.display = 'block';
+            }
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            // Handle success/error message visibility
+            setTimeout(function() {
+                const successMessage = document.getElementById("cat-success-message");
+                const adminsuccessMessage = document.getElementById("admin-success-message");
+                const typesuccessMessage = document.getElementById("type-success-message");
+                const updatesuccessMessage = document.getElementById("update-success-message");
+                const restoreType = document.getElementById("restore-type-success-message");
+                if (successMessage) {
+                    successMessage.style.display = "none";
+                    adminsuccessMessage.style.display = "none";
+                    typesuccessMessage.style.display = "none";
+                    updatesuccessMessage.style.display = "none";
+                    restoreType.style.display = "none";
+                }
+                const errorMessage = document.getElementById("cat-error-message");
+                const adminerrorMessage = document.getElementById("admin-error-message");
+                const typeerrorMessage = document.getElementById("type-error-message");
+                const updateerrorMessage = document.getElementById("update-error-message");
+                const errorRestoreType = document.getElementById("restore-type-error-message");
+                if (errorMessage) {
+                    errorMessage.style.display = "none";
+                    adminerrorMessage.style.display = "none";
+                    typeerrorMessage.style.display = "none";
+                    updateerrorMessage.style.display = "none";
+                    errorRestoreType.style.display = "none";
+                }
+            }, 2000);
+
+            // Toggle Category Form
+            document.getElementById("add-category-button").onclick = function() {
+                const form = document.getElementById("add-category-form");
+                form.style.display = form.style.display === "none" ? "flex" : "none";
+            };
+            document.getElementById("close-category-form").onclick = function() {
+                const form = document.getElementById("add-category-form");
+                form.style.display = "none";
+            };
+
+            // Toggle Type Form
+            document.getElementById("add-type-button").onclick = function() {
+                const form = document.getElementById("add-type-form");
+                form.style.display = form.style.display === "none" ? "flex" : "none";
+            };
+            document.getElementById("close-type-form").onclick = function() {
+                const form = document.getElementById("add-type-form");
+                form.style.display = "none";
+            };
+        });
+        </script>
+
+        <script>
+        function handleFileChange(event, formId) {
+            const form = document.getElementById(formId);
+            form.submit(); // Automatically submit the form after file selection
         }
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        // Handle success/error message visibility
-        setTimeout(function() {
-            const successMessage = document.getElementById("successmessage");
-            if (successMessage) {
-                successMessage.style.display = "none";
-            }
-            const errorMessage = document.getElementById("errormessage");
-            if (errorMessage) {
-                errorMessage.style.display = "none";
-            }
-        }, 3000);
-
-        // Toggle Category Form
-        document.getElementById("add-category-button").onclick = function() {
-            const form = document.getElementById("add-category-form");
-            form.style.display = form.style.display === "none" ? "flex" : "none";
-        };
-        document.getElementById("close-category-form").onclick = function() {
-            const form = document.getElementById("add-category-form");
-            form.style.display = "none";
-        };
-
-        // Toggle Type Form
-        document.getElementById("add-type-button").onclick = function() {
-            const form = document.getElementById("add-type-form");
-            form.style.display = form.style.display === "none" ? "flex" : "none";
-        };
-        document.getElementById("close-type-form").onclick = function() {
-            const form = document.getElementById("add-type-form");
-            form.style.display = "none";
-        };
-    });
-    </script>
+        </script>
 
 </body>
 

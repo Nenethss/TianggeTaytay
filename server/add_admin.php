@@ -26,7 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt->rowCount() > 0) {
             // If the username or email already exists, redirect with an error message
             header('Location: ../pages/settings.php?error=Username or email already exists');
-            exit;
         } else {
             // Prepare the insert query
             $sql = "INSERT INTO admintb (first_name, middle_name, surname, email, username, password) 
@@ -45,17 +44,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Execute the query
             if ($stmt->execute()) {
+
                 // Redirect with a success message
                 header('Location: ../pages/settings.php?success=Admin added successfully');
-                exit;
             } else {
                 // If there was an error adding the admin
                 header('Location: ../pages/settings.php?error=Error adding admin');
-                exit;
             }
         }
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
 }
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require '../vendor/autoload.php';
+
+// Function to send the email
+function verify($email, $username, $password) {
+    $mail = new PHPMailer(true);
+    
+    try {
+        $mail->SMTPDebug = 0;  // Disable debug mode for production
+        $mail->isSMTP();
+        $mail->Host     = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'bantajio22@gmail.com';
+        $mail->Password = 'mgqx cwpm dlrv ujxr';  // Use an application-specific password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port     = 587;
+    
+        $mail->setFrom('e-tiangge@gmail.com', 'E-Tiangge Portal');
+        $mail->addAddress($email);
+    
+        $mail->isHTML(true);
+        $mail->Body = "
+            Username: $username <br>
+            Password: $password <br>
+            <br>
+            You can now proceed to the system portal by clicking the link below: <br>
+            <a href='http://localhost/ETianggeTaytay/pages/login.php'>Login</a>
+        ";
+
+        $mail->send();
+        echo "Mail has been sent successfully!";
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
+
+
+                // Send verification email after successfully adding admin
+                verify($email, $username, $password);
 ?>

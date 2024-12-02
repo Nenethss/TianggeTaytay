@@ -29,7 +29,9 @@ if (isset($_POST['typeid'])) {
             $stmt_delete->execute();
 
             $conn->commit();
-            header('Location: ../pages/settings.php?section=archiveType&success=Product Type restored successfully');
+            header('Location: ../pages/settings.php?section=archive&success=Product Type restored successfully');
+exit; // Ensure no further code is executed
+
         } else {
             echo "Archived category not found.";
         }

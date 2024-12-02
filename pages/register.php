@@ -71,14 +71,66 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         right: 10px;
     }
 
-    .img-container {      
-    height: 200px;
+    .img-container {
+        height: 200px;
+        display: flex;
+        border: 1px solid #cccccc;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+    }.progress-container {
+    padding: 30px 300px;
+    height: 180px;
+    width: 100%;
     display: flex;
-    border: 1px solid #cccccc;
     align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.progress-sub-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.progress-number {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
+    justify-content: space-around;
+}
+
+.progress-number div {
+    height: 50px;
+    width: 50px;
+    display: flex;
     justify-content: center;
-    border-radius: 7px;
-    }
+    align-items: center;
+    background-color: white;
+    border-radius: 35px;
+    border: 1px solid #0033a0;
+}
+
+.progress-number div p {
+    font-weight: 600 !important;
+    font-size: 17px;
+}
+
+.progress-number p {
+    font-size: 17px;
+    font-weight: 450;
+    letter-spacing: -0.5px;
+    color: #0033a0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+}
     </style>
 
     <div class="progress-container">
@@ -108,7 +160,9 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p>Agreement Section</p>
             </div>
         </div>
-        <div class="progress-bar"></div>
+        <div class="progress-bar">
+            <div class="progress-bar-fill"></div>
+        </div>
     </div>
 
     <div id="linkFormContainer" class="hidden link-form">
@@ -141,7 +195,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <!-- Single Hero Text Section -->
-    <div id="heroText" class="hero-text active" id="hero-text">
+    <div class="hero-text active" id="heroText">
         <h1 id="hero-title">Register</h1>
         <p id="hero-description" style="text-align: center;">Create your seller account to post and market your
             products!</p>
@@ -220,9 +274,10 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <label>Business Permit</label>
                 <div id="image-container" class="img-container">
-                    <label style=" font-weight: 600;" for="file-upload" class="img-file-upload">Upload Business Permit</label>
-                    <input type="file" id="file-upload" name="permit" accept="image/*"
-                        onchange="renderFiles(event)" style="opacity: 0%; width:0.01%;" />
+                    <label style=" font-weight: 600;" for="file-upload" class="img-file-upload">Upload Business
+                        Permit</label>
+                    <input type="file" id="file-upload" name="permit" accept="image/*" onchange="renderFiles(event)"
+                        style="opacity: 0%; width:0.01%;" />
                 </div>
 
                 <label id="linkshowFormButton"
@@ -328,7 +383,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </footer>
 
-    <script src="../script/script.js"></script>
+    <script src="../script/scripts.js"></script>
     <script src="../script/formshow.js"></script>
 
     <script>

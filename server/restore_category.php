@@ -29,7 +29,7 @@ if (isset($_POST['categoryid'])) {
             $stmt_delete->execute();
 
             $conn->commit();
-            header('Location: ../pages/settings.php?section=archiveCategory&success=Category restored successfully');
+            header('Location: ../pages/settings.php?section=archive&success=Category restored successfully');
         } else {
             echo "Archived category not found.";
         }

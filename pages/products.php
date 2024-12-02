@@ -1,56 +1,34 @@
-<?php 
-
-
-include_once '../server/fetchproduct.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../style/reset.css">
-    <link rel="stylesheet" href="../style/product.css">
+    <link rel="stylesheet" href="../style/product1.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
-    <title>e-Tiangge Taytay</title>
+    <title>Document</title>
 </head>
 
 <body>
     <div class="register">
         <p>Become a Seller? <a href="register.php">Register Now</a></p>
     </div>
-    <nav class="navbar">
-        <div class="left-side">
-            <a href="#"><img src="../assets/shoppingbag.png" alt=""></a>
-            <div class="input-with-icon">
-                <img class="search-icon" src="../assets/Vector.png" alt="">
-                <input type="text" placeholder="Search for Products...">
-            </div>
-        </div>
-        <div class="right-side">
-            <ul>
-                <li><a href="home.php">Home</a></li>
-                <li><a href="about.php">About</a></li>
-                <li class="selected"><a href="products.php">Products</a></li>
-                <li><a href="store.php">Store</a></li>
-                <li><a href="contact.php">Contact us</a></li>
-            </ul>
-        </div>
-    </nav>
+    <?php
+        include("../components/nav.php");
+    ?>
 
     <main class="container">
         <div class="content">
             <div class="filter-bar">
-                <div>
+                <div class="filter-title">
                     <p>Filters</p>
-                    <img src="../assets/filter-icon.png" alt="">
+                    <!-- <img src="../assets/filter-icon.png" alt="" class="reset-button"> -->
                 </div>
 
-                <div class="divider"></div>
+                <div class="div-bar"></div>
 
-                <div>
-                    <div>
+                <div class="filter-type">
+                    <!-- <div>
                         <p>T-shirts</p>
                         <img src="../assets/arrow-icon.png" alt="">
                     </div>
@@ -69,12 +47,12 @@ include_once '../server/fetchproduct.php';
                     <div>
                         <p>Jeans</p>
                         <img src="../assets/arrow-icon.png" alt="">
-                    </div>
+                    </div> -->
                 </div>
 
-                <div class="divider"></div>
+                <div class="div-bar"></div>
 
-                <div>
+                <div class="filter-price">
                     <div>
                         <p>Price</p>
                         <img src="../assets/arrow-icon.png" alt="">
@@ -83,130 +61,56 @@ include_once '../server/fetchproduct.php';
                     <div>
                         <input type="range" name="" id="">
                         <div class="price-range">
-                            <p>&#8369;100</p>
-                            <p>&#8369;1000</p>
+                            <p class="min-price"></p>
+                            <p class="max-price"></p>
                         </div>
                     </div>
                 </div>
 
-                <div class="divider"></div>
+                <div class="div-bar"></div>
 
-                <div>
-                    <div>
-                        <p>Size</p>
-                        <img src="../assets/arrow-icon.png" alt="">
-                    </div>
-
-                    <div class="sizes">
-                        <div>
-                            <p>XX-Small</p>
-                        </div>
-
-                        <div class="selected">
-                            <p>X-Small</p>
-                        </div>
-
-                        <div>
-                            <p>Small</p>
-                        </div>
-
-                        <div>
-                            <p>Mediumn</p>
-                        </div>
-
-                        <div>
-                            <p>Large</p>
-                        </div>
-
-                        <div>
-                            <p>XLarge</p>
-                        </div>
-
-                        <div>
-                            <p>XX-Large</p>
-                        </div>
-
-                        <div>
-                            <p>3X-Small</p>
-                        </div>
-
-                        <div>
-                            <p>4X-Large</p>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="divider"></div>
-
-                <div>
+                <div class="filter-categories">
                     <div class="title">
                         <p>Categories</p>
                         <img src="../assets/arrow-icon.png" alt="">
                     </div>
 
-                    <div>
-                        <p>Men's Fashion</p>
-                        <img src="../assets/arrow-icon.png" alt="">
-                    </div>
-                    <div>
-                        <p>Women's Fashion</p>
-                        <img src="../assets/arrow-icon.png" alt="">
-                    </div>
-                    <div>
-                        <p>Kids</p>
-                        <img src="../assets/arrow-icon.png" alt="">
-                    </div>
-                    <div>
-                        <p>Accessories</p>
-                        <img src="../assets/arrow-icon.png" alt="">
-                    </div>
-                    <div>
-                        <p>Footwear</p>
-                        <img src="../assets/arrow-icon.png" alt="">
-                    </div>
-                    <div>
-                        <p>Fabrics</p>
-                        <img src="../assets/arrow-icon.png" alt="">
+                    <div class="categories">
                     </div>
                 </div>
-
-                <div class="apply-filter">
-                    Apply Filter
+                <div class="apply-filter reset-button">
+                    Reset Filter
                 </div>
             </div>
 
             <div class="products-container">
                 <div class="breadcrumbs">
                     <span>Home</span>
-                    <img src="../assets/arrowrightblack.png" alt="">
+                    <img src="../assets/arrow-icon.png" alt="">
                     <span>Products</span>
-                    <img src="../assets/arrowrightblack.png" alt="">
-                    <span class="selected">Men's Fashion</span>
+                    <img src="../assets/arrow-icon.png" alt="">
+                    <span class="category">All</span>
                 </div>
 
-                <div class="products">
-                            <?php 
-        
-                             foreach ($product_details as $product): ?>
-                            <div class="product-card">
-                                <!-- Display the first image of the product -->
-                                <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
-                                    alt="Product Image">
-
-                                <!-- Product Name and Price -->
-                                <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                                <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
-                            </div>
-                            <?php endforeach; ?>
+                <div class="products" data-page="<?php echo isset($_GET['page']) ? $_GET['page'] : 1; ?>" data-type="<?php echo isset($_GET['type']) ? $_GET['type'] : null; ?>" data-category="<?php echo isset($_GET['category']) ? $_GET['category'] : null; ?>">
                 </div>
             </div>
+        </div>
+        </div>
 
-            <div class="pagination">
-                <p>1 to 12 of 100 results</p>
 
-                <div></div>
+        <div class="pagination">
+            <p class="results"></p>
+
+            <div class="pages">
+                <!-- <div class="button back-page">
+                    <img src="../assets/pagination-right.png" alt="">
+                </div>
+                <div class="button next-page">
+                    <img src="../assets/pagination-next.png" alt="">
+                </div> -->
             </div>
+        </div>
     </main>
 
     <footer>
@@ -232,8 +136,7 @@ include_once '../server/fetchproduct.php';
                     <li><a href="products.php">Kid's</a></li>
                 </ul>
                 <div class="footer-products-shortcut">
-                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png"
-                        alt="">
+                    <a style="color: #029f6f;" href="products.php">Find More</a> <img src="../assets/greenright.png" alt="">
                 </div>
             </div>
             <div class="footer-info">
@@ -251,5 +154,7 @@ include_once '../server/fetchproduct.php';
         </div>
     </footer>
 </body>
+<script src="../script/products1.js"></script>
+<script src="../script/products-fetch-ui1.js"></script>
 
 </html>

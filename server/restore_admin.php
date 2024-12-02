@@ -17,10 +17,10 @@ if (isset($_POST['admin_id'])) {
 
         if ($admin) {
             // Insert the admin back into the admintb table
-            $stmt_restore = $conn->prepare("INSERT INTO admintb (admin_id, username, email, role, status) 
+            $stmt_restore = $conn->prepare("INSERT INTO admintb (userid, username, email, role, status) 
                 VALUES (?, ?, ?, ?, ?)");
             $stmt_restore->execute([
-                $admin['admin_id'],
+                $admin['userid'],
                 $admin['username'],
                 $admin['email'],
                 $admin['role'],
@@ -35,10 +35,10 @@ if (isset($_POST['admin_id'])) {
             $conn->commit();
 
             // Redirect or notify success
-            header("Location: admin_dashboard.php?message=Admin restored successfully");
+            header("Location: ../pages/settings.php?section=archive");
         } else {
             // Admin not found
-            header("Location: admin_dashboard.php?error=Admin not found in archived");
+            header("Location: ../pages/settings.php?section=archive?error=Admin not found in archived");
         }
     } catch (PDOException $e) {
         $conn->rollBack();

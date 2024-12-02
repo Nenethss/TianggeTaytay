@@ -1,5 +1,12 @@
 <?php
 $error = isset($_GET['error']) ? $_GET['error'] : null;
+
+include_once '../server/connect.php';
+
+$sql = "SELECT systemlogo, TC, PP FROM systeminfo WHERE id = 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetch(PDO::FETCH_ASSOC)
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +34,7 @@ $error = isset($_GET['error']) ? $_GET['error'] : null;
     <div class="container-center">
         <div class="container">
             <div class="login-image">
-                <img src="../assets/tianggeportal.png" alt="Logo">
+            <img src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
             </div>
             <div class="login-wrapper">
                 <h3>Welcome</h3>

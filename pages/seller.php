@@ -1,6 +1,7 @@
 <?php
 session_start(); // Start session
 include_once '../server/connect.php';
+include_once '../server/fetchproduct.php';
 
 // Check if the seller is logged in
 if (!isset($_SESSION['seller_id']) || $_SESSION['role'] !== 'seller') {
@@ -21,9 +22,8 @@ $store_name = $store['storename'] ?? 'No Store Found';
 $store_img = isset($store['img']) ? 'data:image/png;base64,' . base64_encode($store['img']) : '../assets/storepic.png';
 
 // Include category and product fetch logic
-$categoryHTML = include('../server/fetchcategory.php');
-$productHTML = include('../server/fetchproduct.php');
-$lastproductHTML = include('../server/fetchproduct.php');
+
+list($categoryHTML, $categories) = include_once '../server/fetchcategory.php';
 ?>
 
 <!DOCTYPE html>
@@ -162,11 +162,11 @@ $lastproductHTML = include('../server/fetchproduct.php');
     <div class="product-container">
         <h1>NEW ARRIVALS</h1>
         <div class="product-item">
-            <?php 
-        // Assuming $product_details is your array of products
-        $new_arrivals = array_slice($product_details, 0, 4); // Get first 4 products
-        
-        foreach ($new_arrivals as $product): ?>
+            <?php
+            // Assuming $product_details is your array of products
+            $new_arrivals = fetchProducts("NEW_ARRIVALS"); // Get first 4 products
+
+            foreach ($new_arrivals as $product): ?>
             <div class="product-card">
                 <!-- Display the first image of the product -->
                 <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
@@ -188,13 +188,13 @@ $lastproductHTML = include('../server/fetchproduct.php');
     <div class="product-container last-product-container">
         <h1>MOST VIEWED</h1>
         <div class="product-item">
-            <?php 
-        // Get last 4 products (assuming they are sorted by views or some other criteria)
-        $most_viewed = array_slice($product_details, -4); // Get last 4 products
-        
-        foreach ($most_viewed as $product): ?>
+            <?php
+            // Get last 4 products (assuming they are sorted by views or some other criteria)
+            $most_viewed = fetchProducts("MOST_VIEWED");
+
+            foreach ($most_viewed as $product): ?>
             <div class="product-card">
-                <!-- Display the first image of the product -->
+
                 <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
                     alt="Product Image">
 

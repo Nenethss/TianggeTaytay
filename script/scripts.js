@@ -35,6 +35,17 @@ function nextStep(currentStep) {
 
     var allValid = true;
 
+    const progressDiv = document.querySelector(
+        `.progress-sub-container div:nth-of-type(${currentStep}) > div`
+    ); // Corrected: Use backticks for template literals
+    if (progressDiv) {
+        progressDiv.classList.add("progress-active");
+    }
+
+    const progressbarFill = document.querySelector(".progress-bar-fill");
+
+    progressbarFill.style.width = (currentStep / 4) * 100 + "%";
+
     // Step-specific validation
     if (currentStep === 1) {
         const username = document.querySelector('[name="username"]');
@@ -50,19 +61,16 @@ function nextStep(currentStep) {
             showError(email, 'Please enter a valid email address.');
             allValid = false;
         }
-        
         if (password.value !== confirmPassword.value) {
             showError(confirmPassword, 'Passwords do not match.');
             allValid = false;
         }
-        
         if (password.value.length < 8) {
             showError(password, 'The password should have at least 8 characters.');
             allValid = false;
         }
     }
 
-    // File upload validation (if needed in step 3)
     if (currentStep === 3) {
         const fileInput = document.querySelector('[name="permit"]');
         if (fileInput.files.length === 0) {
@@ -81,9 +89,9 @@ function nextStep(currentStep) {
     if (allValid) {
         currentForm.classList.remove('active');
         nextForm.classList.add('active');
+        document.getElementById("heroText").classList.add("active");
         updateHeroContent(currentStep + 1);
 
-        // Set focus to the first input in the next step
         const firstInput = nextForm.querySelector('input, select, textarea');
         if (firstInput) firstInput.focus();
     }
@@ -93,10 +101,16 @@ function previousStep(currentStep) {
     var currentForm = document.getElementById('step' + currentStep);
     var previousForm = document.getElementById('step' + (currentStep - 1));
 
+    progressbarFill.style.width = ((currentStep - 2) / 4) * 100 + "%";
+    const progressDiv = document.querySelector(
+        `.progress-sub-container div:nth-of-type(${currentStep - 1}) > div`
+    ); // Corrected: Use backticks for template literals
+    if (progressDiv) {
+        progressDiv.classList.remove("progress-active");
+    }
+
     currentForm.classList.remove('active');
     previousForm.classList.add('active');
-
-    // Update hero section visibility
     updateHeroContent(currentStep - 1);
 }
 

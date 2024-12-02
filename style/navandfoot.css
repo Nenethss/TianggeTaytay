@@ -73,6 +73,37 @@
     padding-inline: 1em;
     border: 1px solid rgb(44, 44, 44, 0.15);
     border-radius: 100px;
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    transform: translateY(15px);
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 10px;
+    display: none;
+    z-index: 10;
+}
+
+.search-results p {
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+
+.search-results.open {
+    display: block;
+}
+
+.search-results p:hover {
+    background-color: rgb(45, 45, 45, 0.05);
+    border-radius: 10px;
 }
 
 .left-side input {
@@ -82,7 +113,6 @@
     border: none;
     outline: none;
     font-size: 0.9rem;
-    
     margin: 0 !important;
 }
 
@@ -147,6 +177,7 @@
 
 .footer-logo img {
     margin-bottom: 10px;
+    width: 300px;
 }
 
 .footer-logo p {
