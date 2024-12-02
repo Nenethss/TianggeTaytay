@@ -78,59 +78,75 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         align-items: center;
         justify-content: center;
         border-radius: 7px;
-    }.progress-container {
-    padding: 30px 300px;
-    height: 180px;
+    }
+
+    .progress-container {
+        padding: 30px 300px;
+        height: 180px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
+    .progress-sub-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .progress-number {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100px;
+        justify-content: space-around;
+    }
+
+    .progress-number div {
+        height: 50px;
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border-radius: 35px;
+        border: 1px solid #0033a0;
+    }
+
+    .progress-number div p {
+        font-weight: 600 !important;
+        font-size: 17px;
+    }
+
+    .progress-number p {
+        font-size: 17px;
+        font-weight: 450;
+        letter-spacing: -0.5px;
+        color: #0033a0;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 10px;
+        background-color: #e5e5e5;
+        border-radius: 10px;
+    }
+
+    .error-message { 
+    display: flex;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-direction: column;
-}
-
-.progress-sub-container {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-}
-
-.progress-number {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100px;
-    justify-content: space-around;
-}
-
-.progress-number div {
-    height: 50px;
-    width: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 35px;
-    border: 1px solid #0033a0;
-}
-
-.progress-number div p {
-    font-weight: 600 !important;
-    font-size: 17px;
-}
-
-.progress-number p {
-    font-size: 17px;
-    font-weight: 450;
-    letter-spacing: -0.5px;
-    color: #0033a0;
-}
-
-.progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: #e5e5e5;
+    height: 30px;
     border-radius: 10px;
-}
+    padding: 20px;
+    font-weight: 600;
+    color: #f84545;
+    border: 1px solid #f84545;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff3f3;
+    }
     </style>
 
     <div class="progress-container">
@@ -311,6 +327,8 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <button class="back-button" type="button" onclick="previousStep(4)">Back</button>
                     <a href="#progressContainer"><button type="submit">Submit</button></a>
                 </div>
+
+                <div id="form-errors" class="form-errors"></div>
             </div>
 
             <!-- Step 5: Success (Optional, displayed after submission) -->
@@ -383,7 +401,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </footer>
 
-    <script src="../script/register.js"></script>
+    <script src="../script/seller_register.js"></script>
     <script src="../script/formshow.js"></script>
 
     <script>

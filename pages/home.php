@@ -100,7 +100,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
                 </div>
             </div>
             <div class="products-shortcut">
-                <a href="product.php">See All Products</a> <img src="../assets/arrowright.png" alt="">
+                <a href="products.php">See All Products</a> <img src="../assets/arrowright.png" alt="">
             </div>
         </div>
     </main>

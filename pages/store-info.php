@@ -61,6 +61,14 @@ input[type="file"] {
     border-radius: 5px;
 }
 
+.price-delete-container {
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .img-file-upload {
     background-color: #b6b6b666;
     color: #2d2d2d;
@@ -157,11 +165,46 @@ input[type="file"] {
     margin-bottom: 10px;
     border: 1px solid #dddddf;
 }
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    row-gap: 40px;
+    column-gap: 30px;
+    margin-bottom: 2.5em;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.product-delete {
+    margin-left: 100px;
+}
+
+#editProductForm {
+    position: absolute;
+    width: 440px;
+    background-color: #fdfdfd;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 35px 20px 20px 20px;
+}
+
+#editProductForm textarea {
+    width: 400px;
+}
+
+#editProductForm button {
+    margin-top: 20px;
+    margin-left: 260px;
+}
 </style>
 
 <body>
 
-<nav class="navbar">
+    <nav class="navbar">
         <div class="left-side">
             <a href="seller.php"><img src="../assets/shoppingbag.png" alt=""></a>
             <div class="input-with-icon">
@@ -255,195 +298,181 @@ input[type="file"] {
 
         <div class="store-info-main-container">
 
-        <div class="account-container">
-            <div class="edit-container">
-                <button class="edt-btn" id="editStoreBtn">
-                    <img src="../assets/pencil.svg" alt="Edit">Edit Store Information
-                </button>
-            </div>
-
-            <div id="storeInfo" class="account-info">
-                <div class="store-info-card">
-                    <img style="border-radius: 50px; width: 100px; height: 100px;" src="<?php echo $store_img; ?>"
-                        alt="Store Image">
-                    <p style="font-weight: 600;"><?php echo $store_name; ?></p>
+            <div class="account-container">
+                <div class="edit-container">
+                    <button class="edt-btn" id="editStoreBtn">
+                        <img src="../assets/pencil.svg" alt="Edit">Edit Store Information
+                    </button>
                 </div>
 
-                <div class="info-card middle-info-card">
-                    <div class="info"><img src="../assets/shipment-box.png" alt="">
-                        <p>Products: <strong><?php echo $product_count; ?></strong></p>
+                <div id="storeInfo" class="account-info">
+                    <div class="store-info-card">
+                        <img style="border-radius: 50px; width: 100px; height: 100px;" src="<?php echo $store_img; ?>"
+                            alt="Store Image">
+                        <p style="font-weight: 600;"><?php echo $store_name; ?></p>
                     </div>
-                    <div class="info"><img src="../assets/joined.png" alt="">
-                        <p>Created At: <strong><?php echo $created_at; ?></strong></p>
-                    </div>
-                    <div class="info"><img src="../assets/stall.png" alt="">
-                        <p>Stall No: <strong><?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?></strong></p>
-                    </div>
-                </div>
 
-                <div class="info-card">
-                    <div class="info"><img src="../assets/telephone.png" alt="">
-                        <p>Contact: <strong><?php echo $store_contact; ?></strong></p>
-                    </div>
-                    <div class="info"><img src="../assets/thread.png" alt="">
-                        <p>Email: <strong><?php echo $store_email; ?></strong></p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="divider" class="divider">
-                <div></div>
-            </div>
-
-            <div id="mainProducts" class="main-products-container">
-                <div class="child-container">
-                    <div class="header-container">
-                        <h2>MY PRODUCTS</h2>
-
-                        <div class="filterbar">
-                            <select class="custom-select categories-select">
-                                <option value="All Products">All Categories</option>
-                            </select>
-
-                            <select class="custom-select types-select">
-                                <option value="All Products">All Products</option>
-                            </select>
-                            <button id="showFormButton">Add Product</button>
+                    <div class="info-card middle-info-card">
+                        <div class="info"><img src="../assets/shipment-box.png" alt="">
+                            <p>Products: <strong><?php echo $product_count; ?></strong></p>
                         </div>
-
-                    </div>
-
-                    <!-- <div class="products-container">
-                        <?php if (!empty($product_details)): ?>
-                            <?php foreach ($product_details as $product): ?>
-                                <div class="product-card">
-                                    
-                                    <img src="<?php echo isset($product['first_image']) ? 'data:image/jpeg;base64,' . base64_encode($product['first_image']) : '../assets/default-product.png'; ?>"
-                                        alt="Product Image">
-
-                                   
-                                    <h3><?php echo htmlspecialchars($product['product_name']); ?></h3>
-                                    <p>₱<?php echo htmlspecialchars($product['price']); ?></p>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p>No products found for this store.</p>
-                        <?php endif; ?>
-                    </div> -->
-
-                    <!-- Pagination Controls -->
-
-                    <div class="products" data-storename="<?php echo $store_name; ?>">
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-
-        <form class="hidden" id="updateInfo" method="POST" action="../server/updateStore.php"
-            enctype="multipart/form-data">
-            <div class="basic-info rounded-box">
-                <h2>Store Icon</h2>
-                <div>
-                    <div id="file-container" class="file-container">
-                        <label for="file-upload" class="custom-file-upload">Choose File</label>
-                        <input type="file" id="file-upload" name="img" accept="image/*" onchange="renderFile(event)"
-                            style="opacity: 0%;" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="basic-info rounded-box">
-                <h2>About</h2>
-                <div>
-                    <textarea name="description" id="description"><?php echo $store_description ?></textarea>
-                </div>
-            </div>
-
-            <div class="basic-info rounded-box">
-                <h2>Store Details</h2>
-                <div class="store-information">
-                    <div class="first-child">
-                        <div>
-                            <label for="stallnumber">Stall No.</label>
-                            <input type="text" name="stallnumber" id="stallnumber"
-                                value="<?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?>" />
+                        <div class="info"><img src="../assets/joined.png" alt="">
+                            <p>Created At: <strong><?php echo $created_at; ?></strong></p>
                         </div>
-                        <div>
-                            <label for="contact">Contact No.</label>
-                            <input type="text" name="contact" id="contact"
-                                value="<?php echo htmlspecialchars($store_contact); ?>" />
-                        </div>
-                        <div>
-                            <label for="firstname">Business Permit</label>
-                            <p style="color: green; font-weight: 600;">
-                                <?php
-                                // Assume $status is fetched from sellertb
-                                echo htmlspecialchars($status ?? 'Unknown');
-                                ?>
+                        <div class="info"><img src="../assets/stall.png" alt="">
+                            <p>Stall No: <strong><?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?></strong>
                             </p>
                         </div>
                     </div>
-                    <div>
-                        <div>
-                            <label for="storename">Store Name</label>
-                            <input type="text" name="storename" id="storename" value="<?php echo $store_name ?>"
-                                readonly required />
+
+                    <div class="info-card">
+                        <div class="info"><img src="../assets/telephone.png" alt="">
+                            <p>Contact: <strong><?php echo $store_contact; ?></strong></p>
                         </div>
-                        <div>
-                            <label for="email">Email</label>
-                            <input type="text" name="email" id="email"
-                                value="<?php echo htmlspecialchars($store_email); ?>" />
+                        <div class="info"><img src="../assets/thread.png" alt="">
+                            <p>Email: <strong><?php echo $store_email; ?></strong></p>
                         </div>
                     </div>
                 </div>
+
+                <div id="divider" class="divider">
+                    <div></div>
+                </div>
+
+                <div id="mainProducts" class="main-products-container">
+                    <div class="child-container">
+                        <div class="header-container">
+                            <h2>MY PRODUCTS</h2>
+
+                            <div class="filterbar">
+                                <select class="custom-select categories-select">
+                                    <option value="All Products">All Categories</option>
+                                </select>
+
+                                <select class="custom-select types-select">
+                                    <option value="All Products">All Products</option>
+                                </select>
+                                <button id="showFormButton">Add Product</button>
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Pagination Controls -->
+
+                        <div class="products" data-storename="<?php echo $store_name; ?>">
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="basic-info rounded-box">
-                <div class="linked-account" style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Linked Accounts</h2>
-                    <button type="button" id="editAccountsButton" class="edit-button">Edit</button>
-                </div>
-                <div id="linkedAccountsView" class="linked-accounts-view">
-                    <div style="display: flex;">
-                        <label for="firstname">Lazada:</label>
-                        <?php echo !empty($lazada_field) ? '<p style="color: green; font-weight: 600;">YES </p>' : '<p style="color: red; font-weight: 600;">NO </p>'; ?>
-                    </div>
-                    <div style="display: flex;">
-                        <label for="firstname">Shopee:</label>
-                        <?php echo !empty($shopee_field) ? '<p style="color: green; font-weight: 600;">YES </p>' : '<p style="color: red; font-weight: 600;">NO </p>'; ?>
-                    </div>
-                </div>
-                <div id="linkedAccountsEdit" class="linked-accounts-edit hidden">
+
+
+            <form class="hidden" id="updateInfo" method="POST" action="../server/updateStore.php"
+                enctype="multipart/form-data">
+                <div class="basic-info rounded-box">
+                    <h2>Store Icon</h2>
                     <div>
-                        <label for="lazada_link">Lazada</label>
-                        <input type="text" name="lazada_link" id="lazada_link"
-                            value="<?php echo htmlspecialchars($lazada_field ?? ''); ?>"
-                            placeholder="Enter Lazada account link" />
-                    </div>
-                    <div>
-                        <label for="shopee_link">Shopee</label>
-                        <input type="text" name="shopee_link" id="shopee_link"
-                            value="<?php echo htmlspecialchars($shopee_field ?? ''); ?>"
-                            placeholder="Enter Shopee account link" />
+                        <div id="file-container" class="file-container">
+                            <label for="file-upload" class="custom-file-upload">Choose File</label>
+                            <input type="file" id="file-upload" name="img" accept="image/*" onchange="renderFile(event)"
+                                style="opacity: 0%;" />
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="basic-info rounded-box">
+                    <h2>About</h2>
+                    <div>
+                        <textarea name="description" id="description"><?php echo $store_description ?></textarea>
+                    </div>
+                </div>
+
+                <div class="basic-info rounded-box">
+                    <h2>Store Details</h2>
+                    <div class="store-information">
+                        <div class="first-child">
+                            <div>
+                                <label for="stallnumber">Stall No.</label>
+                                <input type="text" name="stallnumber" id="stallnumber"
+                                    value="<?php echo htmlspecialchars(implode(' ', $stallNumbers)); ?>" />
+                            </div>
+                            <div>
+                                <label for="contact">Contact No.</label>
+                                <input type="text" name="contact" id="contact"
+                                    value="<?php echo htmlspecialchars($store_contact); ?>" />
+                            </div>
+                            <div>
+                                <label for="firstname">Business Permit</label>
+                                <p style="color: green; font-weight: 600;">
+                                    <?php
+                                // Assume $status is fetched from sellertb
+                                echo htmlspecialchars($status ?? 'Unknown');
+                                ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <label for="storename">Store Name</label>
+                                <input type="text" name="storename" id="storename" value="<?php echo $store_name ?>"
+                                    readonly required />
+                            </div>
+                            <div>
+                                <label for="email">Email</label>
+                                <input type="text" name="email" id="email"
+                                    value="<?php echo htmlspecialchars($store_email); ?>" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="basic-info rounded-box">
+                    <div class="linked-account"
+                        style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>Linked Accounts</h2>
+                        <button type="button" id="editAccountsButton" class="edit-button">Edit</button>
+                    </div>
+                    <div id="linkedAccountsView" class="linked-accounts-view">
+                        <div style="display: flex;">
+                            <label for="firstname">Lazada:</label>
+                            <?php echo !empty($lazada_field) ? '<p style="color: green; font-weight: 600;">YES </p>' : '<p style="color: red; font-weight: 600;">NO </p>'; ?>
+                        </div>
+                        <div style="display: flex;">
+                            <label for="firstname">Shopee:</label>
+                            <?php echo !empty($shopee_field) ? '<p style="color: green; font-weight: 600;">YES </p>' : '<p style="color: red; font-weight: 600;">NO </p>'; ?>
+                        </div>
+                    </div>
+                    <div id="linkedAccountsEdit" class="linked-accounts-edit hidden">
+                        <div>
+                            <label for="lazada_link">Lazada</label>
+                            <input type="text" name="lazada_link" id="lazada_link"
+                                value="<?php echo htmlspecialchars($lazada_field ?? ''); ?>"
+                                placeholder="Enter Lazada account link" />
+                        </div>
+                        <div>
+                            <label for="shopee_link">Shopee</label>
+                            <input type="text" name="shopee_link" id="shopee_link"
+                                value="<?php echo htmlspecialchars($shopee_field ?? ''); ?>"
+                                placeholder="Enter Shopee account link" />
+                        </div>
+                    </div>
+                </div>
 
 
-            <div class="add-button">
-                <button style="margin-right: 20px;" type="button" id="cancelButton">Cancel</button>
-                <button type="submit">Save</button>
-            </div>
-        </form>
+                <div class="add-button">
+                    <button style="margin-right: 20px;" type="button" id="cancelButton">Cancel</button>
+                    <button type="submit">Save</button>
+                </div>
+            </form>
 
 
         </div>
 
 
-        
+
     </div>
 
     <div class="pagination">
@@ -452,6 +481,24 @@ input[type="file"] {
         <div class="pages">
         </div>
     </div>
+
+    <div id="editModal" class="modal form-hidden">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>x
+            <h2>Edit Product</h2>
+            <form id="editProductForm">
+                <input type="text" id="editName" placeholder="Product Name" required />
+                <input type="number" id="editPrice" placeholder="Price" required />
+                <textarea id="editDescription" placeholder="Description"></textarea>
+                <button type="submit">Save Changes</button>
+                <img src="../assets/close.png" id="closeEditFormButton" class="close-btn" alt="Close">
+            </form>
+        </div>
+    </div>
+
+
+
+
 
 
     <footer>
@@ -497,10 +544,18 @@ input[type="file"] {
     </footer>
 
     <script src="../script/drop-down.js"></script>
-    <script src="../script/formshow.js"></script>
+    <script src="../script/form-show.js"></script>
     <script src="../script/adding-form.js"></script>
 
     <script>
+    const closeEditFormButton = document.getElementById("closeEditFormButton");
+    const closeEditFormContainer = document.getElementById("editProductForm");
+
+    closeEditFormButton.addEventListener("click", function() {
+        closeEditFormContainer.classList.add("form-hidden");
+    });
+
+
     document.addEventListener('DOMContentLoaded', () => {
         const editStoreBtn = document.getElementById('editStoreBtn');
         const updateInfoForm = document.getElementById('updateInfo');
@@ -613,6 +668,6 @@ input[type="file"] {
     });
     </script>
 </body>
-<script src="../script/store-info.js"></script>
+<script src="../script/store-infooo.js"></script>
 
 </html>

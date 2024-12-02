@@ -19,17 +19,17 @@ function updateHeroContent(step) {
   heroDescription.textContent = content.description;
 }
 
-function showError(field, message) {
-  const errorElement = field.nextElementSibling;
-  if (errorElement && errorElement.classList.contains("error")) {
-    errorElement.textContent = message;
-  } else {
-    const span = document.createElement("span");
-    span.classList.add("error");
-    span.textContent = message;
-    field.parentNode.insertBefore(span, field.nextSibling);
-  }
+function showError(message) {
+  const errorContainer = document.getElementById("form-errors");
+
+  const errorItem = document.createElement("div");
+  errorItem.classList.add("error-message");
+  errorItem.textContent = message;
+
+  // Append the error message to the container
+  errorContainer.appendChild(errorItem);
 }
+
 
 function nextStep(currentStep) {
   var currentForm = document.getElementById("step" + currentStep);
@@ -115,6 +115,10 @@ function previousStep(currentStep) {
 }
 
 function submitRegistrationForm(formData) {
+  // Clear previous error messages
+  const errorContainer = document.getElementById("form-errors");
+  errorContainer.innerHTML = "";
+
   fetch("../server/save_registration.php", {
     method: "POST",
     body: formData,
@@ -132,8 +136,7 @@ function submitRegistrationForm(formData) {
       } else if (data.errors) {
         // Display specific errors returned by the server
         for (let field in data.errors) {
-          const input = document.querySelector(`[name="${field}"]`);
-          if (input) showError(input, data.errors[field]);
+          showError(data.errors[field]);
         }
       } else {
         alert("Registration failed. Please try again.");
@@ -144,6 +147,10 @@ function submitRegistrationForm(formData) {
       alert("An error occurred. Please try again.");
     });
 }
+
+
+
+
 
 document
   .getElementById("registrationForm")

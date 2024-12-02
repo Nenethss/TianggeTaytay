@@ -12,8 +12,8 @@ try {
 
     if ($stmt->rowCount() > 0) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $sellerHTML .= '<div class="seller" data-store-name="' . htmlspecialchars($row['storename']) . '" onclick="handleClick(this)">';
-            $sellerHTML .= '<a href="../pages/view-store.php"><img src="data:image/png;base64,' . base64_encode($row['img']) . '" alt="' . htmlspecialchars($row['storename']) . '"></a>   ';
+            $sellerHTML .= '<div style="cursor: default;" class="seller" data-store-name="' . htmlspecialchars($row['storename']) . '" onclick="handleClick(this)">';
+            $sellerHTML .= '<img src="data:image/png;base64,' . base64_encode($row['img']) . '" alt="' . htmlspecialchars($row['storename']) . '">   ';
             $sellerHTML .= '<p>' . htmlspecialchars($row['storename']) . '</p>';
             $sellerHTML .= '</div>';
         }

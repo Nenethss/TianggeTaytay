@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $age = $_POST['age'];
     $province = $_POST['province'];
     $municipality = $_POST['municipality'];
-    $baranggay= $_POST['barangay'];
+    $baranggay = $_POST['barangay'];
     $houseno = $_POST['houseno'];
     $lazada = isset($_POST['lazada']) ? $_POST['lazada'] : null;
     $shopee = isset($_POST['shopee']) ? $_POST['shopee'] : null;
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (file_exists($imagePath)) {
         $imageData = file_get_contents($imagePath);
     } else {
-        die(json_encode(['status' => 'error', 'message' => 'Default image file not found.'])); 
+        die(json_encode(['status' => 'error', 'message' => 'Default image file not found.']));
     }
 
     // Validate password and confirm password
@@ -47,17 +47,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die(json_encode(['status' => 'error', 'message' => 'Passwords do not match.']));
     }
 
-    // Hash the password
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
     try {
+        // Ensure storename, username, and email are not empty
+        if (empty($username) || empty($email) || empty($storeName)) {
+            echo json_encode(['status' => 'error', 'errors' => ['general' => 'All fields must be filled out.']]);
+            exit;
+        }
+    
+        // Check if username exists
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM sellertb WHERE username = :username");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $usernameCount = $stmt->fetchColumn();
+    
+        // Check if email exists
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM sellertb WHERE seller_email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $emailCount = $stmt->fetchColumn(); 
+    
+        // Check if store exists
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM storetb WHERE storename = :storename");
+        $stmt->bindParam(':storename', $storeName);
+        $stmt->execute();
+        $storeCount = $stmt->fetchColumn();
+    
+        // Return error if username exists
+        if ($usernameCount > 0) {
+            echo json_encode(['status' => 'error', 'errors' => ['username' => 'Username already exists.']]);
+            exit;
+        }
+    
+        // Return error if email exists
+        if ($emailCount > 0) {
+            echo json_encode(['status' => 'error', 'errors' => ['email' => 'Email already exists.']]);
+            exit;
+        }
+    
+        // Return error if store already exists
+        if ($storeCount > 0) {
+            echo json_encode(['status' => 'error', 'errors' => ['storename' => 'Store already exists.']]);
+            exit;
+        }
+    
+    
+        // Hash the password
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
         // Begin transaction
         $conn->beginTransaction();
 
         // Insert into sellertb
-        // Insert into sellertb
-        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno,  updated_at, permit) 
-        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno, :updated_at, :permit)";
+        $sellerQuery = "INSERT INTO sellertb (username, password, seller_email, first_name, middle_name, last_name, seller_contact, birthday, age, province, municipality, baranggay, houseno, updated_at, permit) 
+                        VALUES (:username, :password, :seller_email, :first_name, :middle_name, :last_name, :seller_contact, :birthday, :age, :province, :municipality, :baranggay, :houseno, :updated_at, :permit)";
         $sellerStmt = $conn->prepare($sellerQuery);
         $sellerStmt->bindParam(':username', $username, PDO::PARAM_STR);
         $sellerStmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
@@ -75,7 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sellerStmt->bindParam(':updated_at', $updatedAt, PDO::PARAM_STR);
         $sellerStmt->bindParam(':permit', $permit, PDO::PARAM_LOB); // Insert permit as LOB
         $sellerStmt->execute();
-
 
         // Get the last inserted seller_id
         $sellerId = $conn->lastInsertId();
@@ -112,4 +153,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     die(json_encode(['status' => 'error', 'message' => 'Invalid request method.']));
 }
-?>

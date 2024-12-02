@@ -127,6 +127,7 @@ include("../server/fetchstoreinfo.php");
                 <div class="section">
                     <div class="section-header">
                         <h2>Account Information</h2>
+                        
                         <button class="edit-btn">
                             <img src="../assets/pencil.svg" alt="Edit">
                             Edit
@@ -151,6 +152,23 @@ include("../server/fetchstoreinfo.php");
                         echo htmlspecialchars($maskedPassword);
                         ?>
                         </p>
+                        <div>
+                        <?php if (isset($_GET['error']) && $_GET['error'] == 'username'): ?>
+                            <p style="color: red;">Username already exists.</p>
+                            <?php endif; ?>
+                            <?php if (isset($_GET['error']) && $_GET['error'] == 'email'): ?>
+                            <p style="color: red;">Email already exists.</p>
+                            <?php endif; ?>
+                            <?php if (isset($_GET['error']) && $_GET['error'] == 'currentpassword'): ?>
+                            <p style="color: red;">Current password is incorrect.</p>
+                            <?php endif; ?>
+                            <?php if (isset($_GET['error']) && $_GET['error'] == 'newpassword'): ?>
+                            <p style="color: red;">New password must be at least 8 characters long.</p>
+                            <?php endif; ?>
+                            <?php if (isset($_GET['success']) && $_GET['success'] == 'update'): ?>
+                            <p style="color: green;">Updated Successfully</p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,8 +223,7 @@ include("../server/fetchstoreinfo.php");
             </div>
 
             <form class="hidden" id="updateInfo" method="POST" action="../server/updateSeller.php">
-                <input type="hidden" name="current_username" id="current_username"
-                    value="<?php echo $seller_username; ?>">
+                <input type="hidden" name="current_username" value="<?php echo $seller_username; ?>">
 
                 <div class="section-header">
                     <h2>Account Information</h2>
@@ -217,24 +234,26 @@ include("../server/fetchstoreinfo.php");
                             <label for="newusername">Username</label>
                             <input type="text" name="newusername" id="newusername"
                                 value="<?php echo $seller_username ?>" required>
+                            
                         </div>
                         <div class="info-group">
                             <label for="seller_email">Email</label>
-                            <input type="text" name="seller_email" id="seller_email" value="<?php echo $seller_email ?>"
-                                required>
+                            <input type="text" name="seller_email" value="<?php echo $seller_email ?>" required>
+                            
                         </div>
                     </div>
                     <div>
                         <div class="info-group">
-                            <label for="password">Password</label>
-                            <input type="password" name="newpassword" id="password" placeholder="Enter new password">
+                            <label for="currentpassword">Current Password</label>
+                            <input type="password" name="currentpassword" id="currentpassword"
+                                placeholder="Current Password">
+                            
                         </div>
                         <div class="info-group">
-                            <label for="confirmpassword">Confirm Password</label>
-                            <input type="password" name="confirmpassword" id="confirmpassword"
-                                placeholder="Confirm new password">
+                            <label for="newpassword">New Password</label>
+                            <input type="password" name="newpassword" id="newpassword" placeholder="New Password">
+                            
                         </div>
-                        <div id="error-container"></div>
                     </div>
                 </div>
 
@@ -344,96 +363,7 @@ include("../server/fetchstoreinfo.php");
 
     <script src="../script/drop-down.js"></script>
     <script src="../script/formshow.js"></script>
-    <form class="hidden" id="updateInfo" method="POST" action="../server/updateSeller.php">
-        <input type="hidden" name="current_username"  value="<?php echo $seller_username; ?>">
 
-        <div class="section-header">
-            <h2>Account Information</h2>
-        </div>
-        <div class="account-row">
-            <div style="margin-right: 20px">
-                <div class="info-group">
-                    <label for="newusername">Username</label>
-                    <input type="text" name="newusername" id="newusername" value="<?php echo $seller_username ?>"
-                        required>
-                </div>
-                <div class="info-group">
-                    <label for="seller_email">Email</label>
-                    <input type="text" name="seller_email"  value="<?php echo $seller_email ?>"
-                        required>
-                </div>
-            </div>
-            <div>
-                <div class="info-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="newpassword" id="password" placeholder="Enter new password">
-                </div>
-                <div class="info-group">
-                    <label for="confirmpassword">Confirm Password</label>
-                    <input type="password" name="confirmpassword" id="confirmpassword"
-                        placeholder="Confirm new password">
-                </div>
-                <?php if (isset($_GET['error'])): ?>
-                <p style="color: red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <!-- Personal Information Section -->
-        <h2>Personal Information</h2>
-        <div class="basic-info">
-            <div>
-                <label for="firstname">First Name</label>
-                <input type="text" name="firstname" id="firstname" value="<?php echo $seller_fname ?>" required>
-            </div>
-            <div>
-                <label for="middlename">Middle Name (Optional)</label>
-                <input type="text" name="middlename" id="middlename" value="<?php echo $seller_mname ?>">
-            </div>
-            <div>
-                <label for="lastname">Surname</label>
-                <input type="text" name="lastname" id="lastname" value="<?php echo $seller_lname ?>" required>
-            </div>
-        </div>
-        <div class="basic-info">
-            <div>
-                <label for="contact">Contact</label>
-                <input type="text" name="contact" id="contact" value="<?php echo $seller_contact ?>" required>
-            </div>
-            <div>
-                <label for="birthday">Birthday</label>
-                <input type="date" name="birthday" id="birthday" value="<?php echo $seller_birthday ?>" required>
-            </div>
-            <div>
-                <label for="age">Age</label>
-                <input type="number" name="age" id="age" value="<?php echo $seller_age?>" required>
-            </div>
-        </div>
-        <div class="basic-info">
-            <div>
-                <label for="province">Province</label>
-                <input type="text" name="province" id="province" value="<?php echo $seller_province ?>" required>
-            </div>
-            <div>
-                <label for="municipality">Municipality</label>
-                <input type="text" name="municipality" id="municipality" value="<?php echo $seller_municipality ?>"
-                    required>
-            </div>
-            <div>
-                <label for="baranggay">Baranggay</label>
-                <input type="text" name="baranggay" id="baranggay" value="<?php echo $seller_baranggay ?>" required>
-            </div>
-        </div>
-        <div>
-            <label for="houseno">House No.</label>
-            <input type="text" name="houseno" id="houseno" value="<?php echo $seller_houseno ?>" required>
-        </div>
-
-        <div class="add-button">
-            <button style="margin-right: 20px;" type="button" id="cancelButton">Cancel</button>
-            <button type="submit" id="submitBtn">Save</button>
-        </div>
-    </form>
 
     <!-- Add this to include the JavaScript -->
     <script>
@@ -447,28 +377,28 @@ include("../server/fetchstoreinfo.php");
         errorContainer.innerHTML = '';
 
 
-if (password.length > 0 OR confirmPassword.length > 0) {
-    if (password !== confirmPassword) {
-            e.preventDefault();
-            const errorMsg = document.createElement('p');
-            errorMsg.textContent = 'Passwords do not match.';
-            errorMsg.style.color = 'red';
-            errorContainer.appendChild(errorMsg);
-            isValid = false;
-        }
+        if (password.length > 0 OR confirmPassword.length > 0) {
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                const errorMsg = document.createElement('p');
+                errorMsg.textContent = 'Passwords do not match.';
+                errorMsg.style.color = 'red';
+                errorContainer.appendChild(errorMsg);
+                isValid = false;
+            }
 
-        // Check if password is at least 8 characters long
-        if (password.length < 8) {
-            e.preventDefault();
-            const errorMsg = document.createElement('p');
-            errorMsg.textContent = 'Password must be at least 8 characters long.';
-            errorMsg.style.color = 'red';
-            errorContainer.appendChild(errorMsg);
-            isValid = false;
+            // Check if password is at least 8 characters long
+            if (password.length < 8) {
+                e.preventDefault();
+                const errorMsg = document.createElement('p');
+                errorMsg.textContent = 'Password must be at least 8 characters long.';
+                errorMsg.style.color = 'red';
+                errorContainer.appendChild(errorMsg);
+                isValid = false;
+            }
         }
-}
         // Check if password and confirm password match
-        
+
 
         // Only submit the form if all validations pass
         if (!isValid) {

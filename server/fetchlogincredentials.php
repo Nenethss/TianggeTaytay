@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute(['username' => $username]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($admin && password_verify($password, $admin['password'])) {
+        if (password_verify($password, $admin['password'])) {
             // Set session for admin or super admin
             $_SESSION['userid'] = $admin['userid']; // Assuming there is a userid column
             $_SESSION['first_name'] = $admin['first_name']; // Fetch first name

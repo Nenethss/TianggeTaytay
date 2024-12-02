@@ -3,6 +3,8 @@
     const formContainer = document.getElementById("productFormContainer");
     const showFormButton = document.getElementById("showFormButton");
     const closeFormButton = document.getElementById("closeFormButton");
+    const closeEditFormButton = document.getElementById("closeEditFormButton");
+    const closeEditFormContainer = document.getElementById("editModal");
 
     // Show the form
     showFormButton.addEventListener("click", function () {
@@ -13,6 +15,7 @@
     closeFormButton.addEventListener("click", function () {
       formContainer.classList.add("form-hidden");
     });
+
 
     // Optional: Close the form when clicking outside it
     document.addEventListener("click", function (e) {

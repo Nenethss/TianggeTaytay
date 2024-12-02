@@ -31,10 +31,10 @@ const createOption = (value, text) => {
   return option;
 };
 
+
 const ProductCard = (id, img, name, price) => {
   const div = document.createElement("div");
   div.className = "product-card";
-  div.addEventListener("click", () => clickProduct(id));
 
   const productImage = document.createElement("img");
   productImage.className = "product-image";
@@ -47,19 +47,136 @@ const ProductCard = (id, img, name, price) => {
   const productName = document.createElement("p");
   productName.textContent = name;
 
+  // Create a container for price and delete icon
+  const priceDeleteContainer = document.createElement("div");
+  priceDeleteContainer.className = "price-delete-container";
+
   const productPrice = document.createElement("p");
   productPrice.innerHTML = `&#8369; <span>${price}</span>`;
 
-  div.addEventListener("click", () => {
-    window.location.href = `http://localhost/eTianggeTaytay/pages/view-product.php?id=${id}`;
+  
+  productImage.addEventListener("click", () => {
+    window.open(`http://localhost/eTianggeTaytay/pages/view-product.php?id=${id}`, "_blank");
   });
+
+
+  const productDelete = document.createElement("img");
+  productDelete.className = "product-delete";
+  productDelete.src = "../assets/archive.png"; // Set the image source
+  productDelete.alt = "Delete";
+  productDelete.title = "Delete Product"; // Tooltip for the icon
+  productDelete.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent triggering the card click event
+    deleteProduct(id); // Call a delete function
+  });
+  
+
+  const productEdit = document.createElement("button");
+  productEdit.className = "product-edit";
+  productEdit.textContent = "Edit";
+  productEdit.addEventListener("click", (e) => {
+    e.stopPropagation(); // Prevent triggering the card click event
+    openEditModal(id, name, price); // Open a modal for editing
+  });
+
+  // Append price and delete icon to the container
+  priceDeleteContainer.appendChild(productPrice);
+  priceDeleteContainer.appendChild(productDelete);
+  priceDeleteContainer.appendChild(productEdit);
+  
 
   div.appendChild(productImage);
   div.appendChild(productName);
-  div.appendChild(productPrice);
+  div.appendChild(priceDeleteContainer); // Append the container to the main div
 
   return div;
 };
+
+
+
+const openEditModal = (id, name, price) => {
+  const modal = document.querySelector("#editModal");
+  const closeModal = document.querySelector("#closeModal");
+  const editForm = document.querySelector("#editProductForm");
+
+  // Populate the form with existing values
+  document.querySelector("#editName").value = name;
+  document.querySelector("#editPrice").value = price;
+
+  modal.style.display = "block";
+
+  // Close the modal
+  closeModal.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  // Handle form submission
+  editForm.onsubmit = (e) => {
+    e.preventDefault();
+    const updatedName = document.querySelector("#editName").value;
+    const updatedPrice = document.querySelector("#editPrice").value;
+    const updatedDescription = document.querySelector("#editDescription").value;
+
+    updateProduct(id, updatedName, updatedPrice, updatedDescription);
+    modal.style.display = "none"; // Close modal after saving
+  };
+};
+
+// Update product details using fetch
+const updateProduct = (id, name, price, description) => {
+  fetch("http://localhost/eTianggeTaytay/server/update_product.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id, name, price, description }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        alert(data.message);
+        renderPage(); // Re-render product list
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating product:", error);
+    });
+};
+
+
+
+
+const deleteProduct = (id) => {
+  if (confirm("Are you sure you want to delete this product?")) {
+    fetch("http://localhost/eTianggeTaytay/server/delete_product.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert(data.message);
+          renderPage(); // Re-fetch and render the updated product list
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Failed to delete the product.");
+      });
+  }
+};
+
+
+
+
+
 
 const fetchCategories = async () => {
   try {

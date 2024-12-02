@@ -64,9 +64,9 @@ $sellerHTML = include('../server/fetchstore.php');
         <div class="store">
             <?php 
 
-echo $sellerHTML;
+            echo $sellerHTML;
 
-?>
+            ?>
         </div>
 
     </div>
