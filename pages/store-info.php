@@ -544,7 +544,7 @@ input[type="file"] {
     </footer>
 
     <script src="../script/drop-down.js"></script>
-    <script src="../script/form-show.js"></script>
+    <script src="../script/forms.js"></script>
     <script src="../script/adding-form.js"></script>
 
     <script>
@@ -668,6 +668,6 @@ input[type="file"] {
     });
     </script>
 </body>
-<script src="../script/store-infooo.js"></script>
+<script src="../script/product-info.js"></script>
 
 </html>

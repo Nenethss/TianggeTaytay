@@ -18,6 +18,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC)
     <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/Login.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
 </head>
 
 <body>

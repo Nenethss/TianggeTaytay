@@ -7,7 +7,7 @@ function fetchProducts($type = null)
     // Fetch all products from producttb without the store name filter
     if ($type == "NEW_ARRIVALS") {
         $stmt = $conn->prepare("
-            SELECT * FROM producttb ORDER BY date_created DESC LIMIT 4
+            SELECT * FROM producttb ORDER BY productid DESC LIMIT 4
         ");
     } else if ($type == "MOST_VIEWED") {
         $stmt = $conn->prepare("
@@ -18,6 +18,7 @@ function fetchProducts($type = null)
             SELECT * FROM producttb
         ");
     }
+    
 
     $stmt->execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);

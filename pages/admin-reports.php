@@ -209,6 +209,7 @@ foreach ($usersSellerData as $row) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="../style/product-views-styles.css"> -->
     <link rel="stylesheet" href="../style/main-sidebar.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
 </head>
 
 <style>

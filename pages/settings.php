@@ -3,7 +3,7 @@ session_start(); // Start session
 include_once '../server/connect.php';
 
 // Fetch current data
-$sql = "SELECT systemlogo, TC, PP FROM systeminfo WHERE id = 1";
+$sql = "SELECT systemlogo, TC, PP, about, contact_info, uv, jeep, mrt, uv_bus, ride_apps FROM systeminfo WHERE id = 1";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -65,8 +65,10 @@ if ($admin) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/main-sidebar.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
     <script src="https://cdn.tiny.cloud/1/yfzcekqme9bnde6m4kj5va4phv7cwoyw2ttqg0r14c3xdjcl/tinymce/7/tinymce.min.js"
-        referrerpolicy="origin"></script>
+        referrerpolicy="origin">
+    </script>
 </head>
 
 <style>
@@ -330,20 +332,23 @@ tr:hover {
 }
 
 .choose-file {
-    
+
     width: 150px;
     height: 45px;
     text-align: center;
     align-content: center;
 }
 
+
 .delete-btn {
     width: 45px;
     height: 45px;
     border-radius: 25px;
     cursor: pointer;
+    padding-top: 3px;
     background-color: white;
     border: 1px solid #0033a0;
+
 }
 
 .filter-lbl {
@@ -362,8 +367,7 @@ textarea {
 
 .backupandrestore {
     margin-bottom: 20px;
-    display: flex
-;
+    display: flex;
     height: 150px;
     flex-direction: column;
     padding: 15px;
@@ -380,6 +384,7 @@ textarea {
     cursor: pointer;
     border-radius: 5px;
 }
+
 .btn-submit {
     background-color: #ffffff;
     color: #585858;
@@ -394,6 +399,46 @@ textarea {
     padding-left: 30px;
     color: white;
 }
+
+
+.caution-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0033a0;
+    margin-bottom: 15px;
+}
+
+.caution-message {
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.caution-note {
+    background-color: #03;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #0033a0;
+    font-style: italic;
+    color: #5bc0de;
+    margin-bottom: 20px;
+}
+
+p {
+    font-weight: 600;
+}
+
+.platform-form {   
+    display: flex;
+    flex-direction: row;
+}
+
+.platform-form div {
+width: 100%;
+gap: 1;
+}
+
+.platform-form .icon {}
 </style>
 
 <body>
@@ -454,8 +499,8 @@ textarea {
                 <p style="border-top-left-radius: 10px;" class="sidebar-item active" data-section="admin">Admin</p>
                 <p class="sidebar-item" data-section="categories">Categories</p>
                 <p class="sidebar-item" data-section="type">Product Type</p>
+                <p class="sidebar-item" data-section="platform">Platform</p>
                 <p class="sidebar-item" data-section="general">General Information</p>
-                <p class="sidebar-item" data-section="archive">Archive</p>
                 <p class="sidebar-item" data-section="backup">Back-up & Restore</p>
                 <p class="sidebar-item" data-section="account">Profile Account</p>
             </div>
@@ -599,7 +644,7 @@ textarea {
                                     <form action="../server/archive_category.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="categoryid"
                                             value="<?php echo htmlspecialchars($category['categoryid']); ?>">
-                                        <button type="submit" class="delete-btn"><img src="../assets/archive.png"
+                                        <button type="submit" class="delete-btn"><img src="../assets/archived.png"
                                                 alt=""></button>
                                     </form>
                                 </td>
@@ -671,7 +716,7 @@ textarea {
                                     <form action="../server/archive_type.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="typeid"
                                             value="<?php echo htmlspecialchars($type['typeid']); ?>">
-                                        <button type="submit" class="delete-btn"><img src="../assets/archive.png"
+                                        <button type="submit" class="delete-btn"><img src="../assets/archived.png"
                                                 alt=""></button>
                                     </form>
                                 </td>
@@ -687,175 +732,67 @@ textarea {
                     </table>
                 </div>
 
-                <div class="section-container archive-section">
-                    <div style="width: 100%; display: flex; justify-content: flex-end;">
-                    
-
-                        <label class="filter-lbl" for="">Filter by</label>
-                        <select class="filter-btn" name="" id="archive-select">
-                            <option data-section="archive" style="background-color: white; color: black;" value="Admin">
-                                Admin</option>
-                            <option data-section="archive" style="background-color: white; color: black;"
-                                value="Category">Category</option>
-                            <option data-section="archive" style="background-color: white; color: black;" value="Type">
-                                Type</option>
-                        </select>
-
-                    </div>
-
-                    <!-- Archive Category Section -->
-                    <div style="display: none;" class="archive-container archiveCategory-section" id="archive-category">
-                        <h2 style="margin-bottom: 15px;">Archived Categories</h2>
-                        <?php if ($errorMessage): ?>
-                        <div id="restore-type-error-message" class="error-message-container">
-                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
+                <div class="section-container platform-section">
+                    <form action="../server/add_platform.php" method="POST" class="add-platform-form"
+                        id="add-platform-form">
+                        <h2 style="margin-bottom: 15px;">Platforms</h2>
+                        <div class="form-group platform-form">
+                        <div>
+                            <label for="surname">Platform Name</label>
+                            <input type="text" id="platform_name" name="platform_name" required>
                         </div>
-                        <?php endif; ?>
-                        <?php if ($successMessage): ?>
-                        <div id="restore-type-success-message" class="success-message-container">
-                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
+                        <div class="icon">
+                            <label>Platform Icon</label>
+                            <input type="file" id="file-upload" name="img" accept="image/*"/>
                         </div>
-                        <?php endif; ?>
-                        <table style="margin-top: 10px;">
-                            <thead>
-                                <tr>
-                                    <th>Category ID</th>
-                                    <th>Category Name</th>
-                                    <th>Archived At</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($archived_categories)): ?>
-                                <?php foreach ($archived_categories as $category): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($category['categoryid']); ?></td>
-                                    <td><?php echo htmlspecialchars($category['category_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($category['archived_at']); ?></td>
-                                    <td>
-                                        <form action="../server/restore_category.php" method="POST"
-                                            style="display:inline;">
-                                            <input type="hidden" name="categoryid"
-                                                value="<?php echo htmlspecialchars($category['categoryid']); ?>">
-                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
-                                                    alt=""></button>
-                                        </form>
-                                    </td>
+                        </div>
 
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <tr>
-                                    <td colspan="3">No archived categories found.</td>
-                                </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                        <div style="display: flex; justify-content: flex-end; width: 100%;">
+                            <?php if ($errorMessage): ?>
+                            <div id="platform-error-message" class="error-message-container">
+                                <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
+                            </div>
+                            <?php endif; ?>
+                            <?php if ($successMessage): ?>
+                            <div id="platform-success-message" class="success-message-container">
+                                <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
+                            </div>
+                            <?php endif; ?>
+                            <button type="button" class="close-btn" id="clearBtn"
+                                style="margin-right: 10px;">Cancel</button>
+                            <button class="add-btn" type="submit" style="cursor: pointer;">Add Platform</button>
+                        </div>
+                    </form>
 
-                    <!-- Archive Type Section -->
-                    <div style="display: none;" class="archive-container archiveCategory-section" id="archive-type">
-                        <h2 style="margin-bottom: 15px;">Archived Types</h2>
-                        <?php if ($errorMessage): ?>
-                        <div id="restore-type-error-message" class="error-message-container">
-                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if ($successMessage): ?>
-                        <div id="restore-type-success-message" class="success-message-container">
-                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <table style="margin-top: 10px;">
-                            <thead>
-                                <tr>
-                                    <th>Type ID</th>
-                                    <th>Type Name</th>
-                                    <th>Archived At</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($archived_types)): ?>
-                                <?php foreach ($archived_types as $type): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($type['typeid']); ?></td>
-                                    <td><?php echo htmlspecialchars($type['typename']); ?></td>
-                                    <td><?php echo htmlspecialchars($type['archived_at']); ?></td>
-                                    <td>
-                                        <form action="../server/restore_type.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="typeid"
-                                                value="<?php echo htmlspecialchars($type['typeid']); ?>">
-                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
-                                                    alt=""></button>
-                                        </form>
-                                    </td>
-
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <tr>
-                                    <td colspan="3">No archived types found.</td>
-                                </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Archive Admin Section -->
-                    <div class="archive-container archiveAdmin" id="archive-admin">
-                        <h2 style="margin-bottom: 15px;">Archived Admins</h2>
-                        <?php if ($errorMessage): ?>
-                        <div id="restore-type-error-message" class="error-message-container">
-                            <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <?php if ($successMessage): ?>
-                        <div id="restore-type-success-message" class="success-message-container">
-                            <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                        </div>
-                        <?php endif; ?>
-                        <table style="margin-top: 10px;">
-                            <thead>
-                                <tr>
-                                    <th>Admin ID</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($archiveAdmins)): ?>
-                                <?php foreach ($archiveAdmins as $arcAdmin): ?>
-                                <tr>
-                                    <td><?php echo htmlspecialchars($arcAdmin['admin_id']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['username']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['email']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['role']); ?></td>
-                                    <td><?php echo htmlspecialchars($arcAdmin['status']); ?></td>
-                                    <td>
-                                        <!-- Restore Button -->
-                                        <form action="../server/restore_admin.php" method="POST"
-                                            style="display:inline;">
-                                            <input type="hidden" name="admin_id"
-                                                value="<?php echo htmlspecialchars($arcAdmin['admin_id']); ?>">
-                                            <button type="submit" class="delete-btn"><img src="../assets/restore.png"
-                                                    alt=""></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <tr>
-                                    <td colspan="5">No archived admins found.</td>
-                                </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    <!-- Table to display categories -->
+                    <table style="margin-top: 30px;">
+                        <thead>
+                            <tr>
+                                <th>Category ID</th>
+                                <th>Category Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (!empty($platforms)): ?>
+                            <?php foreach ($platforms as $platform): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($platform['platformid']); ?></td>
+                                <td><?php echo htmlspecialchars($platform['platform_name']); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="3">No platform found.</td>
+                            </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
+
+
+                <!-- Archive Type Section -->
+
 
                 <div class="section-container account-section">
                     <form id="adminForm" action="../server/update_superadmin.php" method="POST">
@@ -900,16 +837,6 @@ textarea {
                             </div>
                         </div>
                         <div class="button-group">
-                            <?php if ($errorMessage): ?>
-                            <div id="update-error-message" class="error-message-container">
-                                <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
-                            </div>
-                            <?php endif; ?>
-                            <?php if ($successMessage): ?>
-                            <div id="update-success-message" class="success-message-container">
-                                <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
-                            </div>
-                            <?php endif; ?>
                             <div style="dislay: flex;">
                                 <button type="submit" class="btn btn-submit">Save</button>
                             </div>
@@ -927,180 +854,339 @@ textarea {
                             onchange="handleFileChange(event, 'logoForm')">
                         <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
                             <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="button"
-                                class="btn btn-submit" onclick="document.getElementById('logoInput').click()">
+                                class="btn add-btn" onclick="document.getElementById('logoInput').click()">
                                 Change
                             </button>
                         </div>
                     </form>
 
-                    <h2 style="margin-bottom: 10px;">Privacy</h2>
+                    <h2 style="margin-bottom: 10px;">Terms & Conditions</h2>
 
                     <div>
-                        <h3 style="margin-bottom: 10px;">Terms & Conditions</h3>
                         <form id="termsForm" method="post" action="../server/update_systeminfo.php">
                             <textarea id="TCTextEditor"
                                 style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
                                 name="terms"><?= htmlspecialchars($data['TC']) ?></textarea>
                             <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
                                 <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="submit"
-                                    class="btn btn-submit">
+                                    class="btn add-btn">
                                     Update
                                 </button>
                             </div>
                         </form>
-                    </div>
 
-                    <div>
-                        <h3 style="margin-bottom: 10px;">Privacy Policy</h3>
-                        <form id="privacyForm" method="post" action="../server/update_systeminfo.php">
-                            <textarea id="PPTextEditor"
-                                style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
-                                name="privacy"><?= htmlspecialchars($data['PP']) ?></textarea>
-                            <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
-                                <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="submit"
-                                    class="btn btn-submit">
-                                    Update
-                                </button>
+                        <h2 style="margin-bottom: 10px;">Privacy Policy</h2>
+
+                        <div>
+                            <form id="privacyForm" method="post" action="../server/update_systeminfo.php">
+                                <textarea id="PPTextEditor"
+                                    style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                    name="privacy"><?= htmlspecialchars($data['PP']) ?></textarea>
+                                <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                                    <button style="border-radius: 10px; padding: 15px 20px; width: 90px;" type="submit"
+                                        class="btn add-btn">
+                                        Update
+                                    </button>
+                                </div>
+                            </form>
+
+                            <h2 style="margin-bottom: 10px;">About</h2>
+
+                            <div>
+                                <form id="aboutForm" method="post" action="../server/update_systeminfo.php">
+                                    <textarea id="AboutTextEditor"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="about"><?= htmlspecialchars($data['about']) ?></textarea>
+                                    <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                                        <button style="border-radius: 10px; padding: 15px 20px; width: 90px;"
+                                            type="submit" class="btn add-btn">
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+
+                            <h2 style="margin-bottom: 10px;">Contact Info</h2>
+
+                            <div>
+                                <form id="contactForm" method="post" action="../server/update_systeminfo.php">
+                                    <textarea id="ContactTextEditor"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="contact"><?= htmlspecialchars($data['contact_info']) ?></textarea>
+                                    <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                                        <button style="border-radius: 10px; padding: 15px 20px; width: 90px;"
+                                            type="submit" class="btn add-btn">
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <h2 style="margin-bottom: 10px;">How To Go</h2>
+
+                            <div>
+                                <form id="howtogoForm" method="post" action="../server/update_systeminfo.php">
+                                    <textarea id="uv"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="uv"><?= htmlspecialchars($data['uv']) ?>
+                            </textarea>
+                                    <textarea id="jeep"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="jeep"><?= htmlspecialchars($data['jeep']) ?>
+                            </textarea>
+                                    <textarea id="mrt"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="mrt"><?= htmlspecialchars($data['mrt']) ?>
+                            </textarea>
+                                    <textarea id="uv_bus"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="uv_bus"><?= htmlspecialchars($data['uv_bus']) ?>
+                            </textarea>
+                                    <textarea id="ride_apps"
+                                        style="margin-bottom: 15px; width: 100%; resize: none; outline: none; font-size: 17px; padding: 20px; height: 500px;"
+                                        name="ride_apps"><?= htmlspecialchars($data['ride_apps']) ?>
+                            </textarea>
+                                    <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                                        <button style="border-radius: 10px; padding: 15px 20px; width: 90px;"
+                                            type="submit" class="btn add-btn">
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Other Sections Here -->
                     </div>
                 </div>
 
                 <div class="section-container backup-section">
-
-                    <form class="backupandrestore" action="../server/backup.php" method="POST">
+                    <form style="height: 260px" class="backupandrestore" action="../server/backup.php" method="POST">
+                        <div class="caution-note">
+                            <strong style="font-size: 17px">Caution: </strong>Please wait for the confirmation message
+                            to appear before proceeding with any other actions to ensure the backup or restore process
+                            is completed successfully.
+                        </div>
                         <h2>Data Backup</h2>
-                        <p>Perform data backup</p>
+                        <p style="margin: 10px 0;">Perform data backup</p>
                         <button class="btn btn-submit" type="submit" class="btn-backup">Backup Now</button>
+                        <p id="backup-success" class="success-message"></p>
                     </form>
-                    <form class="backupandrestore" action="../server/restore.php" method="POST" enctype="multipart/form-data">
-                    <h2>Data Restore</h2>
-                    <p>Recover data from saved backups</p>
-                    <div>
-                        <input class="choose-file"  type="file" name="backup_file" accept=".sql" required>
-                        <button  class="btn btn-submit" type="submit" class="btn-restore">Restore</button>
+                    <?php if ($successMessage): ?>
+                    <div style="margin-bottom: 20px;" id="back-success-message" class="success-message-container">
+                        <p style="color: green;"><?php echo htmlspecialchars($successMessage); ?></p>
                     </div>
+                    <?php endif; ?>
+                    <form style="height: 250px" class="backupandrestore" action="../server/restore.php" method="POST"
+                        enctype="multipart/form-data">
+                        <div class="caution-note">
+                            For restoration, double-check the backup folder <strong>(e.g.,
+                                Backup_Data_12-04-2024)</strong> to
+                            confirm that the correct file is available.
+                        </div>
+
+                        <h2>Data Restore</h2>
+                        <p style="margin: 10px 0;">Recover data from saved backups</p>
+                        <div>
+                            <input class="choose-file" type="file" name="backup_file" accept=".sql" required>
+                            <button class="btn btn-submit" type="submit" class="btn-restore">Restore</button>
+                            <p id="restore-success" class="success-message"></p>
+                        </div>
                     </form>
+                    <?php if ($errorMessage): ?>
+                    <div style="border: 1px solid green;" id="restore-success-message" class="error-message-container">
+                        <p style="color: green;"><?php echo htmlspecialchars($errorMessage); ?></p>
+                    </div>
+                    <?php endif; ?>
 
 
-                </div> <!-- Other Sections Here -->
+                </div>
+
             </div>
-        </div>
 
-        <script src="../script/setting_scripts.js"></script>
-        <script src="../script/drop-down.js"></script>
-        <script>
-        tinymce.init({
-            selector: '#TCTextEditor',
-            plugins: 'code link',
-            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
-            menubar: false
-        });
+            <script src="../script/setting-scripts.js"></script>
+            <script src="../script/drop-down.js"></script>
+            <script>
+            tinymce.init({
+                selector: '#TCTextEditor',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
 
-        tinymce.init({
-            selector: '#PPTextEditor',
-            plugins: 'code link',
-            toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
-            menubar: false
-        });
-        </script>
-        <script>
-        const sidebarItems = document.querySelectorAll('.sidebar ul li:not(.logout)');
+            tinymce.init({
+                selector: '#PPTextEditor',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
 
-        // Loop through all sidebar items and add a click event listener
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', function() {
-                // Remove the 'active' class from all items and revert their icons to blue
-                sidebarItems.forEach(i => {
-                    i.classList.remove('active'); // Remove 'active' class from all items
-                    const icon = i.querySelector('.sidebar-icon');
-                    const defaultIconSrc = icon.getAttribute('src').replace('-grey',
-                        ''); // Get the default blue icon (remove any '-white' part)
-                    icon.src = defaultIconSrc; // Set the icon back to the default blue
+            tinymce.init({
+                selector: '#AboutTextEditor',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+
+            tinymce.init({
+                selector: '#ContactTextEditor',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+
+            tinymce.init({
+                selector: '#uv',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+
+            tinymce.init({
+                selector: '#jeep',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+
+            tinymce.init({
+                selector: '#mrt',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+
+            tinymce.init({
+                selector: '#uv_bus',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+
+            tinymce.init({
+                selector: '#ride_apps',
+                plugins: 'code link',
+                toolbar: 'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | link | code',
+                menubar: false
+            });
+            </script>
+            <script>
+            const sidebarItems = document.querySelectorAll('.sidebar ul li:not(.logout)');
+
+            // Loop through all sidebar items and add a click event listener
+            sidebarItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove the 'active' class from all items and revert their icons to blue
+                    sidebarItems.forEach(i => {
+                        i.classList.remove(
+                            'active'); // Remove 'active' class from all items
+                        const icon = i.querySelector('.sidebar-icon');
+                        const defaultIconSrc = icon.getAttribute('src').replace('-grey',
+                            ''); // Get the default blue icon (remove any '-white' part)
+                        icon.src = defaultIconSrc; // Set the icon back to the default blue
+                    });
+
+                    // Add the 'active' class to the clicked item and change its icon to white
+                    this.classList.add('active');
+                    const icon = this.querySelector('.sidebar-icon');
+                    const activeIconSrc = icon.getAttribute(
+                        'data-active-src'); // Get the white icon path
+                    icon.src = activeIconSrc; // Set the icon to the white version
+                });
+            });
+
+            document.getElementById('archive-select').addEventListener('change', function() {
+                var selectedValue = this.value;
+
+                // Hide all sections
+                document.querySelectorAll('.archive-container').forEach(function(container) {
+                    container.style.display = 'none';
                 });
 
-                // Add the 'active' class to the clicked item and change its icon to white
-                this.classList.add('active');
-                const icon = this.querySelector('.sidebar-icon');
-                const activeIconSrc = icon.getAttribute('data-active-src'); // Get the white icon path
-                icon.src = activeIconSrc; // Set the icon to the white version
+                // Show the selected section
+                if (selectedValue === 'Admin') {
+                    document.getElementById('archive-admin').style.display = 'block';
+                } else if (selectedValue === 'Category') {
+                    document.getElementById('archive-category').style.display = 'block';
+                } else if (selectedValue === 'Type') {
+                    document.getElementById('archive-type').style.display = 'block';
+                }
             });
-        });
+            document.addEventListener("DOMContentLoaded", function() {
+                // Handle success/error message visibility
+                setTimeout(function() {
+                    const successMessage = document.getElementById("cat-success-message");
+                    const adminsuccessMessage = document.getElementById("admin-success-message");
+                    const typesuccessMessage = document.getElementById("type-success-message");
+                    const updatesuccessMessage = document.getElementById("update-success-message");
+                    const restoreType = document.getElementById("restore-type-success-message");
+                    const restoreCategory = document.getElementById("restore-category-success-message");
+                    const restoreAdmin = document.getElementById("restore-admin-success-message");
+                    const backUp = document.getElementById("back-success-message");
 
-        document.getElementById('archive-select').addEventListener('change', function() {
-            var selectedValue = this.value;
+                    if (successMessage) {
+                        successMessage.style.display = "none";
+                        adminsuccessMessage.style.display = "none";
+                        typesuccessMessage.style.display = "none";
+                        updatesuccessMessage.style.display = "none";
+                        restoreType.style.display = "none";
+                        backUp.style.display = "none";
+                        restoreCategory.style.display = "none";
+                        restoreAdmin.style.display = "none";
+                    }
 
-            // Hide all sections
-            document.querySelectorAll('.archive-container').forEach(function(container) {
-                container.style.display = 'none';
+
+                    const errorMessage = document.getElementById("cat-error-message");
+                    const adminerrorMessage = document.getElementById("admin-error-message");
+                    const typeerrorMessage = document.getElementById("type-error-message");
+                    const updateerrorMessage = document.getElementById("update-error-message");
+                    const errorRestoreType = document.getElementById("restore-type-error-message");
+                    const errorrestoreCategory = document.getElementById(
+                        "restore-category-error-message");
+                    const errorrestoreAdmin = document.getElementById("restore-admin-error-message");
+                    const restore = document.getElementById("restore-success-message");
+                    if (errorMessage) {
+                        errorMessage.style.display = "none";
+                        adminerrorMessage.style.display = "none";
+                        typeerrorMessage.style.display = "none";
+                        updateerrorMessage.style.display = "none";
+                        errorRestoreType.style.display = "none";
+                        restored.style.display = "none";
+                        errorrestoreCategory.style.display = "none";
+                        errorrestoreAdmin.style.display = "none";
+                        restore.style.display = "none";
+                    }
+                }, 3000);
+
+                // Toggle Category Form
+                document.getElementById("add-category-button").onclick = function() {
+                    const form = document.getElementById("add-category-form");
+                    form.style.display = form.style.display === "none" ? "flex" : "none";
+                };
+                document.getElementById("close-category-form").onclick = function() {
+                    const form = document.getElementById("add-category-form");
+                    form.style.display = "none";
+                };
+
+                // Toggle Type Form
+                document.getElementById("add-type-button").onclick = function() {
+                    const form = document.getElementById("add-type-form");
+                    form.style.display = form.style.display === "none" ? "flex" : "none";
+                };
+                document.getElementById("close-type-form").onclick = function() {
+                    const form = document.getElementById("add-type-form");
+                    form.style.display = "none";
+                };
             });
+            </script>
 
-            // Show the selected section
-            if (selectedValue === 'Admin') {
-                document.getElementById('archive-admin').style.display = 'block';
-            } else if (selectedValue === 'Category') {
-                document.getElementById('archive-category').style.display = 'block';
-            } else if (selectedValue === 'Type') {
-                document.getElementById('archive-type').style.display = 'block';
+            <script>
+            function handleFileChange(event, formId) {
+                const form = document.getElementById(formId);
+                form.submit(); // Automatically submit the form after file selection
             }
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            // Handle success/error message visibility
-            setTimeout(function() {
-                const successMessage = document.getElementById("cat-success-message");
-                const adminsuccessMessage = document.getElementById("admin-success-message");
-                const typesuccessMessage = document.getElementById("type-success-message");
-                const updatesuccessMessage = document.getElementById("update-success-message");
-                const restoreType = document.getElementById("restore-type-success-message");
-                if (successMessage) {
-                    successMessage.style.display = "none";
-                    adminsuccessMessage.style.display = "none";
-                    typesuccessMessage.style.display = "none";
-                    updatesuccessMessage.style.display = "none";
-                    restoreType.style.display = "none";
-                }
-                const errorMessage = document.getElementById("cat-error-message");
-                const adminerrorMessage = document.getElementById("admin-error-message");
-                const typeerrorMessage = document.getElementById("type-error-message");
-                const updateerrorMessage = document.getElementById("update-error-message");
-                const errorRestoreType = document.getElementById("restore-type-error-message");
-                if (errorMessage) {
-                    errorMessage.style.display = "none";
-                    adminerrorMessage.style.display = "none";
-                    typeerrorMessage.style.display = "none";
-                    updateerrorMessage.style.display = "none";
-                    errorRestoreType.style.display = "none";
-                }
-            }, 4000);
-
-            // Toggle Category Form
-            document.getElementById("add-category-button").onclick = function() {
-                const form = document.getElementById("add-category-form");
-                form.style.display = form.style.display === "none" ? "flex" : "none";
-            };
-            document.getElementById("close-category-form").onclick = function() {
-                const form = document.getElementById("add-category-form");
-                form.style.display = "none";
-            };
-
-            // Toggle Type Form
-            document.getElementById("add-type-button").onclick = function() {
-                const form = document.getElementById("add-type-form");
-                form.style.display = form.style.display === "none" ? "flex" : "none";
-            };
-            document.getElementById("close-type-form").onclick = function() {
-                const form = document.getElementById("add-type-form");
-                form.style.display = "none";
-            };
-        });
-        </script>
-
-        <script>
-        function handleFileChange(event, formId) {
-            const form = document.getElementById(formId);
-            form.submit(); // Automatically submit the form after file selection
-        }
-        </script>
+            </script>
 
 </body>
 

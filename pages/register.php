@@ -402,7 +402,7 @@ $platforms = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
 
     <script src="../script/seller_register.js"></script>
-    <script src="../script/formshow.js"></script>
+    <script src="../script/forms.js"></script>
 
     <script>
     function renderFiles(event) {

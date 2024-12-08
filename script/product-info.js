@@ -62,9 +62,9 @@ const ProductCard = (id, img, name, price) => {
 
   const productDelete = document.createElement("img");
   productDelete.className = "product-delete";
-  productDelete.src = "../assets/archive.png"; // Set the image source
+  productDelete.src = "../assets/trashbin.png"; // Set the image source
   productDelete.alt = "Delete";
-  productDelete.title = "Delete Product"; // Tooltip for the icon
+  productDelete.title = "Remove Product"; // Tooltip for the icon
   productDelete.addEventListener("click", (e) => {
     e.stopPropagation(); // Prevent triggering the card click event
     deleteProduct(id); // Call a delete function

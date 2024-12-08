@@ -406,8 +406,8 @@ tr:hover {
             <hr class="vertical">
 
             <div class="container">
-                <p class="row-count_new"><?php echo $newUserCount; ?></p>
-                <h1 class="new">New Users</h1>
+                <p class="row-count_new"><?php echo $PendingUserCount; ?></p>
+                <h1 class="new">Pending</h1>
             </div>
         </div>
 

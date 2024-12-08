@@ -5,8 +5,8 @@ include_once '../server/connect.php';
 
 
 if (!isset($_SESSION['userid']) || $_SESSION['role'] !== 'super_admin') {
-    header("Location: login.php"); // Redirect to login if not logged in
-    exit();
+  header("Location: login.php"); // Redirect to login if not logged in
+  exit();
 }
 
 $sql = "SELECT systemlogo, TC, PP FROM systeminfo WHERE id = 1";
@@ -23,26 +23,27 @@ $stmt->execute(['userid' => $userid]);
 $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($admin) {
-    // Data fetched successfully
-    $username = $admin['username'];
-    $fname = $admin['first_name'];
-    $mname = $admin['middle_name'];
-    $lname = $admin['surname'];
-    $email = $admin['email'];
-    $fullname = $fname . " " . $lname;
-    $role = $admin['role'];
-    $password = html_entity_decode($admin['password']);
-    if (!empty($admin['img'])) {
-        $user_img = 'data:image/png;base64,' . base64_encode($admin['img']);
-    } else {
-        $user_img = '../assets/storepic.png';
-    }
-    
+  // Data fetched successfully
+  $username = $admin['username'];
+  $fname = $admin['first_name'];
+  $mname = $admin['middle_name'];
+  $lname = $admin['surname'];
+  $email = $admin['email'];
+  $fullname = $fname . " " . $lname;
+  $role = $admin['role'];
+  $password = html_entity_decode($admin['password']);
+  if (!empty($admin['img'])) {
+    $user_img = 'data:image/png;base64,' . base64_encode($admin['img']);
+  } else {
+    $user_img = '../assets/storepic.png';
+  }
 } else {
-    // Handle case where no admin record was found
-    echo "No admin record found for the given user ID.";
-    exit();
+  // Handle case where no admin record was found
+  echo "No admin record found for the given user ID.";
+  exit();
 }
+
+
 
 ?>
 
@@ -71,13 +72,26 @@ if ($admin) {
 }
 
 .delete-btn {
-    
+
     width: 45px;
     height: 45px;
     border-radius: 25px;
     cursor: pointer;
     background-color: white;
     border: 1px solid #0033a0;
+}
+
+.modal {
+
+    padding: 12px 12px;
+    font-weight: 600;
+    font-size: 15px;
+    width: 110px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #0033A0;
+    color: white;
+    border: none;
 }
 
 /* Sidebar */
@@ -97,31 +111,32 @@ if ($admin) {
 }
 
 .container {
-  display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 20px auto;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #F5F6FA;
+    margin: 0;
+    padding: 0;
+    background-color: #F5F6FA;
 }
 
 .content {
-  margin-top: 100px;
-  margin-left: 400px;
-  /* Increased margin-left to match the new sidebar width */
-  padding: 20px;
-  width: calc(100% - 300px);
-  /* Adjusted content width */
+    margin-top: 100px;
+    margin-left: 400px;
+    /* Increased margin-left to match the new sidebar width */
+    padding: 20px;
+    width: calc(100% - 300px);
+    /* Adjusted content width */
 }
 
 
 table {
     border: 1px solid #ccc;
 }
+
 table {
     width: 100%;
     border-collapse: separate;
@@ -134,7 +149,8 @@ table thead {
     background-color: #fdfdfd;
 }
 
-td, th {
+td,
+th {
     font-size: 14px;
     padding: 15px;
     font-weight: 600;
@@ -146,61 +162,75 @@ th {
     border-bottom: 1px solid #ccc;
 }
 
-tr{
-  background-color: #FFFFFF;
+tr {
+    background-color: #FFFFFF;
 }
 
 tr:hover {
-  background-color: #FFFFFF;
+    background-color: #FFFFFF;
 }
 
-#search{ 
-     width: 50%;
+#search {
+    width: 50%;
 
-  border-radius: 25px;
+    border-radius: 25px;
 }
 
 input[type="text"] {
-  padding: 10px;
-  width: 200px;
-  margin-right: 10px;
-  /* Space between search input and dropdown */
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+    padding: 10px;
+    width: 200px;
+    margin-right: 10px;
+    /* Space between search input and dropdown */
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 .content {
-  margin-top: 130px;
-  margin-left: 300px;
-  /* Increased margin-left to match the new sidebar width */
-  padding: 20px;
-  width: calc(100% - 300px);
-  /* Adjusted content width */
+    margin-top: 130px;
+    margin-left: 300px;
+    /* Increased margin-left to match the new sidebar width */
+    padding: 20px;
+    width: calc(100% - 300px);
+    /* Adjusted content width */
 }
 
 
-td:nth-child(4), th:nth-child(4) {
-  width: 150px; /* Make the "Status" column smaller */
-  white-space: nowrap; /* Prevent text from wrapping */
+td:nth-child(4),
+th:nth-child(4) {
+    width: 150px;
+    /* Make the "Status" column smaller */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
 }
 
 .status-dropdown {
-  width: 100px; /* Adjust the width as needed */
-  font-size: 14px; /* Adjust the font size */
-  border: none; /* Remove the border */
-  outline: none; /* Remove the focus outline (optional) */
-  background: none; /* Remove background (optional) */
+    width: 150px;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    outline: none;
 }
 
-.filterby{
-  border-radius: 15px;
-  padding: 10px;
-  margin-left: 10px;
+/* Default styling */
+.status-dropdown.verified {
+    color: green;
+    background-color: lightgreen;
+}
+
+.status-dropdown.pending {
+    color: red;
+    background-color: pink;
 }
 
 
 
+.filterby {
+    border-radius: 15px;
+    padding: 10px;
+    margin-left: 10px;
+}
 </style>
 
 <body>
@@ -223,7 +253,7 @@ td:nth-child(4), th:nth-child(4) {
     </div>
     <div class="sidebar">
         <div class="logo">
-        <img src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
+            <img src="data:image/png;base64,<?= base64_encode($data['systemlogo']) ?>" alt="System Logo">
         </div>
         <ul>
             <li>
@@ -264,14 +294,13 @@ td:nth-child(4), th:nth-child(4) {
 
                 <!-- Dropdown to select which table to display -->
                 <form method="GET">
-                    Filter by:<select name="table_select" onchange="this.form.submit()" class="filterby" id="user_type">
-                        <option value="administrator" disabled selected>User Type</option>
+                    User Type:<select name="table_select" onchange="this.form.submit()" class="filterby" id="user_type">
                         <option value="seller"
                             <?php echo isset($_GET['table_select']) && $_GET['table_select'] == 'seller' ? 'selected' : ''; ?>>
-                            Seller Table</option>
+                            Seller</option>
                         <option value="administrator"
                             <?php echo isset($_GET['table_select']) && $_GET['table_select'] == 'administrator' ? 'selected' : ''; ?>>
-                            Administrator Table</option>
+                            Administrator</option>
                     </select>
                 </form>
             </div>
@@ -282,10 +311,67 @@ td:nth-child(4), th:nth-child(4) {
 
         </div>
     </div>
-    <!-- Main content -->
+    <!-- Permit Modal -->
+    <div id="permitModal"
+        style="
+    display: none
+;
+    position: fixed;
+    margin-top: 40px;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;">
+        <div style="
+    display: flex;
+    padding: 20px;
+    position: relative;
+    background: white;
+    width: 80%;
+    max-width: 600px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+">
+            <span style="position:absolute; top:10px; right:10px; cursor:pointer;"
+                onclick="closeModal()">&#10006;</span>
+            <h3>Permit</h3>
+            <img id="permitImage" src="" alt="Permit" style="width:80%; height:auto;">
+        </div>
+    </div>
+
 
 
     <script src="../script/drop-down.js"></script>
+    <script>
+    // Function to update the select element's style dynamically
+// Function to update the select element's style dynamically
+function updateSelectStyle(selectElement) {
+    const selectedOption = selectElement.options[selectElement.selectedIndex];
+    const selectedText = selectedOption.textContent || selectedOption.innerText;
+
+    // Apply styles based on the selected text
+    if (selectedText === "Pending") {
+        selectElement.style.color = "red";
+        selectElement.style.borderColor = "red";
+    } else if (selectedText === "Verified") {
+        selectElement.style.color = "green";
+        selectElement.style.borderColor = "green";
+    }
+}
+
+// Initialize styles for all dropdowns on page load
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdowns = document.querySelectorAll('.status-dropdown');
+    dropdowns.forEach(function (selectElement) {
+        updateSelectStyle(selectElement); // Apply styles on page load
+    });
+});
+
+    </script>
     <script>
     // Get all the sidebar list items (excluding logout)
     const sidebarItems = document.querySelectorAll('.sidebar ul li:not(.logout)');
@@ -356,6 +442,19 @@ td:nth-child(4), th:nth-child(4) {
                 });
         }
     });
+
+    function showModal(dataUrl) {
+        const modal = document.getElementById('permitModal');
+        const image = document.getElementById('permitImage');
+        image.src = dataUrl;
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('permitModal');
+        modal.style.display = 'none';
+    }
+
 
 
 

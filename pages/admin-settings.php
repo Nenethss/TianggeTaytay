@@ -65,6 +65,7 @@ if ($admin) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/main-sidebar.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
     <script src="https://cdn.tiny.cloud/1/yfzcekqme9bnde6m4kj5va4phv7cwoyw2ttqg0r14c3xdjcl/tinymce/7/tinymce.min.js"
         referrerpolicy="origin"></script>
 </head>
@@ -463,7 +464,7 @@ textarea {
                                     <form action="../server/archive_categories.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="categoryid"
                                             value="<?php echo htmlspecialchars($category['categoryid']); ?>">
-                                        <button type="submit" class="delete-btn"><img src="../assets/archive.png"
+                                        <button type="submit" class="delete-btn"><img src="../assets/archived.png"
                                                 alt=""></button>
                                     </form>
                                 </td>
@@ -535,7 +536,7 @@ textarea {
                                     <form action="../server/archive_types.php" method="POST" style="display:inline;">
                                         <input type="hidden" name="typeid"
                                             value="<?php echo htmlspecialchars($type['typeid']); ?>">
-                                        <button type="submit" class="delete-btn"><img src="../assets/archive.png"
+                                        <button type="submit" class="delete-btn"><img src="../assets/archived.png"
                                                 alt=""></button>
                                     </form>
                                 </td>

@@ -33,6 +33,7 @@ list($categoryHTML, $categories) = include_once '../server/fetchcategory.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/home.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
     <link rel="stylesheet" href="../style/navandfoot.css">
     <title>e-Tiangge Taytay</title>
 </head>

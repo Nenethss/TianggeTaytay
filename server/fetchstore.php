@@ -13,7 +13,7 @@ try {
     if ($stmt->rowCount() > 0) {
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $sellerHTML .= '<div style="cursor: default;" class="seller" data-store-name="' . htmlspecialchars($row['storename']) . '" onclick="handleClick(this)">';
-            $sellerHTML .= '<img src="data:image/png;base64,' . base64_encode($row['img']) . '" alt="' . htmlspecialchars($row['storename']) . '">   ';
+            $sellerHTML .= '<a href="../pages/view-store.php?storename=' . urlencode($row['storename']) . '"><img src="data:image/png;base64,' . base64_encode($row['img']) . '" alt="' . htmlspecialchars($row['storename']) . '"></a>   ';
             $sellerHTML .= '<p>' . htmlspecialchars($row['storename']) . '</p>';
             $sellerHTML .= '</div>';
         }

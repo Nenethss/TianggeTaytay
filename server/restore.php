@@ -3,12 +3,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if a file was uploaded
     if (isset($_FILES['backup_file']) && $_FILES['backup_file']['error'] === UPLOAD_ERR_OK) {
         $uploadedFile = $_FILES['backup_file']['tmp_name'];
+        $file = $_POST['backup_file'];
 
         // Database connection details
         $host = 'localhost';
         $username = 'root';
         $password = '';
-        $database = 'backup';
+        $database = 'tianggedb';
 
         try {
             // Connect to the database
@@ -36,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Enable foreign key checks after restoration
             $pdo->exec('SET foreign_key_checks = 1;');
 
-            echo "Database restored successfully.";
+            header("Location: ../pages/settings.php?section=backup&error=Data restored successfully. $file");
         } catch (PDOException $e) {
             echo "Error restoring database: " . $e->getMessage();
         }

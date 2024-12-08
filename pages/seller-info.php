@@ -15,6 +15,7 @@ include("../server/fetchstoreinfo.php");
     <link rel="stylesheet" href="../style/navandfoot.css">
     <link rel="stylesheet" href="../style/store-info.css">
     <link rel="stylesheet" href="../style/seller-info.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
 </head>
 
 <style>
@@ -238,7 +239,7 @@ include("../server/fetchstoreinfo.php");
                         </div>
                         <div class="info-group">
                             <label for="seller_email">Email</label>
-                            <input type="text" name="seller_email" value="<?php echo $seller_email ?>" required>
+                            <input type="text" name="seller_email" value="<?php echo $seller_email ?>"  readonly>
                             
                         </div>
                     </div>
@@ -362,7 +363,7 @@ include("../server/fetchstoreinfo.php");
 
 
     <script src="../script/drop-down.js"></script>
-    <script src="../script/formshow.js"></script>
+    <script src="../script/forms.js"></script>
 
 
     <!-- Add this to include the JavaScript -->

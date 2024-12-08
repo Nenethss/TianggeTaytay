@@ -38,8 +38,7 @@ function nextStep(currentStep) {
     `.progress-sub-container div:nth-of-type(${currentStep}) > div`
   );
 
-  progressDiv.classList.add("progress-active");
-  progressbarFill.style.width = (currentStep / 4) * 100 + "%";
+  
 
   var allValid = true;
 
@@ -87,6 +86,10 @@ function nextStep(currentStep) {
   }
 
   if (allValid) {
+
+    progressDiv.classList.add("progress-active");
+  progressbarFill.style.width = (currentStep / 4) * 100 + "%";
+  
     currentForm.classList.remove("active");
     nextForm.classList.add("active");
     updateHeroContent(currentStep + 1);

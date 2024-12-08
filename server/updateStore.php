@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email']);
         $shopee = trim($_POST['shopee_link']);
         $lazada = trim($_POST['lazada_link']);
+        $lazada = trim($_POST['lazada_link']);
 
         // Initialize img to null
         $img = null;

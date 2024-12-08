@@ -8,13 +8,13 @@
 
     // Tables to back up with both structure and data
     $tablesWithData = [
-        'admintb', 'sellertb', 'actlogtb', 'storetb',
-        'categorytb', 'producttypetb', 'platformtb'
+        'admintb', 'sellertb', 'actlogtb', 'storetb', 'stalltb',
+        'categorytb', 'producttypetb', 'platformtb', 'systeminfo'
     ];
 
     // Tables to back up with structure only
     $tablesWithStructureOnly = [
-        'stalltb','producttb','archived_admintb', 'archived_categories', 'archived_productypetb','product_img_tb'
+        'producttb','archived_admintb', 'archived_categories', 'archived_productypetb','product_img_tb'
     ];
 
     try {
@@ -59,10 +59,10 @@
         }
 
         // Save to a file
-        $backupFile = 'selective_backup_' . date('YmdHis') . '.sql';
+        $backupFile = '../backup/Backup_Data_' . date('m-d-Y') . '.sql';
         file_put_contents($backupFile, $backupSQL);
 
-        echo "Backup created successfully: <a href=\"$backupFile\" download>$backupFile</a>";
+        header("Location: ../pages/settings.php?section=backup&success=Backup completed successfully.  $backupFile");
 
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();

@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             // Clear any error or success message if visible
-            ['error-message', 'success-message', 'cat-error-message', 'cat-success-message', 'type-error-message', 'type-success-message']
+            ['error-message', 'success-message', 'cat-error-message', 'cat-success-message', 'type-error-message', 'type-success-message', 'back-success-message', 'restore-success-message']
                 .forEach(id => {
                     const element = document.getElementById(id);
                     if (element) element.style.display = 'none';
@@ -124,7 +124,9 @@ document.addEventListener('DOMContentLoaded', function () {
         'cat-error-message',
         'cat-success-message',
         'type-error-message',
-        'type-success-message'
+        'type-success-message',
+        'back-success-message',
+        'restore-success-message'
     ];
 
     setTimeout(() => {

@@ -15,6 +15,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/TC.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
     <link rel="stylesheet" href="../style/navandfoot.css">
 
 </head>

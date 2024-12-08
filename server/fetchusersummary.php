@@ -2,19 +2,18 @@
 include_once "connect.php";
 
 // Function for counting new registered users (from 'created_at' column)
-function getNewUserCount($tableNames, $daysAgo = 30)
+function getPendingUserCount($tableNames)
 {
     global $conn;  
     $totalCount = 0;
-    $dateLimit = date('Y-m-d', strtotime("-$daysAgo days"));  // Get the date from $daysAgo days ago
 
-    // Loop through all table names and sum up the row counts for new users
+    // Loop through all table names and sum up the row counts for active users
     foreach ($tableNames as $tablename) {
         // Validate and sanitize the table name to prevent SQL injection
         $table = validate($tablename);
 
-        // Prepare the query to count rows for users created within the last $daysAgo days
-        $query = "SELECT COUNT(*) AS totalCount FROM `$table` WHERE `created_at` >= '$dateLimit'";  // Filter by created_at
+        // Pending
+        $query = "SELECT COUNT(*) AS totalCount FROM `$table` WHERE `status` = 'Pending'";  // Filtering by active status
 
         // Execute the query using PDO
         try {
@@ -23,7 +22,7 @@ function getNewUserCount($tableNames, $daysAgo = 30)
             
             // Fetch the result as an associative array
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            // Add the row count of new users from the current table to the total count
+            // Add the row count of active users from the current table to the total count
             $totalCount += $row['totalCount'];
         } catch (PDOException $e) {
             // Handle PDO exception
@@ -110,11 +109,10 @@ function validate($input)
     }
 }
 
-// Assuming the database connection is already established
 $tableNames = ['admintb', 'sellertb'];  // Array of table names
 
 // Get counts for different categories
-$newUserCount = getNewUserCount($tableNames, 30);  // Get the count of users registered in the last 30 days
+$PendingUserCount = getPendingUserCount($tableNames, 30);  // Get the count of users registered in the last 30 days
 $activeUserCount = getActiveUserCount($tableNames);  // Get the count of active users
 $totalUserCount = getTotalUserCount($tableNames);  // Get the count of all users
 ?>

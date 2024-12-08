@@ -1,3 +1,14 @@
+<?php
+
+include_once '../server/connect.php';
+
+$sql = "SELECT systemlogo, contact_info FROM systeminfo WHERE id = 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +18,7 @@
     <title>e-Tiangge Taytay</title>
     <link rel="stylesheet" href="../style/contact.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
 </head>
 
 <body>
@@ -36,21 +48,7 @@
     </nav>
 
     <section class="contact-us">
-        <div>
-            <h2>Contact Us</h2>
-        </div>
-        <div class="contact-container">
-            <div>
-                <p>If you have any inquiries or need assistance, feel free to reach out to us.</p>
-            </div>
-            <div>
-                <p>• Email: <a href="mailto:support@e-tiangge.ph">support@e-tiangge.ph</a></p>
-                <p>• Phone: <a href="tel:+639123456789">+63 912 345 6789</a></p>
-            </div>
-            <div>
-                <p>Our team is here to help during business hours.</p>
-            </div>
-        </div>
+    <?= html_entity_decode($data['contact_info']) ?>
     </section>
 
     <footer>

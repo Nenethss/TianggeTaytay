@@ -13,6 +13,14 @@ foreach ($imagesData['data'] as $image) {
     $images[] = base64_encode($image['img']);
 }
 
+// $result = updateData($connect, 'users', ['name' => 'Jane Doe', 'age' => 35], ['id' => 1]);
+
+updateData($conn, "producttb", 
+    ['views' => $productData['data'][0]['views'] + 1], 
+    ['productid' => $id]
+);
+
+
 $response = [
     'success' => true,
     'message' => "Data fetched successfully",

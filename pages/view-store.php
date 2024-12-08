@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../style/navandfoot.css">
     <link rel="stylesheet" href="../style//custom-select.css">
     <title>e-Tiangge Taytay</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
 </head>
 
 <body>

@@ -5,8 +5,14 @@ $longitude = 121.132690;
 
 //eto yugn initial zoom
 $zoomLevel = 18;
-?>
 
+include_once '../server/connect.php';
+
+$sql = "SELECT systemlogo, about, uv, jeep, mrt, uv_bus, ride_apps FROM systeminfo WHERE id = 1";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$data = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +23,7 @@ $zoomLevel = 18;
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="../style/about.css">
     <link rel="stylesheet" href="../style/navandfoot.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
@@ -50,36 +57,9 @@ $zoomLevel = 18;
 
 
     <section class="terms-conditions">
-        <div class="about">
-            <h1>ABOUT</h1>
-            <p>Welcome to E-Tiangge Portal, an online marketplace that showcases the best of Taytay's Garments and
-                Fashion. Originally created to bring the vibrant and affordable Ready-to-Wear (RTW) clothing and
-                accessories from Taytay’s famous Tiangge (market) to the digital world, we have worked hard to adapt and
-                evolve in response to new challenges. Our mission is to provide a platform where local Taytay sellers
-                can easily showcase their high-quality garments to a wider audience, while helping the Taytayeños thrive
-                during difficult times, especially through the COVID-19 pandemic. As Taytay is known as the Garments
-                Capital of the Philippines, we aim to make it easier for people everywhere to access and buy affordable
-                yet fashionable clothing, textiles, and accessories. At E-Tiangge Portal, we believe in supporting local
-                businesses, promoting the unique craftsmanship of Taytay's garment industry, and providing a space for
-                people to shop with ease.</p>
-        </div>
-        <div class="looking-back">
-            <h1>LOOKING BACK</h1>
-            <p>For the past several years, people from Taytay Rizal are already into textile and RTW (ready-to-wear)
-                businesses in which garments are being sold in Divisoria, Baclaran, Tutuban, Greenhills and every part
-                of the Philippines. Thanks to an initiative by the local Taytay government in 2014, Taytay-based tailors
-                and dressmakers who used to rent space outside Taytay Rizal now have a more conducive business location
-                right in their hometown. Few stalls started in a small lot of Club Manila East Compound. It gradually
-                grew and continuously growing. As of 2017, there are around 10 garments center operating in Club Manila
-                East Compound. Each garment center has hundreds to thousands of stalls selling different clothes. Of
-                these ten, the biggest are Taytay Municipal Tiangge, Bagpi Garment Center, Igpai Garment Center,
-                MASUERTE 4JC Tiangge and Freedom bazaar. Each center has varying schedule of opening and closing but
-                almost all are open on main market days of Monday and Thursday evenings.
-                Since then, the Taytay Tiangge has become a shopper’s paradise and a godsend for wholesalers. However,
-                due to the ever growing businesses of Taytay Tiangge, there are some drawbacks and one worth mentioning
-                is the traffic. For peak hours, the traffic stretches from Taytay Tiangge (Club Manila East) up to
-                Ortigas Ave in Pasig City.</p>
-        </div>
+    <section class="terms-conditions privacy">
+        <?= html_entity_decode($data['about']) ?>
+    </section>
         <div class="map-tiangge">
             <h1>HOW TO GO TO TAYTAY TIANGGE</h1>
             <div class="outer-container">
@@ -99,59 +79,23 @@ $zoomLevel = 18;
 
         <!-- Info Sections -->
         <div id="uv-info" class="info-box" style="display: block;">
-            <h2>Via UV Express</h2>
-            <p>
-                <strong>Where to Ride:</strong><br>
-                -> Go to a UV Express terminal (e.g., at Robinsons Galleria or SM Megamall).<br><br>
-                <strong>Route:</strong>
-                Take a UV Express bound for Taytay or Angono.<br><br>
-                <strong>Drop-Off Point:</strong>
-                Ask the driver to drop you at Taytay New Market or Bagpi Garment Center.<br><br>
-                <strong>Estimated Fare:</strong>
-                ₱30–₱50. <br><br>
-                <strong>Travel Time:</strong>
-                30–45 minutes, depending on traffic.
-            </p>
+        <?= html_entity_decode($data['uv']) ?>
         </div>
 
         <div id="jeep-info" class="info-box" style="display: none;">
-            <h2>Via Jeepney</h2>
-            <p>
-                <strong>Where to Ride:</strong><br>
-                Look for jeepneys with the signboard Taytay, Angono, or Binangonan.<br><br>
-                <strong>Drop-Off Point:</strong><br>
-                Same as above—ask to be dropped off near the Taytay Tiangge area.
-            </p>
+            <?= html_entity_decode($data['jeep']) ?>
         </div>
 
         <div id="mrt-info" class="info-box" style="display: none;">
-            <h2>From Quezon City or Northern Areas Via MRT + UV Express</h2>
-            <p>
-                <strong>Route:</strong><br>
-                -> Take the MRT and alight at Ortigas Station.<br>
-                -> Walk to SM Megamall or Robinsons Galleria for a UV Express bound for Taytay.
-            </p>
+        <?= html_entity_decode($data['mrt']) ?>
         </div>
 
         <div id="bus-info" class="info-box" style="display: none;">
-            <h2>From Southern Metro Manila</h2>
-            <h3>Via Bus + UV Express</h3>
-            <p>
-                <strong>Route:</strong><br>
-                -> Ride a bus bound for Ortigas or Cubao.<br>
-                -> Transfer to a UV Express or jeepney bound for Taytay.
-            </p>
+        <?= html_entity_decode($data['uv_bus']) ?>
         </div>
 
         <div id="grab-info" class="info-box" style="display: none;">
-            <h2>Via Ride-Hailing Apps</h2>
-            <p>
-                <strong>Route:</strong><br>
-                -> Use Grab or similar apps and input Bagpi Garment Center, Taytay or Taytay New Market as your
-                destination.<br><br>
-                <strong>Estimated Fare:</strong><br>
-                ₱300–₱500, depending on distance and traffic.
-            </p>
+        <?= html_entity_decode($data['ride_apps']) ?>
         </div>
     </section>
 

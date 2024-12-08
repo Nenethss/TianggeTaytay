@@ -86,6 +86,161 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             header("Location: ../pages/settings.php?section=general");
         }
+
+        if (!empty($_POST['about'])) {
+            $privacy = $_POST['about'];
+            $sql = "UPDATE systeminfo SET about = :about WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':about', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the About";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
+        if (!empty($_POST['contact'])) {
+            $privacy = $_POST['contact'];
+            $sql = "UPDATE systeminfo SET contact_info = :contact_info WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':contact_info', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the About";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
+        if (!empty($_POST['uv'])) {
+            $privacy = $_POST['uv'];
+            $sql = "UPDATE systeminfo SET uv = :uv WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':uv', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the uv";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
+        if (!empty($_POST['jeep'])) {
+            $privacy = $_POST['jeep'];
+            $sql = "UPDATE systeminfo SET jeep = :jeep WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':jeep', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the jeep";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
+        if (!empty($_POST['mrt'])) {
+            $privacy = $_POST['mrt'];
+            $sql = "UPDATE systeminfo SET mrt = :mrt WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':mrt', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the mrt";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
+        if (!empty($_POST['uv_bus'])) {
+            $privacy = $_POST['uv_bus'];
+            $sql = "UPDATE systeminfo SET uv_bus = :uv_bus WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':uv_bus', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the uv_bus";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
+        if (!empty($_POST['ride_apps'])) {
+            $privacy = $_POST['ride_apps'];
+            $sql = "UPDATE systeminfo SET ride_apps = :ride_apps WHERE id = 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':ride_apps', $privacy);
+            $stmt->execute();
+
+            $action = $adminUsername . " updated the ride_apps";
+            $logSql = "INSERT INTO actlogtb (usertype, email, action) 
+                       VALUES (:usertype, :email, :action)";
+
+            $logStmt = $conn->prepare($logSql);
+            $logStmt->bindParam(':usertype', $adminRole);
+            $logStmt->bindParam(':email', $adminEmail);
+            $logStmt->bindParam(':action', $action);
+
+            // Execute the log query
+            $logStmt->execute();
+
+            header("Location: ../pages/settings.php?section=general");
+        }
+
     } catch (Exception $e) {
         $response = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
     }

@@ -56,6 +56,7 @@ if ($admin) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../style/main-sidebar.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets//favicon-32x32.png">
     <!-- <link rel="stylesheet" href="../style/users.css"> -->
 
 </head>
